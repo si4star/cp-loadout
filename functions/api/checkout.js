@@ -27,7 +27,7 @@ export async function onRequestPost({ request, env }) {
 
     const body = new URLSearchParams();
     body.append("mode", "payment");
-    body.append("ui_mode", "embedded");
+    body.append("ui_mode", "embedded_page");
     body.append("return_url", `${env.SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`);
     body.append("shipping_address_collection[allowed_countries][0]", "GB");
     body.append("metadata[site]", "cp-loadout");
