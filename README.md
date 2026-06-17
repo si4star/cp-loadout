@@ -39,6 +39,14 @@ Bind it to the Pages project with the binding name **DB**.
 | ADMIN_TOKEN            | a long random string — gates the admin endpoints            |
 | STRIPE_PUBLISHABLE_KEY | only if you use /api/config instead of hardcoding pk_       |
 
+## Email (Resend)
+1. Verify **cploadout.com** as a sending domain in Resend (add their DKIM/SPF
+   records to the zone) — don't reuse the comicstencils.com verification, or
+   "from" reads @comicstencils.com.
+2. Set `RESEND_API_KEY` and send `FROM_EMAIL` on the verified domain
+   (e.g. `orders@cploadout.com`).
+Resend's free tier comfortably covers launch volume.
+
 ## Reconciling with Comic Stencils
 This is built fresh, not copied, so check these match (or adjust):
 - **Env var names** above — if stencils used different names, rename here or add duplicates.
