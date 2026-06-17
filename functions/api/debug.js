@@ -1,19 +1,18 @@
-// functions/api/debug.js  — TEMPORARY. Delete after diagnosing.
-// Returns which env vars are present at runtime (booleans only, no secret
-// values) so we can see what the Functions actually receive.
+// functions/api/debug.js — TEMPORARY. Delete after diagnosing.
+// Dumps exact variable NAMES present at runtime (no values), plus which
+// branch/deployment is serving — to spot typos, trailing spaces, or a
+// preview-vs-production mismatch.
 export async function onRequestGet({ env }) {
-  const keys = [
-    "STRIPE_PUBLISHABLE_KEY", "STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET",
-    "RESEND_API_KEY", "CF_ACCESS_TEAM_DOMAIN", "CF_ACCESS_AUD",
-    "FROM_EMAIL", "ADMIN_EMAIL", "SITE_URL",
-  ];
-  const present = {};
-  for (const k of keys) present[k] = typeof env[k] === "string" && env[k].length > 0;
+  const names = Object.keys(env || {}).sort();
   const body = {
-    present,
-    pubKeyLength: (env.STRIPE_PUBLISHABLE_KEY || "").length,
-    hasDB_binding: !!env.DB,
-    envKeyCount: Object.keys(env || {}).length,
+    keyNames: names,
+    branch: env.CF_PAGES_BRANCH ?? null,
+    deploymentUrl: env.CF_PAGES_URL ?? null,
+    lengths: {
+      STRIPE_PUBLISHABLE_KEY: (env.STRIPE_PUBLISHABLE_KEY || "").length,
+      STRIPE_SECRET_KEY: (env.STRIPE_SECRET_KEY || "").length,
+      FROM_EMAIL: (env.FROM_EMAIL || "").length,
+    },
   };
   return new Response(JSON.stringify(body, null, 2), {
     headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
