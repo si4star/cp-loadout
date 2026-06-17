@@ -84,7 +84,7 @@ h1 em{font-style:normal; color:var(--gold)}
   box-shadow:0 30px 60px -28px rgba(0,0,0,.85); user-select:none; touch-action:pan-y}
 .hero-carousel .slides{display:flex; transition:transform .35s ease}
 .hero-carousel .slide{min-width:100%; position:relative; flex-shrink:0}
-.hero-carousel .slide img{width:100%; aspect-ratio:1/1.18; object-fit:cover; display:block}
+.hero-carousel .slide img{width:100%; aspect-ratio:4/3; object-fit:cover; display:block}
 .hero-tag{position:absolute; left:14px; bottom:14px; background:rgba(13,14,17,.82);
   border:1px solid var(--line); border-radius:6px; padding:7px 12px;
   font-family:"Space Mono"; font-size:11.5px; letter-spacing:.08em; color:var(--gold)}
@@ -95,7 +95,7 @@ h1 em{font-style:normal; color:var(--gold)}
 .hero-prev{left:10px}
 .hero-next{right:10px}
 .hero-prev:hover,.hero-next:hover{background:rgba(13,14,17,.95)}
-.hero-dots{position:absolute; bottom:48px; left:50%; transform:translateX(-50%);
+.hero-dots{position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
   display:flex; gap:6px; z-index:2; pointer-events:none}
 .hero-dots span{width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.35); transition:background .2s}
 .hero-dots span.on{background:var(--gold)}
@@ -528,7 +528,7 @@ document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
     var track    = carousel.querySelector('.slides');
     var dots     = carousel.querySelectorAll('.hero-dots span');
     var n        = carousel.querySelectorAll('.slide').length;
-    var cur      = 1; // start on hero-2
+    var cur      = 1;
     function go(i){
       cur = (i % n + n) % n;
       track.style.transform = 'translateX(-' + (cur * 100) + '%)';
