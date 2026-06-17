@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CP Loadout — Orders</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Inter:wght@400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#ECE7DC;--muted:#8A8F99;--bg:#15171C;--bg2:#1C2026;--bg3:#22272F;--line:#333944;--gold:#F5B301;--green:#46B055;--red:#d9534f;--blue:#3A7BC0}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,sans-serif;font-size:14px;padding:22px}
+h1{font-family:"Oswald";font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:26px;margin:0 0 4px}
+.coin{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#15171C;font-family:"Oswald";font-weight:700;font-size:11px;border:2px solid #0d0e11;vertical-align:middle;margin-right:8px}
+.sub{color:var(--muted);margin-bottom:20px}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:end;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:16px}
+.field{display:flex;flex-direction:column;gap:4px}
+label{font-family:"Space Mono";font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+input,select{background:var(--bg3);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:9px 10px;font-family:"Inter";font-size:14px}
+input[type=text]{min-width:280px}
+button{font-family:"Oswald";font-weight:600;text-transform:uppercase;letter-spacing:.04em;border:none;border-radius:6px;padding:10px 16px;cursor:pointer;font-size:13px;background:var(--bg3);color:var(--ink);border:1px solid var(--line)}
+button:hover{border-color:#555}
+.btn-gold{background:var(--gold);color:#15171C;border:none}
+.btn-gold:hover{background:#FFD24A}
+table{width:100%;border-collapse:collapse;background:var(--bg2);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:"Space Mono";font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+td.mono,.mono{font-family:"Space Mono";font-size:12px}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-family:"Space Mono";text-transform:uppercase;letter-spacing:.05em}
+.s-paid{background:rgba(58,123,192,.18);color:#7fb1e6}
+.s-dispatched{background:rgba(70,176,85,.18);color:#7fd98c}
+.s-refunded{background:rgba(217,83,79,.18);color:#e89490}
+.rowbtns{display:flex;gap:6px;flex-wrap:wrap}
+.rowbtns button{padding:6px 10px;font-size:11px}
+.b-disp{background:var(--green);color:#0d0e11;border:none}
+.b-ref{background:transparent;color:var(--red);border:1px solid var(--red)}
+.b-slip{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+.msg{margin:10px 0;color:var(--muted)}
+.bulkbar{display:flex;gap:10px;align-items:center;margin:14px 0}
+@media(max-width:720px){ input[type=text]{min-width:0;width:100%} .controls{flex-direction:column;align-items:stretch} }
+</style>
+</head>
+<body>
+<h1><span class="coin">CP</span>Loadout Orders</h1>
+<p class="sub">Order management · enter your admin token, then load orders.</p>
+
+<div class="controls">
+  <div class="field" style="flex:1">
+    <label for="token">Admin token</label>
+    <input type="text" id="token" placeholder="paste ADMIN_TOKEN">
+  </div>
+  <div class="field"><label for="from">From</label><input type="date" id="from"></div>
+  <div class="field"><label for="to">To</label><input type="date" id="to"></div>
+  <div class="field">
+    <label for="status">Status</label>
+    <select id="status"><option value="">All</option><option value="paid">Paid</option><option value="dispatched">Dispatched</option><option value="refunded">Refunded</option></select>
+  </div>
+  <button class="btn-gold" onclick="load()">Load orders</button>
+  <button onclick="exportCsv()">Export CSV</button>
+</div>
+
+<div class="bulkbar">
+  <button class="b-slip" onclick="printSelected()">Print selected packing slips</button>
+  <span class="msg" id="msg"></span>
+</div>
+
+<table>
+  <thead><tr>
+    <th><input type="checkbox" id="all" onclick="toggleAll(this)"></th>
+    <th>Date</th><th>Customer</th><th>Items</th><th>Delivery</th><th>Total</th><th>Status</th><th>Actions</th>
+  </tr></thead>
+  <tbody id="rows"><tr><td colspan="8" class="msg">No orders loaded.</td></tr></tbody>
+</table>
+
+<script>
+let ORDERS = [];
+const tok = () => document.getElementById("token").value.trim();
+const hdr = () => ({ "Authorization": "Bearer " + tok() });
+const gbp = p => "£" + (Number(p||0)/100).toFixed(2);
+const msg = t => document.getElementById("msg").textContent = t;
+const parseItems = j => { try { return JSON.parse(j||"[]"); } catch { return []; } };
+
+async function load(){
+  if(!tok()){ msg("Enter your admin token first."); return; }
+  const u = new URL("/api/orders", location.origin);
+  ["from","to","status"].forEach(k=>{ const v=document.getElementById(k).value; if(v) u.searchParams.set(k,v); });
+  msg("Loading…");
+  try{
+    const res = await fetch(u, { headers: hdr() });
+    if(res.status === 401){ msg("Unauthorized — check the token."); return; }
+    const data = await res.json();
+    ORDERS = data.orders || [];
+    render();
+    msg(ORDERS.length + " order(s).");
+  }catch(e){ msg("Failed to load: " + e.message); }
+}
+
+function render(){
+  const tb = document.getElementById("rows");
+  if(!ORDERS.length){ tb.innerHTML = '<tr><td colspan="8" class="msg">No orders.</td></tr>'; return; }
+  tb.innerHTML = ORDERS.map(o=>{
+    const items = parseItems(o.items_json).map(i=>`${i.qty}× ${i.name}`).join("<br>");
+    const date = (o.created_at||"").slice(0,10);
+    const acts = o.status==="refunded" ? "" :
+      `<button class="b-disp" onclick="dispatch(${o.id})">Mark dispatched</button>
+       <button class="b-ref" onclick="refund(${o.id})">Cancel & refund</button>`;
+    return `<tr>
+      <td><input type="checkbox" class="sel" value="${o.id}"></td>
+      <td class="mono">${date}</td>
+      <td>${esc(o.customer_name)}<br><span class="mono" style="color:var(--muted)">${esc(o.customer_email)}</span></td>
+      <td>${items}</td>
+      <td>${esc(o.shipping_method)}${o.tracking?`<br><span class="mono" style="color:var(--muted)">${esc(o.tracking)}</span>`:""}</td>
+      <td class="mono">${gbp(o.amount_total)}</td>
+      <td><span class="pill s-${o.status}">${o.status}</span></td>
+      <td><div class="rowbtns"><button class="b-slip" onclick="printSlips([${o.id}])">Slip</button>${acts}</div></td>
+    </tr>`;
+  }).join("");
+}
+
+function toggleAll(cb){ document.querySelectorAll(".sel").forEach(c=>c.checked=cb.checked); }
+function selectedIds(){ return [...document.querySelectorAll(".sel:checked")].map(c=>+c.value); }
+function printSelected(){ const ids=selectedIds(); if(!ids.length){ msg("Tick some orders first."); return; } printSlips(ids); }
+
+async function dispatch(id){
+  const tracking = prompt("DPD tracking number (leave blank if none):", "");
+  if(tracking === null) return;
+  const res = await fetch("/api/dispatch", { method:"POST", headers:{...hdr(),"Content-Type":"application/json"}, body:JSON.stringify({id,tracking}) });
+  msg(res.ok ? "Marked dispatched — email sent." : "Dispatch failed."); if(res.ok) load();
+}
+async function refund(id){
+  if(!confirm("Cancel and refund this order? This issues a Stripe refund and emails the customer.")) return;
+  const res = await fetch("/api/refund", { method:"POST", headers:{...hdr(),"Content-Type":"application/json"}, body:JSON.stringify({id}) });
+  msg(res.ok ? "Refunded — email sent." : "Refund failed."); if(res.ok) load();
+}
+
+async function exportCsv(){
+  if(!tok()){ msg("Enter your admin token first."); return; }
+  const u = new URL("/api/export", location.origin);
+  ["from","to"].forEach(k=>{ const v=document.getElementById(k).value; if(v) u.searchParams.set(k,v); });
+  const res = await fetch(u, { headers: hdr() });
+  if(!res.ok){ msg("Export failed."); return; }
+  const blob = await res.blob();
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = "cploadout-orders.csv"; a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function printSlips(ids){
+  const list = ORDERS.filter(o=>ids.includes(o.id));
+  if(!list.length) return;
+  const slips = list.map(o=>{
+    const items = parseItems(o.items_json).map(i=>`<tr><td>${i.qty}</td><td>${esc(i.name)}</td></tr>`).join("");
+    const addr = [o.ship_name,o.ship_line1,o.ship_line2,o.ship_city,o.ship_postcode,o.ship_country].filter(Boolean).map(esc).join("<br>");
+    const ref = (o.session_id||"").slice(-12);
+    return `<div class="slip">
+      <div class="brand">CP LOADOUT</div>
+      <div class="meta">Order #${o.id} · ${ (o.created_at||"").slice(0,10) } · Ref ${ref}</div>
+      <h3>Ship to</h3><p>${addr}</p>
+      <h3>Items</h3><table><thead><tr><th>Qty</th><th>Item</th></tr></thead><tbody>${items}</tbody></table>
+      <p class="deliv">${esc(o.shipping_method)}</p>
+    </div>`;
+  }).join("");
+  const w = window.open("", "_blank");
+  w.document.write(`<html><head><title>Packing slips</title><style>
+    body{font-family:Arial,sans-serif;margin:0;color:#111}
+    .slip{padding:30px 34px;page-break-after:always}
+    .brand{font-weight:800;letter-spacing:.12em;font-size:20px}
+    .meta{color:#666;font-size:12px;margin:4px 0 18px}
+    h3{font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 4px}
+    p{margin:0;line-height:1.5}
+    table{border-collapse:collapse;margin-top:6px;width:100%}
+    td,th{border-bottom:1px solid #ddd;padding:6px 8px;text-align:left;font-size:14px}
+    th{font-size:11px;text-transform:uppercase;color:#666}
+    .deliv{margin-top:16px;font-weight:600}
+  </style></head><body>${slips}</body></html>`);
+  w.document.close(); w.focus(); setTimeout(()=>w.print(), 300);
+}
+
+function esc(s){ return String(s??"").replace(/[&<>"]/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c])); }
+</script>
+</body>
+</html>

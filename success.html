@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order confirmed — CP Loadout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Inter:wght@400;500&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#ECE7DC;--muted:#8A8F99;--bg:#15171C;--bg2:#1C2026;--line:#333944;--gold:#F5B301;--gold-soft:#FFD24A}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Inter",system-ui,sans-serif;
+  min-height:100vh;display:grid;place-items:center;padding:24px;line-height:1.6}
+.card{max-width:540px;width:100%;background:var(--bg2);border:1px solid var(--line);
+  border-radius:16px;padding:40px 34px;text-align:center;position:relative}
+.card::before,.card::after{content:"";position:absolute;width:18px;height:18px;border:2px solid var(--gold)}
+.card::before{top:14px;left:14px;border-right:0;border-bottom:0}
+.card::after{bottom:14px;right:14px;border-left:0;border-top:0}
+.coin{width:46px;height:46px;border-radius:50%;background:var(--gold);border:3px solid #0d0e11;
+  display:grid;place-items:center;color:#15171C;font-family:"Oswald";font-weight:700;font-size:18px;margin:0 auto 22px}
+h1{font-family:"Oswald";font-weight:700;text-transform:uppercase;font-size:32px;margin:0 0 6px;letter-spacing:.02em}
+.tick{color:var(--gold);font-family:"Space Mono";font-size:12px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:18px}
+p{color:#cfcabd;margin:0 0 16px}
+.ref{font-family:"Space Mono";font-size:12px;color:var(--muted);word-break:break-all;
+  border-top:1px solid var(--line);padding-top:16px;margin-top:8px}
+.btn{display:inline-block;margin-top:20px;background:var(--gold);color:#15171C;text-decoration:none;
+  font-family:"Oswald";font-weight:600;text-transform:uppercase;letter-spacing:.05em;
+  padding:13px 26px;border-radius:7px}
+.btn:hover{background:var(--gold-soft)}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="coin">CP</div>
+    <div class="tick">Payment received</div>
+    <h1>Order confirmed</h1>
+    <p>Thanks — your order's in. A receipt is on its way to your inbox.</p>
+    <p>Everything's made to order, so dispatch can take a little longer when we're busy. <strong>We'll email you the moment it's on its way by DPD.</strong></p>
+    <div class="ref" id="ref"></div>
+    <a class="btn" href="/">Back to the shop</a>
+  </div>
+<script>
+  // Show a short order reference from the Stripe session id, if present.
+  const id = new URLSearchParams(location.search).get("session_id");
+  if(id){ document.getElementById("ref").textContent = "Order reference: " + id.slice(-12); }
+  else{ document.getElementById("ref").style.display = "none"; }
+</script>
+</body>
+</html>
