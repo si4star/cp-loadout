@@ -10,4 +10,4 @@ pages_build_output_dir = "."
 [[d1_databases]]
 binding = "DB"                       # functions read env.DB
 database_name = "cp-loadout-db"
-database_id = "<your-d1-database-id>"  # from: wrangler d1 create cp-loadout-db
+database_id = "9592cf7c-31a0-4fde-854d-c47b4b0a883f"
