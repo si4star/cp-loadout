@@ -11,14 +11,17 @@
 // index.html. Token set is one product with per-game variants.
 const CATALOG = {
   "tray":    { name: "The Loadout Tray",              price: 2500 },
-  "box":     { name: "Really Useful Box A4",          price: 500  },
+  "box":     { name: "Really Useful Tray A4",         price: 500  },
   "tok:aos": { name: "Token Set — Age of Sigmar",     price: 1500 },
   "tok:40k": { name: "Token Set — Warhammer 40,000",  price: 1500 },
 }; // pence
 
-// Flat UK postage, added as one line per order. Revisit if you later split
-// rates by whether the Really Useful Box is in the order.
-const POSTAGE_PENCE = 600; // £6.00
+// DPD delivery options, shown in the Stripe checkout. Cheaper/standard is
+// listed first so it's the default selection. Amounts in pence.
+const SHIPPING = [
+  { name: "DPD — 3–4 working days", amount: 299, min: 3, max: 4 },
+  { name: "DPD — Next working day", amount: 545, min: 1, max: 1 },
+];
 
 export async function onRequestPost({ request, env }) {
   try {
@@ -33,7 +36,6 @@ export async function onRequestPost({ request, env }) {
     if (line_items.length === 0) {
       return json({ error: "Cart is empty" }, 400);
     }
-    if (POSTAGE_PENCE > 0) line_items.push(lineItem("Postage", POSTAGE_PENCE, 1));
 
     // Build the Stripe Checkout Session (embedded UI mode).
     const body = new URLSearchParams();
@@ -54,6 +56,23 @@ export async function onRequestPost({ request, env }) {
       body.append(`line_items[${i}][price_data][unit_amount]`, li.unit_amount);
       body.append(`line_items[${i}][price_data][product_data][name]`, li.name);
     });
+
+    // DPD delivery options — customer chooses the speed at checkout.
+    SHIPPING.forEach((s, i) => {
+      const p = `shipping_options[${i}][shipping_rate_data]`;
+      body.append(`${p}[type]`, "fixed_amount");
+      body.append(`${p}[fixed_amount][amount]`, s.amount);
+      body.append(`${p}[fixed_amount][currency]`, "gbp");
+      body.append(`${p}[display_name]`, s.name);
+      body.append(`${p}[delivery_estimate][minimum][unit]`, "business_day");
+      body.append(`${p}[delivery_estimate][minimum][value]`, s.min);
+      body.append(`${p}[delivery_estimate][maximum][unit]`, "business_day");
+      body.append(`${p}[delivery_estimate][maximum][value]`, s.max);
+    });
+
+    // Set expectations on the payment sheet — these are made to order.
+    body.append("custom_text[submit][message]",
+      "Made to order — dispatch can take longer during busy periods. We'll email you when your order is on its way.");
 
     const res = await fetch("https://api.stripe.com/v1/checkout/sessions", {
       method: "POST",
