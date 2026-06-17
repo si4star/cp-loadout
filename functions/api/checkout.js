@@ -1,6 +1,6 @@
 // functions/api/checkout.js
 const CATALOG = {
-  "tray":    { name: "The Loadout Tray",              price: 2500 },
+  "tray":    { name: "The AoS Loadout",              price: 4000 },
   "box":     { name: "Really Useful Tray A4",         price: 500  },
   "tok:aos": { name: "Token Set — Age of Sigmar",     price: 1500 },
   "tok:40k": { name: "Token Set — Warhammer 40,000",  price: 1500 },
