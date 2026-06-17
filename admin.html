@@ -53,7 +53,7 @@ tr:last-child td{border-bottom:0}
     <label for="status">Status</label>
     <select id="status"><option value="">All</option><option value="paid">Paid</option><option value="dispatched">Dispatched</option><option value="refunded">Refunded</option></select>
   </div>
-  <button class="btn-gold" onclick="load()">Load orders</button>
+  <button class="btn-gold" onclick="load()">Refresh</button>
   <button onclick="exportCsv()">Export CSV</button>
 </div>
 
@@ -71,6 +71,7 @@ tr:last-child td{border-bottom:0}
 </table>
 
 <script>
+document.addEventListener("DOMContentLoaded", load);
 let ORDERS = [];
 const gbp = p => "£" + (Number(p||0)/100).toFixed(2);
 const msg = t => document.getElementById("msg").textContent = t;
@@ -97,7 +98,7 @@ function render(){
     const items = parseItems(o.items_json).map(i=>`${i.qty}× ${i.name}`).join("<br>");
     const date = (o.created_at||"").slice(0,10);
     const acts = o.status==="refunded" ? "" :
-      `<button class="b-disp" onclick="dispatch(${o.id})">Mark dispatched</button>
+      `${o.status!=="dispatched" ? `<button class="b-disp" onclick="dispatch(${o.id})">Mark dispatched</button>` : ""}
        <button class="b-ref" onclick="refund(${o.id})">Cancel & refund</button>`;
     return `<tr>
       <td><input type="checkbox" class="sel" value="${o.id}"></td>
