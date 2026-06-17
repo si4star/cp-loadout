@@ -372,8 +372,9 @@ footer a{color:var(--gold); text-decoration:none}
    CONFIG — the only bits you need to change.
    ===================================================================*/
 const CONFIG = {
-  // From your Stripe dashboard. Leave blank to run the page as a demo.
-  STRIPE_PUBLISHABLE_KEY: "",        // e.g. "pk_live_..."
+  // Leave blank to load it from /api/config (set STRIPE_PUBLISHABLE_KEY as an
+  // env var). Or hardcode your pk_ here. Publishable keys are safe to expose.
+  STRIPE_PUBLISHABLE_KEY: "",
   // Your deployed checkout endpoint (same pattern as Comic Stencils).
   CHECKOUT_ENDPOINT: "/api/checkout",
   // Postage is chosen at checkout (DPD options live in checkout.js).
@@ -439,13 +440,26 @@ function openCart(){ document.getElementById("drawer").classList.add("open"); do
 function closeCart(){ document.getElementById("drawer").classList.remove("open"); document.getElementById("scrim").classList.remove("open"); }
 
 /* ---- Stripe embedded checkout (mirrors the Comic Stencils flow) ---- */
-let stripe = CONFIG.STRIPE_PUBLISHABLE_KEY ? Stripe(CONFIG.STRIPE_PUBLISHABLE_KEY) : null;
+/* Key comes from CONFIG if hardcoded, otherwise from /api/config (env var),
+   so you don't have to re-edit this file on every redeploy. */
+let stripe = null;
+let pubKey = CONFIG.STRIPE_PUBLISHABLE_KEY || "";
 let checkoutInstance = null;
+
+async function ensureStripe(){
+  if(stripe) return stripe;
+  if(!pubKey){
+    try{ const r = await fetch("/api/config"); if(r.ok) pubKey = (await r.json()).publishableKey || ""; }catch{}
+  }
+  if(pubKey) stripe = Stripe(pubKey);
+  return stripe;
+}
 
 async function checkout(){
   if(Object.keys(cart).length === 0) return;
-  if(!stripe){
-    alert("Demo mode: add your Stripe publishable key and deploy the /api/checkout function to take real payments.");
+  const s = await ensureStripe();
+  if(!s){
+    alert("Payments aren't switched on yet. Set STRIPE_PUBLISHABLE_KEY (and deploy the checkout function) to take payments.");
     return;
   }
   try{
@@ -458,7 +472,7 @@ async function checkout(){
     const { clientSecret } = await res.json();
     document.getElementById("co-modal").classList.add("open");
     if(checkoutInstance) checkoutInstance.destroy();
-    checkoutInstance = await stripe.initEmbeddedCheckout({ clientSecret });
+    checkoutInstance = await s.initEmbeddedCheckout({ clientSecret });
     checkoutInstance.mount("#checkout");
   }catch(e){
     alert("Sorry — couldn't start checkout. Please try again.");
