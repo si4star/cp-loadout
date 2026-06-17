@@ -30,7 +30,7 @@ export async function onRequestPost({ request, env }) {
     const line_items = [];
     for (const sku in (items || {})) {
       if (!CATALOG[sku]) continue;                 // ignore anything not in the catalogue
-      const qty = Math.max(0, parseInt(items[sku]) || 0);
+      const qty = Math.min(50, Math.max(0, parseInt(items[sku]) || 0));
       if (qty > 0) line_items.push(lineItem(CATALOG[sku].name, CATALOG[sku].price, qty));
     }
     if (line_items.length === 0) {

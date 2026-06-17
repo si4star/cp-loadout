@@ -52,8 +52,9 @@ export async function onRequestPost({ request, env }) {
     currency: s.currency || "gbp",
   };
 
+  let res;
   try {
-    await env.DB.prepare(
+    res = await env.DB.prepare(
       `INSERT OR IGNORE INTO orders
        (session_id,payment_intent,created_at,customer_name,customer_email,ship_name,
         ship_line1,ship_line2,ship_city,ship_postcode,ship_country,items_json,
@@ -67,8 +68,12 @@ export async function onRequestPost({ request, env }) {
       )
       .run();
   } catch (e) {
-    // Duplicate delivery of the same event — ignore.
+    // Real DB error — return 500 so Stripe retries and we don't lose the order.
+    return json({ error: "db" }, 500);
   }
+
+  // Duplicate webhook delivery (row already existed) — don't email again.
+  if (!res?.meta?.changes) return json({ received: true, duplicate: true });
 
   const itemsHtml = items.map((i) => `${i.qty} × ${i.name} — ${gbp(i.amount)}`).join("<br>");
   const addressHtml = [o.ship_name, o.ship_line1, o.ship_line2, o.ship_city, o.ship_postcode, o.ship_country]
@@ -105,6 +110,10 @@ async function verify(payload, header, secret) {
   const parts = Object.fromEntries(header.split(",").map((p) => p.split("=")));
   const { t, v1 } = parts;
   if (!t || !v1) return false;
+
+  // Reject stale events (replay protection): 5-minute tolerance.
+  const age = Math.floor(Date.now() / 1000) - Number(t);
+  if (!Number.isFinite(age) || age > 300) return false;
 
   const key = await crypto.subtle.importKey(
     "raw",

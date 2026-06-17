@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CP Loadout — Orders</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600;700&family=Inter:wght@400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
 <style>
@@ -43,13 +44,9 @@ tr:last-child td{border-bottom:0}
 </head>
 <body>
 <h1><span class="coin">CP</span>Loadout Orders</h1>
-<p class="sub">Order management · enter your admin token, then load orders.</p>
+<p class="sub">Order management.</p>
 
 <div class="controls">
-  <div class="field" style="flex:1">
-    <label for="token">Admin token</label>
-    <input type="text" id="token" placeholder="paste ADMIN_TOKEN">
-  </div>
   <div class="field"><label for="from">From</label><input type="date" id="from"></div>
   <div class="field"><label for="to">To</label><input type="date" id="to"></div>
   <div class="field">
@@ -75,20 +72,17 @@ tr:last-child td{border-bottom:0}
 
 <script>
 let ORDERS = [];
-const tok = () => document.getElementById("token").value.trim();
-const hdr = () => ({ "Authorization": "Bearer " + tok() });
 const gbp = p => "£" + (Number(p||0)/100).toFixed(2);
 const msg = t => document.getElementById("msg").textContent = t;
 const parseItems = j => { try { return JSON.parse(j||"[]"); } catch { return []; } };
 
 async function load(){
-  if(!tok()){ msg("Enter your admin token first."); return; }
   const u = new URL("/api/orders", location.origin);
   ["from","to","status"].forEach(k=>{ const v=document.getElementById(k).value; if(v) u.searchParams.set(k,v); });
   msg("Loading…");
   try{
-    const res = await fetch(u, { headers: hdr() });
-    if(res.status === 401){ msg("Unauthorized — check the token."); return; }
+    const res = await fetch(u);
+    if(res.status === 401){ msg("Not signed in — refresh to log in via Cloudflare Access."); return; }
     const data = await res.json();
     ORDERS = data.orders || [];
     render();
@@ -125,20 +119,19 @@ function printSelected(){ const ids=selectedIds(); if(!ids.length){ msg("Tick so
 async function dispatch(id){
   const tracking = prompt("DPD tracking number (leave blank if none):", "");
   if(tracking === null) return;
-  const res = await fetch("/api/dispatch", { method:"POST", headers:{...hdr(),"Content-Type":"application/json"}, body:JSON.stringify({id,tracking}) });
+  const res = await fetch("/api/dispatch", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({id,tracking}) });
   msg(res.ok ? "Marked dispatched — email sent." : "Dispatch failed."); if(res.ok) load();
 }
 async function refund(id){
   if(!confirm("Cancel and refund this order? This issues a Stripe refund and emails the customer.")) return;
-  const res = await fetch("/api/refund", { method:"POST", headers:{...hdr(),"Content-Type":"application/json"}, body:JSON.stringify({id}) });
+  const res = await fetch("/api/refund", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({id}) });
   msg(res.ok ? "Refunded — email sent." : "Refund failed."); if(res.ok) load();
 }
 
 async function exportCsv(){
-  if(!tok()){ msg("Enter your admin token first."); return; }
   const u = new URL("/api/export", location.origin);
   ["from","to"].forEach(k=>{ const v=document.getElementById(k).value; if(v) u.searchParams.set(k,v); });
-  const res = await fetch(u, { headers: hdr() });
+  const res = await fetch(u);
   if(!res.ok){ msg("Export failed."); return; }
   const blob = await res.blob();
   const a = document.createElement("a");

@@ -3,7 +3,7 @@
 import { json, authed, stripe, sendEmail, gbp } from "./_lib.js";
 
 export async function onRequestPost({ request, env }) {
-  if (!authed(request, env)) return json({ error: "unauthorized" }, 401);
+  if (!(await authed(request, env))) return json({ error: "unauthorized" }, 401);
 
   const { id } = await request.json();
   const order = await env.DB.prepare("SELECT * FROM orders WHERE id = ?").bind(id).first();

@@ -3,7 +3,7 @@
 import { authed } from "./_lib.js";
 
 export async function onRequestGet({ request, env }) {
-  if (!authed(request, env)) return new Response("unauthorized", { status: 401 });
+  if (!(await authed(request, env))) return new Response("unauthorized", { status: 401 });
 
   const u = new URL(request.url);
   const from = u.searchParams.get("from");
