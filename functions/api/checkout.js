@@ -1,23 +1,11 @@
 // functions/api/checkout.js
-// Cloudflare Pages Function — creates a Stripe embedded Checkout Session.
-// Same shape as your Comic Stencils checkout. Server computes the price so
-// the client can't tamper with it.
-//
-// Required env vars (Cloudflare Pages > Settings > Environment variables):
-//   STRIPE_SECRET_KEY   sk_live_...
-//   SITE_URL            https://cploadout.com   (for the return URL)
-
-// Catalogue — the server is the source of truth on price. Keep in sync with
-// index.html. Token set is one product with per-game variants.
 const CATALOG = {
   "tray":    { name: "The Loadout Tray",              price: 2500 },
   "box":     { name: "Really Useful Tray A4",         price: 500  },
   "tok:aos": { name: "Token Set — Age of Sigmar",     price: 1500 },
   "tok:40k": { name: "Token Set — Warhammer 40,000",  price: 1500 },
-}; // pence
+};
 
-// DPD delivery options, shown in the Stripe checkout. Cheaper/standard is
-// listed first so it's the default selection. Amounts in pence.
 const SHIPPING = [
   { name: "DPD — 3–4 working days", amount: 299, min: 3, max: 4 },
   { name: "DPD — Next working day", amount: 545, min: 1, max: 1 },
@@ -29,7 +17,7 @@ export async function onRequestPost({ request, env }) {
 
     const line_items = [];
     for (const sku in (items || {})) {
-      if (!CATALOG[sku]) continue;                 // ignore anything not in the catalogue
+      if (!CATALOG[sku]) continue;
       const qty = Math.min(50, Math.max(0, parseInt(items[sku]) || 0));
       if (qty > 0) line_items.push(lineItem(CATALOG[sku].name, CATALOG[sku].price, qty));
     }
@@ -37,18 +25,12 @@ export async function onRequestPost({ request, env }) {
       return json({ error: "Cart is empty" }, 400);
     }
 
-    // Build the Stripe Checkout Session (embedded UI mode).
     const body = new URLSearchParams();
     body.append("mode", "payment");
     body.append("ui_mode", "embedded");
     body.append("return_url", `${env.SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`);
     body.append("shipping_address_collection[allowed_countries][0]", "GB");
-    // Shared Stripe account with Comic Stencils — tag the order so you can tell
-    // the two stores apart in the dashboard and in your webhook handler.
     body.append("metadata[site]", "cp-loadout");
-    // So the customer's bank statement reads CP LOADOUT, not COMIC STENCILS.
-    // NOTE: appended to your account's statement-descriptor prefix; total is
-    // capped at 22 chars, so trim if Stripe rejects it.
     body.append("payment_intent_data[statement_descriptor_suffix]", "CP LOADOUT");
     line_items.forEach((li, i) => {
       body.append(`line_items[${i}][quantity]`, li.quantity);
@@ -57,7 +39,6 @@ export async function onRequestPost({ request, env }) {
       body.append(`line_items[${i}][price_data][product_data][name]`, li.name);
     });
 
-    // DPD delivery options — customer chooses the speed at checkout.
     SHIPPING.forEach((s, i) => {
       const p = `shipping_options[${i}][shipping_rate_data]`;
       body.append(`${p}[type]`, "fixed_amount");
@@ -70,7 +51,6 @@ export async function onRequestPost({ request, env }) {
       body.append(`${p}[delivery_estimate][maximum][value]`, s.max);
     });
 
-    // Set expectations on the payment sheet — these are made to order.
     body.append("custom_text[submit][message]",
       "Made to order — dispatch can take longer during busy periods. We'll email you when your order is on its way.");
 
@@ -83,10 +63,16 @@ export async function onRequestPost({ request, env }) {
       body,
     });
     const session = await res.json();
-    if (!res.ok) throw new Error(session.error?.message || "Stripe error");
+
+    // Temporary: log Stripe's full response so we can see what it's rejecting
+    if (!res.ok) {
+      console.error("Stripe error response:", JSON.stringify(session));
+      throw new Error(session.error?.message || "Stripe error");
+    }
 
     return json({ clientSecret: session.client_secret });
   } catch (err) {
+    console.error("checkout exception:", err.message);
     return json({ error: err.message }, 500);
   }
 }
