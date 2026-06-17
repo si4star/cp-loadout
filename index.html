@@ -113,7 +113,7 @@ section{padding:62px 0}
 @media(max-width:760px){ .steps{grid-template-columns:1fr} }
 
 /* ---- pricing ---- */
-.price-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px}
+.price-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:22px}
 .card{background:var(--bg2); border:1px solid var(--line); border-radius:14px; padding:28px;
   display:flex; flex-direction:column; transition:transform .15s, border-color .15s}
 .card:hover{transform:translateY(-3px); border-color:#48505c}
@@ -132,6 +132,10 @@ section{padding:62px 0}
 .addbtn{background:var(--gold); color:#15171C; border:none; border-radius:7px; padding:11px 18px;
   font-family:"Oswald"; font-weight:600; text-transform:uppercase; letter-spacing:.04em; cursor:pointer; font-size:14px}
 .addbtn:hover{background:var(--gold-soft)}
+.varlabel{display:block; font-family:"Space Mono"; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:7px}
+.variant{width:100%; background:var(--bg3); color:var(--ink); border:1px solid var(--line); border-radius:7px;
+  padding:11px 12px; font-family:"Inter"; font-size:15px; margin-bottom:18px; cursor:pointer}
+.variant:focus-visible{outline:2px solid var(--gold); outline-offset:2px}
 .more{color:var(--muted); font-size:14px; text-align:center; margin-top:22px}
 @media(max-width:760px){ .price-grid{grid-template-columns:1fr} }
 
@@ -203,7 +207,7 @@ footer a{color:var(--gold); text-decoration:none}
       <div class="reveal in">
         <div class="eyebrow">3D-printed · made to order · <span>UK</span></div>
         <h1>Your army's dice, tokens &amp; gauges — <em>packed to fit.</em></h1>
-        <p class="lede">A custom dice tray and token caddy that drops straight into a Really Useful Box A4 paper tray. The lid clicks shut and nothing moves.</p>
+        <p class="lede">A custom dice tray and token caddy, sized to drop into a Really Useful Box A4 paper tray. The lid clicks shut and nothing moves.</p>
         <div class="cta-row">
           <a class="btn btn-gold" href="#" onclick="addItem('tray');openCart();return false">Buy the tray — £25</a>
           <a class="btn btn-ghost" href="#holds">See what it holds</a>
@@ -253,7 +257,7 @@ footer a{color:var(--gold); text-decoration:none}
           <div class="tagline">The core kit</div>
           <h3>The Loadout Tray</h3>
           <div class="price">£25 <small>+ postage</small></div>
-          <p>The 3D-printed dice tray and token caddy, sized for a Really Useful Box A4 paper tray. Dice not included.</p>
+          <p>The 3D-printed dice tray and token caddy, sized for a Really Useful Box A4 paper tray. Box and dice sold separately.</p>
           <div class="qtyrow">
             <div class="stepper">
               <button onclick="bump('tray',-1)" aria-label="Less">−</button>
@@ -264,17 +268,36 @@ footer a{color:var(--gold); text-decoration:none}
           </div>
         </div>
         <div class="card reveal">
-          <div class="tagline">Add-on · compatible with Age of Sigmar</div>
-          <h3>Age of Sigmar Token Set</h3>
-          <div class="price">£15 <small>+ postage</small></div>
-          <p>The tokens, combat gauges and command-point coins shown — printed to drop into the caddy racks.</p>
+          <div class="tagline">Add-on</div>
+          <h3>Really Useful Box</h3>
+          <div class="price">£5 <small>+ postage</small></div>
+          <p>The A4 paper tray the Loadout Tray is built to fit. Skip it if you've already got one.</p>
           <div class="qtyrow">
             <div class="stepper">
-              <button onclick="bump('aos',-1)" aria-label="Less">−</button>
-              <span class="q" id="q-aos">0</span>
-              <button onclick="bump('aos',1)" aria-label="More">+</button>
+              <button onclick="bump('box',-1)" aria-label="Less">−</button>
+              <span class="q" id="q-box">0</span>
+              <button onclick="bump('box',1)" aria-label="More">+</button>
             </div>
-            <button class="addbtn" onclick="addItem('aos');openCart()">Add to cart</button>
+            <button class="addbtn" onclick="addItem('box');openCart()">Add to cart</button>
+          </div>
+        </div>
+        <div class="card reveal">
+          <div class="tagline">Standalone product · Age of Sigmar &amp; Warhammer 40,000</div>
+          <h3>Token Set</h3>
+          <div class="price">£15 <small>+ postage</small></div>
+          <p>Tokens, combat gauges and command-point coins, printed to drop into the caddy racks.</p>
+          <label class="varlabel" for="tok-variant">Game</label>
+          <select id="tok-variant" class="variant" onchange="render()">
+            <option value="aos">Age of Sigmar</option>
+            <option value="40k">Warhammer 40,000</option>
+          </select>
+          <div class="qtyrow">
+            <div class="stepper">
+              <button onclick="bumpTok(-1)" aria-label="Less">−</button>
+              <span class="q" id="q-tok">0</span>
+              <button onclick="bumpTok(1)" aria-label="More">+</button>
+            </div>
+            <button class="addbtn" onclick="addTok();openCart()">Add to cart</button>
           </div>
         </div>
       </div>
@@ -289,7 +312,7 @@ footer a{color:var(--gold); text-decoration:none}
       <div class="care reveal">
         <div><div class="k">Material</div><p>Printed in PLA. Keep it out of direct sunlight — a hot, sunny windowsill will warp it over time.</p></div>
         <div><div class="k">Made to order</div><p>Each tray is printed for your order. Allow a few days before dispatch.</p></div>
-        <div><div class="k">In the box</div><p>The tray and caddy only. Dice are not included; the token set is a separate add-on.</p></div>
+        <div><div class="k">In the box</div><p>The dice tray and token caddy. The Really Useful Box, dice and token set are each sold separately.</p></div>
       </div>
     </div>
   </section>
@@ -337,27 +360,39 @@ const CONFIG = {
   STRIPE_PUBLISHABLE_KEY: "",        // e.g. "pk_live_..."
   // Your deployed checkout endpoint (same pattern as Comic Stencils).
   CHECKOUT_ENDPOINT: "/api/checkout",
-  // Prices in pence.
-  PRICES: { tray: 2500, aos: 1500 },
-  // TODO: set real parcel postage. This product is a parcel, NOT a
-  // large-letter like the stencils — get a real Royal Mail/Evri rate.
-  POSTAGE_PENCE: 0,                  // <-- placeholder, flagged below
+  // Flat UK postage, added once per order.
+  POSTAGE_PENCE: 600,                // £6.00
 };
 
-const ITEMS = {
-  tray: { name: "The Loadout Tray", price: CONFIG.PRICES.tray },
-  aos:  { name: "Age of Sigmar Token Set", price: CONFIG.PRICES.aos },
+// Catalogue. The token set is one product with per-game variants; add more
+// games here as you print them. Keep names/prices in sync with checkout.js.
+const CATALOG = {
+  "tray":    { name: "The Loadout Tray",              price: 2500 },
+  "box":     { name: "Really Useful Box A4",          price: 500  },
+  "tok:aos": { name: "Token Set — Age of Sigmar",     price: 1500 },
+  "tok:40k": { name: "Token Set — Warhammer 40,000",  price: 1500 },
 };
 
-const cart = { tray:0, aos:0 };
+const cart = {};                       // sku -> qty
 const gbp = p => "£" + (p/100).toFixed(2);
 
-function bump(id, d){ cart[id] = Math.max(0, cart[id] + d); render(); }
-function addItem(id){ cart[id] = Math.max(1, cart[id] + 1); render(); }
+function tokKey(){ return "tok:" + document.getElementById("tok-variant").value; }
+function bumpTok(d){ bump(tokKey(), d); }
+function addTok(){ addItem(tokKey()); }
+
+function bump(key, d){
+  cart[key] = Math.max(0, (cart[key]||0) + d);
+  if(!cart[key]) delete cart[key];
+  render();
+}
+function addItem(key){ cart[key] = Math.max(1, (cart[key]||0) + 1); render(); }
 
 function render(){
-  for(const id in cart){ document.getElementById("q-"+id).textContent = cart[id]; }
-  const count = cart.tray + cart.aos;
+  document.getElementById("q-tray").textContent = cart["tray"] || 0;
+  document.getElementById("q-box").textContent  = cart["box"] || 0;
+  document.getElementById("q-tok").textContent  = cart[tokKey()] || 0;
+
+  let count = 0; for(const k in cart) count += cart[k];
   document.getElementById("cart-count").textContent = count;
 
   const lines = document.getElementById("cart-lines");
@@ -368,11 +403,9 @@ function render(){
     return;
   }
   let html = "", sub = 0;
-  for(const id in cart){
-    if(cart[id] > 0){
-      const lt = ITEMS[id].price * cart[id]; sub += lt;
-      html += '<div class="line"><span>'+ITEMS[id].name+' × '+cart[id]+'</span><span class="ln">'+gbp(lt)+'</span></div>';
-    }
+  for(const k in cart){
+    const lt = CATALOG[k].price * cart[k]; sub += lt;
+    html += '<div class="line"><span>'+CATALOG[k].name+' × '+cart[k]+'</span><span class="ln">'+gbp(lt)+'</span></div>';
   }
   lines.innerHTML = html;
   const post = CONFIG.POSTAGE_PENCE;
@@ -390,7 +423,7 @@ let stripe = CONFIG.STRIPE_PUBLISHABLE_KEY ? Stripe(CONFIG.STRIPE_PUBLISHABLE_KE
 let checkoutInstance = null;
 
 async function checkout(){
-  if(cart.tray + cart.aos === 0) return;
+  if(Object.keys(cart).length === 0) return;
   if(!stripe){
     alert("Demo mode: add your Stripe publishable key and deploy the /api/checkout function to take real payments.");
     return;

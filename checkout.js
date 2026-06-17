@@ -7,26 +7,32 @@
 //   STRIPE_SECRET_KEY   sk_live_...
 //   SITE_URL            https://cploadout.com   (for the return URL)
 
-const PRICES = { tray: 2500, aos: 1500 }; // pence — keep in sync with the front-end
+// Catalogue — the server is the source of truth on price. Keep in sync with
+// index.html. Token set is one product with per-game variants.
+const CATALOG = {
+  "tray":    { name: "The Loadout Tray",              price: 2500 },
+  "box":     { name: "Really Useful Box A4",          price: 500  },
+  "tok:aos": { name: "Token Set — Age of Sigmar",     price: 1500 },
+  "tok:40k": { name: "Token Set — Warhammer 40,000",  price: 1500 },
+}; // pence
 
-// TODO: real parcel postage. This is a boxed parcel, not a large letter,
-// so the Comic Stencils £2.00 / £3.50 rates do NOT apply. Options:
-//   (a) one flat parcel rate, or
-//   (b) Stripe shipping_options with proper Royal Mail/Evri pricing.
-const POSTAGE_PENCE = 0; // <-- set this
+// Flat UK postage, added as one line per order. Revisit if you later split
+// rates by whether the Really Useful Box is in the order.
+const POSTAGE_PENCE = 600; // £6.00
 
 export async function onRequestPost({ request, env }) {
   try {
     const { items } = await request.json();
-    const qtyTray = Math.max(0, parseInt(items?.tray) || 0);
-    const qtyAos  = Math.max(0, parseInt(items?.aos)  || 0);
-    if (qtyTray + qtyAos === 0) {
-      return json({ error: "Cart is empty" }, 400);
-    }
 
     const line_items = [];
-    if (qtyTray) line_items.push(lineItem("The Loadout Tray", PRICES.tray, qtyTray));
-    if (qtyAos)  line_items.push(lineItem("Age of Sigmar Token Set", PRICES.aos, qtyAos));
+    for (const sku in (items || {})) {
+      if (!CATALOG[sku]) continue;                 // ignore anything not in the catalogue
+      const qty = Math.max(0, parseInt(items[sku]) || 0);
+      if (qty > 0) line_items.push(lineItem(CATALOG[sku].name, CATALOG[sku].price, qty));
+    }
+    if (line_items.length === 0) {
+      return json({ error: "Cart is empty" }, 400);
+    }
     if (POSTAGE_PENCE > 0) line_items.push(lineItem("Postage", POSTAGE_PENCE, 1));
 
     // Build the Stripe Checkout Session (embedded UI mode).
