@@ -503,13 +503,23 @@ async function checkout(){
     return;
   }
   try{
+    const discountMsg = document.getElementById("discount-msg");
+    discountMsg.textContent = "";
     const res = await fetch(CONFIG.CHECKOUT_ENDPOINT, {
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body: JSON.stringify({ items: cart, discountCode: document.getElementById("discount-code").value.trim() || undefined })
     });
-    if(!res.ok) throw new Error("Checkout failed");
-    const { clientSecret } = await res.json();
+    const data = await res.json();
+    if(!res.ok){
+      if(data.error === "invalid_coupon"){
+        discountMsg.style.color = "var(--red, #e05)";
+        discountMsg.textContent = data.message;
+        return;
+      }
+      throw new Error("Checkout failed");
+    }
+    const { clientSecret } = data;
     document.getElementById("co-modal").classList.add("open");
     if(checkoutInstance) checkoutInstance.destroy();
     checkoutInstance = await s.initEmbeddedCheckout({ clientSecret });
