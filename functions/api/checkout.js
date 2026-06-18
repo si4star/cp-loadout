@@ -13,7 +13,7 @@ const SHIPPING = [
 
 export async function onRequestPost({ request, env }) {
   try {
-    const { items } = await request.json();
+    const { items, discountCode } = await request.json();
 
     const line_items = [];
     for (const sku in (items || {})) {
@@ -51,6 +51,10 @@ export async function onRequestPost({ request, env }) {
       body.append(`${p}[delivery_estimate][maximum][value]`, s.max);
     });
 
+    if (discountCode) {
+      body.append("discounts[0][coupon]", discountCode.trim().toUpperCase());
+    }
+
     body.append("custom_text[submit][message]",
       "Made to order — dispatch can take longer during busy periods. We'll email you when your order is on its way.");
 
@@ -64,7 +68,6 @@ export async function onRequestPost({ request, env }) {
     });
     const session = await res.json();
 
-    // Temporary: log Stripe's full response so we can see what it's rejecting
     if (!res.ok) {
       console.error("Stripe error response:", JSON.stringify(session));
       throw new Error(session.error?.message || "Stripe error");

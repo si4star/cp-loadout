@@ -187,7 +187,12 @@ section{padding:62px 0}
 .totals{margin-top:auto; padding-top:18px}
 .totals .row{display:flex; justify-content:space-between; padding:6px 0; color:#cfcabd; font-size:14px}
 .totals .row.grand{color:var(--ink); font-size:20px; font-family:"Oswald"; font-weight:700; border-top:1px solid var(--line); margin-top:8px; padding-top:14px}
-.checkout{width:100%; margin-top:16px; padding:15px; font-size:17px}
+.discount-row{display:flex; align-items:center; gap:8px; margin-top:16px}
+.discount-row input{flex:1; background:var(--bg2); border:1px solid var(--line); border-radius:7px; padding:10px 12px; color:var(--ink); font-size:14px; font-family:inherit; outline:none}
+.discount-row input:focus{border-color:var(--gold)}
+.discount-row input::placeholder{color:var(--muted)}
+#discount-msg{font-size:13px; color:var(--muted); white-space:nowrap}
+.checkout{width:100%; margin-top:10px; padding:15px; font-size:17px}
 .note{font-size:12px; color:var(--muted); margin-top:10px; text-align:center}
 
 /* ---- checkout modal ---- */
@@ -385,6 +390,10 @@ footer a{color:var(--gold); text-decoration:none}
     <div class="row"><span>Subtotal</span><span class="ln" id="t-sub">£0.00</span></div>
     <div class="row"><span>Postage</span><span class="ln" id="t-post">—</span></div>
     <div class="row grand"><span>Items</span><span class="ln" id="t-grand">£0.00</span></div>
+    <div class="discount-row">
+      <input id="discount-code" type="text" placeholder="Discount code" autocomplete="off" spellcheck="false">
+      <span id="discount-msg"></span>
+    </div>
     <button class="btn btn-gold checkout" onclick="checkout()">Checkout</button>
     <p class="note">Secure checkout by Stripe. Made to order — we'll email you when it's dispatched.</p>
   </div>
@@ -497,7 +506,7 @@ async function checkout(){
     const res = await fetch(CONFIG.CHECKOUT_ENDPOINT, {
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({ items: cart })
+      body: JSON.stringify({ items: cart, discountCode: document.getElementById("discount-code").value.trim() || undefined })
     });
     if(!res.ok) throw new Error("Checkout failed");
     const { clientSecret } = await res.json();
