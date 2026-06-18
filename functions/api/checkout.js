@@ -52,7 +52,7 @@ export async function onRequestPost({ request, env }) {
     });
 
     if (discountCode) {
-      body.append("discounts[0][coupon]", discountCode.trim().toUpperCase());
+      body.append("discounts[0][promotion_code]", discountCode.trim().toUpperCase());
     }
 
     body.append("custom_text[submit][message]",
@@ -71,7 +71,7 @@ export async function onRequestPost({ request, env }) {
     if (!res.ok) {
       console.error("Stripe error response:", JSON.stringify(session));
       const err = session.error || {};
-      if (err.code === "resource_missing" && err.param === "discounts[0][coupon]") {
+      if (err.code === "resource_missing" && (err.param === "discounts[0][coupon]" || err.param === "discounts[0][promotion_code]")) {
         return json({ error: "invalid_coupon", message: "That discount code isn't valid." }, 400);
       }
       throw new Error(err.message || "Stripe error");

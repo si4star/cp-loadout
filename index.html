@@ -187,11 +187,11 @@ section{padding:62px 0}
 .totals{margin-top:auto; padding-top:18px}
 .totals .row{display:flex; justify-content:space-between; padding:6px 0; color:#cfcabd; font-size:14px}
 .totals .row.grand{color:var(--ink); font-size:20px; font-family:"Oswald"; font-weight:700; border-top:1px solid var(--line); margin-top:8px; padding-top:14px}
-.discount-row{display:flex; align-items:center; gap:8px; margin-top:16px}
-.discount-row input{flex:1; background:var(--bg2); border:1px solid var(--line); border-radius:7px; padding:10px 12px; color:var(--ink); font-size:14px; font-family:inherit; outline:none}
+.discount-row{display:flex; flex-direction:column; gap:6px; margin-top:16px}
+.discount-row input{width:100%; background:var(--bg2); border:1px solid var(--line); border-radius:7px; padding:10px 12px; color:var(--ink); font-size:14px; font-family:inherit; outline:none; box-sizing:border-box}
 .discount-row input:focus{border-color:var(--gold)}
 .discount-row input::placeholder{color:var(--muted)}
-#discount-msg{font-size:13px; color:var(--muted); white-space:nowrap}
+#discount-msg{font-size:13px; min-height:1em}
 .checkout{width:100%; margin-top:10px; padding:15px; font-size:17px}
 .note{font-size:12px; color:var(--muted); margin-top:10px; text-align:center}
 
@@ -392,7 +392,7 @@ footer a{color:var(--gold); text-decoration:none}
     <div class="row grand"><span>Items</span><span class="ln" id="t-grand">£0.00</span></div>
     <div class="discount-row">
       <input id="discount-code" type="text" placeholder="Discount code" autocomplete="off" spellcheck="false">
-      <span id="discount-msg"></span>
+      <span id="discount-msg" style="font-size:13px; min-height:1em"></span>
     </div>
     <button class="btn btn-gold checkout" onclick="checkout()">Checkout</button>
     <p class="note">Secure checkout by Stripe. Made to order — we'll email you when it's dispatched.</p>
