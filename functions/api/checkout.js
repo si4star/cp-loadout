@@ -70,7 +70,11 @@ export async function onRequestPost({ request, env }) {
 
     if (!res.ok) {
       console.error("Stripe error response:", JSON.stringify(session));
-      throw new Error(session.error?.message || "Stripe error");
+      const err = session.error || {};
+      if (err.code === "resource_missing" && err.param === "discounts[0][coupon]") {
+        return json({ error: "invalid_coupon", message: "That discount code isn't valid." }, 400);
+      }
+      throw new Error(err.message || "Stripe error");
     }
 
     return json({ clientSecret: session.client_secret });
