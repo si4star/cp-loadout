@@ -96,7 +96,7 @@ h1 em{font-style:normal; color:var(--gold)}
 .hero-prev{left:10px}
 .hero-next{right:10px}
 .hero-prev:hover,.hero-next:hover{background:rgba(13,14,17,.95)}
-.hero-dots{position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
+.hero-dots{display:none; position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
   display:flex; gap:6px; z-index:2; pointer-events:none}
 .hero-dots span{width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,.35); transition:background .2s}
 .hero-dots span.on{background:var(--gold)}
@@ -245,15 +245,15 @@ footer a{color:var(--gold); text-decoration:none}
         <div class="slides">
           <div class="slide">
             <img src="/img/hero-1.jpg" alt="CP Loadout dice tray — front view">
-            <div class="hero-tag">FITS A REALLY USEFUL TRAY · A4</div>
+            <div class="hero-tag">SECURED FOR TRANSPORT</div>
           </div>
           <div class="slide">
             <img src="/img/hero-2.jpg" alt="CP Loadout dice tray and token caddy">
-            <div class="hero-tag">FITS A REALLY USEFUL TRAY · A4</div>
+            <div class="hero-tag">FITS A REALLY USEFUL A4 PAPER TRAY</div>
           </div>
           <div class="slide">
             <img src="/img/hero-3.jpg" alt="CP Loadout packed into a Really Useful Tray">
-            <div class="hero-tag">FITS A REALLY USEFUL TRAY · A4</div>
+            <div class="hero-tag">READY TO ROLL!</div>
           </div>
         </div>
         <button class="hero-prev" aria-label="Previous">&#8249;</button>
@@ -317,7 +317,7 @@ footer a{color:var(--gold); text-decoration:none}
           <div class="tagline">Add-on</div>
           <h3>Really Useful Tray</h3>
           <div class="price">£4 <small>+ postage</small></div>
-          <p>The A4 paper tray the Loadout drops into. Sits on the rim of a 4L or 9L Really Useful Box. Skip it if you've already got one; or do you want two!?</p>
+          <p>The A4 paper tray the Loadout drops into. Sits on the rim of either a 4L or a 9L Really Useful Box. Skip it if you've already got one; or do you want two!?</p>
           <div class="qtyrow">
             <div class="stepper">
               <button onclick="bump('box',-1)" aria-label="Less">−</button>
@@ -359,7 +359,7 @@ footer a{color:var(--gold); text-decoration:none}
       <div class="care reveal">
         <div><div class="k">Material</div><p>Printed in PLA. Keep it out of direct sunlight — a hot, sunny windowsill will warp it over time.</p></div>
         <div><div class="k">Delivery</div><p>Sent by DPD: next working day £5.45, or 3–4 working days £2.99. Made to order, so dispatch can take longer when we're busy — we'll email you when it's on its way.</p></div>
-        <div><div class="k">In the box</div><p>The Loadout contains our dice tray, our token caddy, a game specific set of our tokens & 6 combat gauges. The Really Useful Tray (that our dice tray fits in) is sold separately.</p></div>
+        <div><div class="k">In the box</div><p>The Loadout contains our dice tray, our token caddy, a game specific set of our tokens & 6 combat gauges. The Really Useful Tray (that our dice tray fits in) is sold separately and fits only a 4L or 9L Really Useful Box.</p></div>
       </div>
     </div>
   </section>
