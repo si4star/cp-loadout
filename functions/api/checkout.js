@@ -13,7 +13,7 @@ const SHIPPING = [
 
 export async function onRequestPost({ request, env }) {
   try {
-    const { items, discountCode } = await request.json();
+    const { items } = await request.json();
 
     const line_items = [];
     for (const sku in (items || {})) {
@@ -51,9 +51,7 @@ export async function onRequestPost({ request, env }) {
       body.append(`${p}[delivery_estimate][maximum][value]`, s.max);
     });
 
-    if (discountCode) {
-      body.append("discounts[0][promotion_code]", discountCode.trim().toUpperCase());
-    }
+    body.append("allow_promotion_codes", "true");
 
     body.append("custom_text[submit][message]",
       "Made to order — dispatch can take longer during busy periods. We'll email you when your order is on its way.");
@@ -70,11 +68,7 @@ export async function onRequestPost({ request, env }) {
 
     if (!res.ok) {
       console.error("Stripe error response:", JSON.stringify(session));
-      const err = session.error || {};
-      if (err.code === "resource_missing" && (err.param === "discounts[0][coupon]" || err.param === "discounts[0][promotion_code]")) {
-        return json({ error: "invalid_coupon", message: "That discount code isn't valid." }, 400);
-      }
-      throw new Error(err.message || "Stripe error");
+      throw new Error(session.error?.message || "Stripe error");
     }
 
     return json({ clientSecret: session.client_secret });
