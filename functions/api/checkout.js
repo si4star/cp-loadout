@@ -1,9 +1,10 @@
 // functions/api/checkout.js
 const CATALOG = {
-  "tray":    { name: "The AoS Loadout",              price: 3600 },
-  "box":     { name: "Really Useful Tray A4",         price: 400  },
-  "tok:aos": { name: "Token Set — Age of Sigmar",     price: 1500 },
-  "tok:40k": { name: "Token Set — Warhammer 40,000",  price: 1500 },
+  "tray:aos": { name: "The Loadout — Age of Sigmar",       price: 3600 },
+  "tray:40k": { name: "The Loadout — Warhammer 40,000",    price: 3600 },
+  "box":      { name: "Really Useful Tray A4",              price: 400  },
+  "tok:aos":  { name: "Token Set — Age of Sigmar",          price: 1500 },
+  "tok:40k":  { name: "Token Set — Warhammer 40,000",       price: 1500 },
 };
 
 const SHIPPING = [

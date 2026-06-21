@@ -9,6 +9,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://cploadout.com/">
+<link rel="canonical" href="https://cploadout.com/">
 <meta property="og:title" content="CP Loadout — A4 Dice Tray & Token Caddy">
 <meta property="og:description" content="Your army's dice, tokens and gauges — packed to go. A 3D-printed tray and token caddy for a Really Useful A4 tray.">
 <meta property="og:image" content="https://cploadout.com/og.jpg">
@@ -51,9 +52,9 @@ header{position:sticky; top:0; z-index:40; background:rgba(21,23,28,.86);
 .bar{display:flex; align-items:center; justify-content:space-between; height:62px}
 .brand{display:flex; align-items:center; gap:11px; font-family:"Oswald"; font-weight:700;
   font-size:22px; letter-spacing:.16em; text-transform:uppercase; text-decoration:none}
-.coin{width:30px; height:30px; border-radius:50%; background:var(--gold);
-  border:2.5px solid #0d0e11; display:grid; place-items:center; color:#15171C;
-  font-family:"Oswald"; font-weight:700; font-size:13px; letter-spacing:0}
+.coin{width:30px; height:30px; border-radius:50%; background:#0d0e11;
+  border:2.5px solid var(--gold); display:grid; place-items:center; color:var(--gold);
+  font-family:Arial,sans-serif; font-weight:700; font-size:12px; letter-spacing:0}
 .nav{display:flex; gap:26px; align-items:center}
 .nav a{text-decoration:none; color:var(--muted); font-size:14px; font-weight:500;
   text-transform:uppercase; letter-spacing:.08em; transition:color .15s}
@@ -211,12 +212,59 @@ footer a{color:var(--gold); text-decoration:none}
   .btn:active{transform:none}
 }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "name": "CP Loadout",
+      "url": "https://cploadout.com",
+      "logo": "https://cploadout.com/img/cp-loadout-wordmark.svg",
+      "contactPoint": {"@type": "ContactPoint", "email": "hello@cploadout.com"}
+    },
+    {
+      "@type": "Product",
+      "name": "The AoS Loadout Tray",
+      "description": "3D-printed dice tray and token caddy sized for a Really Useful A4 paper tray. Holds 50 dice, 60 tokens, CP coins and combat gauges. Made to order in the UK.",
+      "image": "https://cploadout.com/img/tray-product.jpg",
+      "brand": {"@type": "Brand", "name": "CP Loadout"},
+      "offers": {
+        "@type": "Offer",
+        "url": "https://cploadout.com/",
+        "priceCurrency": "GBP",
+        "price": "36.00",
+        "availability": "https://schema.org/InStock",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {"@type": "MonetaryAmount", "value": "2.99", "currency": "GBP"},
+          "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "GB"},
+          "deliveryTime": {"@type": "ShippingDeliveryTime", "businessDays": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"]}, "cutoffTime": "17:00:00Z", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 3, "maxValue": 4, "unitCode": "DAY"}}
+      }
+    },
+    {
+      "@type": "Product",
+      "name": "Token Set — Age of Sigmar",
+      "description": "Full set of Age of Sigmar tokens printed in PLA. Wound, hit, rend, damage, save and ward tokens plus CP coins. Made to order in the UK.",
+      "image": "https://cploadout.com/img/tokens-aos.jpg",
+      "brand": {"@type": "Brand", "name": "CP Loadout"},
+      "offers": {
+        "@type": "Offer",
+        "url": "https://cploadout.com/",
+        "priceCurrency": "GBP",
+        "price": "15.00",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
 <header>
   <div class="wrap bar">
-    <a class="brand" href="#top"><span class="coin">CP</span>Loadout</a>
+    <a class="brand" href="#top"><img src="/img/cp-loadout-wordmark.svg" alt="CP Loadout" height="32" style="display:block"></a>
     <nav class="nav">
       <a href="#holds">What it holds</a>
       <a href="#how">How it works</a>
@@ -298,21 +346,29 @@ footer a{color:var(--gold); text-decoration:none}
         <div class="card feature reveal">
           <img class="card-img" src="/img/tray-product.jpg" alt="The CP Loadout Tray">
           <div class="tagline">The Loadout</div>
-          <h3>The Loadout for AoS</h3>
+          <h3>The Loadout</h3>
           <div class="price">£36 <small>+ postage</small></div>
           <p>Our 3D-printed dice tray, our token caddy, AoS token set & six gauges; ready to drop into your own Really Useful A4 paper tray.</p>
           <p style="font-size:12.5px;color:var(--muted);margin:-14px 0 20px">Dice and tape measure not included.</p>
+          <label class="varlabel" for="tray-variant">Game</label>
+          <select id="tray-variant" class="variant" onchange="render()">
+            <option value="aos">Age of Sigmar</option>
+            <option value="40k">Warhammer 40,000 — Pre-order, ships from 1st July</option>
+          </select>
+          <div id="tray-preorder-note" style="display:none;font-size:12.5px;color:var(--gold);margin:8px 0 14px;line-height:1.5">
+            <strong>Pre-order:</strong> payment is taken now. Shipping begins 1st July — printing capacity will dictate your exact dispatch date. We are currently experiencing high order numbers.
+          </div>
           <div class="qtyrow">
             <div class="stepper">
-              <button onclick="bump('tray',-1)" aria-label="Less">−</button>
+              <button onclick="bumpTray(-1)" aria-label="Less">−</button>
               <span class="q" id="q-tray">0</span>
-              <button onclick="bump('tray',1)" aria-label="More">+</button>
+              <button onclick="bumpTray(1)" aria-label="More">+</button>
             </div>
-            <button class="addbtn" onclick="addItem('tray');openCart()">Add to cart</button>
+            <button class="addbtn" id="tray-add" onclick="addTray();openCart()">Add to cart</button>
           </div>
         </div>
         <div class="card reveal">
-          <img class="card-img" src="data:image/jpeg;base64,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" alt="A Really Useful A4 paper tray — the clear shallow tray the Loadout Tray sits in.">
+          <img class="card-img" src="/img/box-product.jpg" alt="Really Useful A4 paper tray — the shallow clear tray the Loadout Tray sits in.">
           <div class="tagline">Add-on</div>
           <h3>Really Useful Tray</h3>
           <div class="price">£4 <small>+ postage</small></div>
@@ -335,8 +391,11 @@ footer a{color:var(--gold); text-decoration:none}
           <label class="varlabel" for="tok-variant">Game</label>
           <select id="tok-variant" class="variant" onchange="render()">
             <option value="aos">Age of Sigmar</option>
-            <option value="40k">Warhammer 40,000 — coming soon</option>
+            <option value="40k">Warhammer 40,000 — Pre-order, ships from 1st July</option>
           </select>
+          <div id="tok-preorder-note" style="display:none;font-size:12.5px;color:var(--gold);margin:8px 0 14px;line-height:1.5">
+            <strong>Pre-order:</strong> payment is taken now. Shipping begins 1st July — printing capacity will dictate your exact dispatch date. We are currently experiencing high order numbers.
+          </div>
           <div class="qtyrow">
             <div class="stepper">
               <button onclick="bumpTok(-1)" aria-label="Less">−</button>
@@ -368,7 +427,7 @@ footer a{color:var(--gold); text-decoration:none}
 <footer>
   <div class="wrap">
     <div class="ft">
-      <div><span class="brand" style="font-size:18px"><span class="coin" style="width:24px;height:24px;font-size:10px">CP</span>Loadout</span></div>
+      <div><img src="/img/cp-loadout-wordmark.svg" alt="CP Loadout" height="24" style="display:block"></div>
       <div>© <span id="yr"></span> CP Loadout · UK · <a href="mailto:hello@cploadout.com">hello@cploadout.com</a></div>
     </div>
     <p class="ftlinks"><a href="/returns">Returns &amp; refunds</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
@@ -415,19 +474,25 @@ const CONFIG = {
 // Catalogue. The token set is one product with per-game variants; add more
 // games here as you print them. Keep names/prices in sync with checkout.js.
 const CATALOG = {
-  "tray":    { name: "The AoS Loadout",              price: 3600 },
-  "box":     { name: "Really Useful Tray A4",         price: 400  },
-  "tok:aos": { name: "Token Set — Age of Sigmar",     price: 1500 },
-  // "tok:40k" — coming soon, not yet purchasable.
+  "tray:aos": { name: "The Loadout — Age of Sigmar",       price: 3600 },
+  "tray:40k": { name: "The Loadout — Warhammer 40,000",    price: 3600 },
+  "box":      { name: "Really Useful Tray A4",              price: 400  },
+  "tok:aos":  { name: "Token Set — Age of Sigmar",          price: 1500 },
+  "tok:40k":  { name: "Token Set — Warhammer 40,000",       price: 1500 },
 };
 
 const cart = {};                       // sku -> qty
 const gbp = p => "£" + (p/100).toFixed(2);
 
+function trayKey(){ return "tray:" + document.getElementById("tray-variant").value; }
+function trayPreorder(){ return document.getElementById("tray-variant").value === "40k"; }
+function bumpTray(d){ bump(trayKey(), d); }
+function addTray(){ addItem(trayKey()); }
+
 function tokKey(){ return "tok:" + document.getElementById("tok-variant").value; }
-function tokSoon(){ return document.getElementById("tok-variant").value === "40k"; }
-function bumpTok(d){ if(tokSoon()) return; bump(tokKey(), d); }
-function addTok(){ if(tokSoon()) return; addItem(tokKey()); }
+function tokPreorder(){ return document.getElementById("tok-variant").value === "40k"; }
+function bumpTok(d){ bump(tokKey(), d); }
+function addTok(){ addItem(tokKey()); }
 
 function bump(key, d){
   cart[key] = Math.max(0, (cart[key]||0) + d);
@@ -437,13 +502,15 @@ function bump(key, d){
 function addItem(key){ cart[key] = Math.max(1, (cart[key]||0) + 1); render(); }
 
 function render(){
-  document.getElementById("q-tray").textContent = cart["tray"] || 0;
+  document.getElementById("q-tray").textContent = cart[trayKey()] || 0;
   document.getElementById("q-box").textContent  = cart["box"] || 0;
-  const soon = tokSoon();
-  document.getElementById("q-tok").textContent  = soon ? 0 : (cart[tokKey()] || 0);
-  const addBtn = document.getElementById("tok-add");
-  addBtn.disabled = soon;
-  addBtn.textContent = soon ? "Coming soon" : "Add to cart";
+  document.getElementById("q-tok").textContent  = cart[tokKey()] || 0;
+  // tray pre-order note
+  const trayPre = trayPreorder();
+  document.getElementById("tray-preorder-note").style.display = trayPre ? "block" : "none";
+  // tok pre-order note
+  const tokPre = tokPreorder();
+  document.getElementById("tok-preorder-note").style.display = tokPre ? "block" : "none";
 
   let count = 0; for(const k in cart) count += cart[k];
   document.getElementById("cart-count").textContent = count;
