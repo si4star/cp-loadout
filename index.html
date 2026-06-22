@@ -197,6 +197,15 @@ section{padding:62px 0}
 #co-inner{max-width:560px; margin:30px auto; background:#fff; border-radius:12px; padding:18px; color:#111}
 #co-inner .back{background:none;border:none;color:#555;cursor:pointer;font-size:14px;margin-bottom:8px}
 
+.faq-list{border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--bg2)}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-item:last-child{border-bottom:0}
+.faq-item summary{padding:18px 22px; font-weight:600; font-size:16px; cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:"＋"; color:var(--gold); font-size:20px; font-weight:400; flex-shrink:0; margin-left:12px}
+.faq-item[open] summary::after{content:"－"}
+.faq-item[open] summary{color:var(--gold)}
+.faq-item p{margin:0; padding:0 22px 20px; color:#cfcabd; font-size:15px; line-height:1.65}
 footer{border-top:1px solid var(--line); padding:38px 0; color:var(--muted); font-size:13px}
 footer .ft{display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap}
 footer a{color:var(--gold); text-decoration:none}
@@ -225,7 +234,7 @@ footer a{color:var(--gold); text-decoration:none}
     },
     {
       "@type": "Product",
-      "name": "The AoS Loadout Tray",
+      "name": "The Loadout",
       "description": "3D-printed dice tray and token caddy sized for a Really Useful A4 paper tray. Holds 50 dice, 60 tokens, CP coins and combat gauges. Made to order in the UK.",
       "image": "https://cploadout.com/img/tray-product.jpg",
       "brand": {"@type": "Brand", "name": "CP Loadout"},
@@ -237,7 +246,7 @@ footer a{color:var(--gold); text-decoration:none}
         "availability": "https://schema.org/InStock",
         "shippingDetails": {
           "@type": "OfferShippingDetails",
-          "shippingRate": {"@type": "MonetaryAmount", "value": "2.99", "currency": "GBP"},
+          "shippingRate": {"@type": "MonetaryAmount", "value": "3.29", "currency": "GBP"},
           "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "GB"},
           "deliveryTime": {"@type": "ShippingDeliveryTime", "businessDays": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"]}, "cutoffTime": "17:00:00Z", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 3, "maxValue": 4, "unitCode": "DAY"}}
       }
@@ -256,6 +265,20 @@ footer a{color:var(--gold); text-decoration:none}
         "availability": "https://schema.org/InStock"
       }
     }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Does it fit a 4L or 9L Really Useful Box?","acceptedAnswer":{"@type":"Answer","text":"Both. The Loadout Tray sits in a Really Useful A4 paper tray, which rests on the rim of either a 4L or 9L Really Useful Box."}},
+    {"@type":"Question","name":"Are dice included?","acceptedAnswer":{"@type":"Answer","text":"No — dice are not included. The tray holds up to 50 × 16mm dice and 20 × 10mm dice."}},
+    {"@type":"Question","name":"What is PLA and will it warp?","acceptedAnswer":{"@type":"Answer","text":"PLA is a common 3D-printing filament. It can warp if left in direct sunlight or a very hot environment. Under normal use it is completely robust."}},
+    {"@type":"Question","name":"How long until my order is dispatched?","acceptedAnswer":{"@type":"Answer","text":"Everything is printed to order. Please allow up to 7 working days for dispatch. Pre-orders for Warhammer 40,000 products will begin shipping from 1st July."}},
+    {"@type":"Question","name":"Do you ship outside the UK?","acceptedAnswer":{"@type":"Answer","text":"Not currently — we ship to UK addresses only via Evri."}},
+    {"@type":"Question","name":"What is the difference between the AoS and 40K token sets?","acceptedAnswer":{"@type":"Answer","text":"The token sets are designed for their respective game systems. Both fit the same caddy racks in The Loadout."}}
   ]
 }
 </script>
@@ -284,7 +307,7 @@ footer a{color:var(--gold); text-decoration:none}
         <h1>Your army's dice, tokens &amp; gauges — <em>packed to go.</em></h1>
         <p class="lede"><strong>The Loadout</strong> is a custom dice tray and token caddy, sized to drop into a Really Useful Boxes A4 paper tray. When the lid clicks shut, nothing moves.</p>
         <div class="cta-row">
-          <a class="btn btn-gold" href="#buy">Buy the Loadout — £36</a>
+          <a class="btn btn-gold" href="#buy">See Pricing</a>
           <a class="btn btn-ghost" href="#holds">See what it holds</a>
         </div>
       </div>
@@ -345,10 +368,10 @@ footer a{color:var(--gold); text-decoration:none}
       <div class="price-grid">
         <div class="card feature reveal">
           <img class="card-img" src="/img/tray-product.jpg" alt="The CP Loadout Tray">
-          <div class="tagline">The Loadout</div>
+          <div class="tagline">Dice Tray &amp; Token Holder</div>
           <h3>The Loadout</h3>
           <div class="price">£36 <small>+ postage</small></div>
-          <p>Our 3D-printed dice tray, our token caddy, AoS token set & six gauges; ready to drop into your own Really Useful A4 paper tray.</p>
+          <p>Our Our 3D-printed dice tray, our token caddy, game-specific token set & six gauges; ready to drop into your own Really Useful A4 paper tray.</p>
           <p style="font-size:12.5px;color:var(--muted);margin:-14px 0 20px">Dice and tape measure not included.</p>
           <label class="varlabel" for="tray-variant">Game</label>
           <select id="tray-variant" class="variant" onchange="render()">
@@ -410,13 +433,46 @@ footer a{color:var(--gold); text-decoration:none}
     </div>
   </section>
 
+  <!-- FAQ -->
+  <section id="faq" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">04</span><h2>FAQ</h2></div>
+      <div class="faq-list reveal">
+        <details class="faq-item">
+          <summary>Does it fit a 4L or 9L Really Useful Box?</summary>
+          <p>Both. The Loadout Tray sits in a Really Useful A4 paper tray, which rests on the rim of either a 4L or 9L Really Useful Box. The A4 paper tray is sold separately on this site if you need one.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Are dice included?</summary>
+          <p>No — dice are not included. The tray holds up to 50 × 16mm dice and 20 × 10mm dice, but you'll need to bring your own.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What is PLA and will it warp?</summary>
+          <p>PLA (polylactic acid) is a common 3D-printing filament. It's rigid, lightweight and odourless. It can warp if left in direct sunlight or a very hot environment — don't leave it on a sunny windowsill or in a hot car. Under normal use it's completely robust.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How long until my order is dispatched?</summary>
+          <p>Everything is printed to order. Please allow up to 7 working days for dispatch — we'll email you with your Evri tracking number as soon as it's on its way. Pre-orders for Warhammer 40,000 products will begin shipping from 1st July, subject to printing capacity.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Do you ship outside the UK?</summary>
+          <p>Not currently — we ship to UK addresses only via Evri.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What's the difference between the AoS and 40K token sets?</summary>
+          <p>The token sets are designed for their respective game systems. The Age of Sigmar set includes wound, hit, rend, damage, save and ward tokens plus CP coins. The Warhammer 40,000 set includes tokens specific to 40K rules. Both fit the same caddy racks in The Loadout.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
   <!-- CARE -->
   <section style="padding-top:0">
     <div class="wrap">
-      <div class="sec-head"><span class="sec-num">04</span><h2>Good to know</h2></div>
+      <div class="sec-head"><span class="sec-num">05</span><h2>Good to know</h2></div>
       <div class="care reveal">
-        <div><div class="k">Material</div><p>Printed in PLA. Keep it out of direct sunlight — a hot, sunny windowsill will warp it over time.</p></div>
-        <div><div class="k">Delivery</div><p>Sent by DPD: next working day £5.45, or 3–4 working days £2.99. Made to order, so dispatch can take longer when we're busy — we'll email you when it's on its way.</p></div>
+        <div><div class="k">Material</div><p>Printed in PLA in South Shields, UK. Keep it out of direct sunlight — a hot, sunny windowsill will warp it over time.</p></div>
+        <div><div class="k">Delivery</div><p>Sent by Evri: 2–4 working days, £3.29. Made to order, so dispatch can take longer when we're busy — we'll email you when it's on its way.</p></div>
         <div><div class="k">In the box</div><p>The Loadout contains our dice tray, our token caddy, a game specific set of our tokens & 6 combat gauges. The Really Useful Tray (that our dice tray fits in) is sold separately and fits only a 4L or 9L Really Useful Box.</p></div>
       </div>
     </div>
