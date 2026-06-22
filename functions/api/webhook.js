@@ -40,6 +40,7 @@ export async function onRequestPost({ request, env }) {
     created_at: new Date().toISOString(),
     customer_name: s.customer_details?.name || ship.name || "",
     customer_email: s.customer_details?.email || "",
+    customer_mobile: (s.custom_fields || []).find(f => f.key === "mobile")?.text?.value || "",
     ship_name: ship.name || s.customer_details?.name || "",
     ship_line1: addr.line1 || "",
     ship_line2: addr.line2 || "",
@@ -56,15 +57,15 @@ export async function onRequestPost({ request, env }) {
   try {
     res = await env.DB.prepare(
       `INSERT OR IGNORE INTO orders
-       (session_id,payment_intent,created_at,customer_name,customer_email,ship_name,
-        ship_line1,ship_line2,ship_city,ship_postcode,ship_country,items_json,
+       (session_id,payment_intent,created_at,customer_name,customer_email,customer_mobile,
+        ship_name,ship_line1,ship_line2,ship_city,ship_postcode,ship_country,items_json,
         shipping_method,amount_total,currency,status)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, 'paid')`
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, 'paid')`
     )
       .bind(
         o.session_id, o.payment_intent, o.created_at, o.customer_name, o.customer_email,
-        o.ship_name, o.ship_line1, o.ship_line2, o.ship_city, o.ship_postcode,
-        o.ship_country, o.items_json, o.shipping_method, o.amount_total, o.currency
+        o.customer_mobile, o.ship_name, o.ship_line1, o.ship_line2, o.ship_city,
+        o.ship_postcode, o.ship_country, o.items_json, o.shipping_method, o.amount_total, o.currency
       )
       .run();
   } catch (e) {

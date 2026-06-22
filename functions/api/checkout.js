@@ -8,8 +8,7 @@ const CATALOG = {
 };
 
 const SHIPPING = [
-  { name: "DPD — 3–4 working days", amount: 299, min: 3, max: 4 },
-  { name: "DPD — Next working day", amount: 545, min: 1, max: 1 },
+  { name: "Evri — 2–4 working days", amount: 329, min: 2, max: 4 },
 ];
 
 export async function onRequestPost({ request, env }) {
@@ -32,6 +31,11 @@ export async function onRequestPost({ request, env }) {
     body.append("return_url", `${env.SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`);
     body.append("shipping_address_collection[allowed_countries][0]", "GB");
     body.append("metadata[site]", "cp-loadout");
+    body.append("custom_fields[0][key]", "mobile");
+    body.append("custom_fields[0][label][type]", "custom");
+    body.append("custom_fields[0][label][custom]", "Mobile number");
+    body.append("custom_fields[0][type]", "text");
+    body.append("custom_fields[0][optional]", "true");
     body.append("payment_intent_data[statement_descriptor_suffix]", "CP LOADOUT");
     line_items.forEach((li, i) => {
       body.append(`line_items[${i}][quantity]`, li.quantity);

@@ -103,7 +103,7 @@ function render(){
     return `<tr>
       <td><input type="checkbox" class="sel" value="${o.id}"></td>
       <td class="mono">${date}</td>
-      <td>${esc(o.customer_name)}<br><span class="mono" style="color:var(--muted)">${esc(o.customer_email)}</span></td>
+      <td>${esc(o.customer_name)}<br><span class="mono" style="color:var(--muted)">${esc(o.customer_email)}</span>${o.customer_mobile ? `<br><span class="mono" style="color:var(--muted)">${esc(o.customer_mobile)}</span>` : ""}</td>
       <td>${items}</td>
       <td>${esc(o.shipping_method)}${o.tracking?`<br><span class="mono" style="color:var(--muted)">${esc(o.tracking)}</span>`:""}</td>
       <td class="mono">${gbp(o.amount_total)}</td>
@@ -118,7 +118,7 @@ function selectedIds(){ return [...document.querySelectorAll(".sel:checked")].ma
 function printSelected(){ const ids=selectedIds(); if(!ids.length){ msg("Tick some orders first."); return; } printSlips(ids); }
 
 async function dispatch(id){
-  const tracking = prompt("DPD tracking number (leave blank if none):", "");
+  const tracking = prompt("Evri tracking number (leave blank if none):", "");
   if(tracking === null) return;
   const res = await fetch("/api/dispatch", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({id,tracking}) });
   msg(res.ok ? "Marked dispatched — email sent." : "Dispatch failed."); if(res.ok) load();
@@ -151,6 +151,7 @@ function printSlips(ids){
       <div class="brand">CP LOADOUT</div>
       <div class="meta">Order #${o.id} · ${ (o.created_at||"").slice(0,10) } · Ref ${ref}</div>
       <h3>Ship to</h3><p>${addr}</p>
+      <p style="margin-top:8px;font-size:13px;color:#444">${esc(o.customer_email)}${o.customer_mobile ? " · " + esc(fmtMobile(o.customer_mobile)) : ""}</p>
       <h3>Items</h3><table><thead><tr><th>Qty</th><th>Item</th></tr></thead><tbody>${items}</tbody></table>
       <p class="deliv">${esc(o.shipping_method)}</p>
     </div>`;
@@ -171,6 +172,7 @@ function printSlips(ids){
   w.document.close(); w.focus(); setTimeout(()=>w.print(), 300);
 }
 
+function fmtMobile(s){ s = String(s??""); if(s.startsWith("+44")) s = "0" + s.slice(3); return s; }
 function esc(s){ return String(s??"").replace(/[&<>"]/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c])); }
 </script>
 </body>

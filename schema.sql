@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS orders (
   created_at      TEXT NOT NULL,          -- ISO timestamp
   customer_name   TEXT,
   customer_email  TEXT,
+  customer_mobile TEXT,
   ship_name       TEXT,
   ship_line1      TEXT,
   ship_line2      TEXT,
