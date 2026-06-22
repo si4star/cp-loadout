@@ -52,6 +52,7 @@ tr:last-child td{border-bottom:0}
     <label for="status">Status</label>
     <select id="status" onchange="load()"><option value="">All</option><option value="paid" selected>Paid</option><option value="dispatched">Dispatched</option><option value="refunded">Refunded</option></select>
   </div>
+  <div class="field"><label for="search">Search items</label><input type="text" id="search" placeholder="e.g. 40K, AoS, token…" oninput="renderFiltered()"></div>
   <button class="btn-gold" onclick="load()">Refresh</button>
   <button onclick="exportCsv()">Export CSV</button>
 </div>
@@ -85,15 +86,25 @@ async function load(){
     if(res.status === 401){ msg("Not signed in — refresh to log in via Cloudflare Access."); return; }
     const data = await res.json();
     ORDERS = data.orders || [];
-    render();
+    renderFiltered();
     msg(ORDERS.length + " order(s).");
   }catch(e){ msg("Failed to load: " + e.message); }
 }
 
-function render(){
+function renderFiltered(){
+  const q = (document.getElementById("search").value || "").toLowerCase();
+  if(!q){ render(ORDERS); return; }
+  const filtered = ORDERS.filter(o =>
+    parseItems(o.items_json).some(i => i.name.toLowerCase().includes(q))
+  );
+  render(filtered);
+}
+
+function render(orders){
+  orders = orders || ORDERS;
   const tb = document.getElementById("rows");
-  if(!ORDERS.length){ tb.innerHTML = '<tr><td colspan="9" class="msg">No orders.</td></tr>'; return; }
-  tb.innerHTML = ORDERS.map(o=>{
+  if(!orders.length){ tb.innerHTML = '<tr><td colspan="9" class="msg">No orders.</td></tr>'; return; }
+  tb.innerHTML = orders.map(o=>{
     const items = parseItems(o.items_json).map(i=>`${i.qty}× ${i.name}`).join("<br>");
     const date = (o.created_at||"").slice(0,10);
     const acts = o.status==="refunded" ? "" :
@@ -144,7 +155,7 @@ function printSlips(ids){
   const list = ORDERS.filter(o=>ids.includes(o.id));
   if(!list.length) return;
   const slips = list.map(o=>{
-    const items = parseItems(o.items_json).map(i=>`<tr><td>${i.qty}</td><td>${esc(i.name)}</td></tr>`).join("");
+    const items = parseItems(o.items_json).map(i=>`<tr><td>${i.qty}</td><td>${esc(i.name)}</td><td>${gbp(i.amount)}</td></tr>`).join("");
     const addr = [o.ship_name,o.ship_line1,o.ship_line2,o.ship_city,o.ship_postcode,o.ship_country].filter(Boolean).map(esc).join("<br>");
     const ref = (o.session_id||"").slice(-12);
     return `<div class="slip">
@@ -152,8 +163,11 @@ function printSlips(ids){
       <div class="meta">Order #${o.id} · ${ (o.created_at||"").slice(0,10) } · Ref ${ref}</div>
       <h3>Ship to</h3><p>${addr}</p>
       <p style="margin-top:8px;font-size:13px;color:#444">${esc(o.customer_email)}${o.customer_mobile ? " · " + esc(fmtMobile(o.customer_mobile)) : ""}</p>
-      <h3>Items</h3><table><thead><tr><th>Qty</th><th>Item</th></tr></thead><tbody>${items}</tbody></table>
-      <p class="deliv">${esc(o.shipping_method)}</p>
+      <h3>Items</h3><table><thead><tr><th>Qty</th><th>Item</th><th>Total</th></tr></thead><tbody>${items}</tbody></table>
+      <div class="slip-footer">
+        <div><span class="slip-label">Order total</span><span class="slip-val">${gbp(o.amount_total)}</span></div>
+        <div><span class="slip-label">Shipping</span><span class="slip-val">${esc(o.shipping_method)}</span></div>
+      </div>
     </div>`;
   }).join("");
   const w = window.open("", "_blank");
@@ -167,7 +181,10 @@ function printSlips(ids){
     table{border-collapse:collapse;margin-top:6px;width:100%}
     td,th{border-bottom:1px solid #ddd;padding:6px 8px;text-align:left;font-size:14px}
     th{font-size:11px;text-transform:uppercase;color:#666}
-    .deliv{margin-top:16px;font-weight:600}
+    .slip-footer{margin-top:18px;border-top:2px solid #111;padding-top:12px}
+    .slip-footer div{display:flex;justify-content:space-between;padding:4px 0;font-size:14px}
+    .slip-label{color:#555}
+    .slip-val{font-weight:700}
   </style></head><body>${slips}</body></html>`);
   w.document.close(); w.focus(); setTimeout(()=>w.print(), 300);
 }
