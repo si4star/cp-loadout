@@ -151,22 +151,85 @@ async function exportCsv(){
   URL.revokeObjectURL(a.href);
 }
 
+const CHECKLISTS = {
+  "tray:aos": [
+    "Dice tray",
+    "Token holder",
+    "6× hit tokens",
+    "6× wound tokens",
+    "6× damage tokens",
+    "6× rend tokens",
+    "6× save tokens",
+    "2× ward 6+, 2× ward 5+, 1× ward 4+, 1× ward 3+ tokens",
+    "6× CP coins",
+    "6× attack tokens",
+    "2× run &amp; charge tokens",
+    "2× cast tokens",
+    "6× objective tokens",
+    "6× gauges",
+    "6× strike first / last tokens",
+  ],
+  "tok:aos": [
+    "6× hit tokens",
+    "6× wound tokens",
+    "6× damage tokens",
+    "6× rend tokens",
+    "6× save tokens",
+    "2× ward 6+, 2× ward 5+, 1× ward 4+, 1× ward 3+ tokens",
+    "6× CP coins",
+    "6× attack tokens",
+    "2× run &amp; charge tokens",
+    "2× cast tokens",
+    "6× objective tokens",
+    "6× strike first / last tokens",
+  ],
+  "box": ["Really Useful A4 paper tray"],
+};
+
+function checklistFor(name){
+  if(/40.?000|40k/i.test(name)) return null; // 40K TBD
+  if(/token set.*age|age.*token/i.test(name)) return CHECKLISTS["tok:aos"];
+  if(/loadout|dice tray/i.test(name)) return CHECKLISTS["tray:aos"];
+  if(/really useful/i.test(name)) return CHECKLISTS["box"];
+  return null;
+}
+
 function printSlips(ids){
   const list = ORDERS.filter(o=>ids.includes(o.id));
   if(!list.length) return;
   const slips = list.map(o=>{
-    const items = parseItems(o.items_json).map(i=>`<tr><td>${i.qty}</td><td>${esc(i.name)}</td><td>${gbp(i.amount)}</td></tr>`).join("");
+    const parsedItems = parseItems(o.items_json);
     const addr = [o.ship_name,o.ship_line1,o.ship_line2,o.ship_city,o.ship_postcode,o.ship_country].filter(Boolean).map(esc).join("<br>");
     const ref = (o.session_id||"").slice(-12);
+
+    const itemSections = parsedItems.map(i => {
+      const checklist = checklistFor(i.name);
+      const checkboxes = checklist
+        ? `<ul class="checklist">${checklist.map(c=>`<li><span class="cb"></span>${c}</li>`).join("")}</ul>`
+        : `<p class="no-checklist">Checklist not yet defined for this product.</p>`;
+      return `<div class="item-section">
+        <div class="item-title">${esc(i.name)} ×${i.qty} <span class="item-price">${gbp(i.amount)}</span></div>
+        ${checkboxes}
+      </div>`;
+    }).join("");
+
     return `<div class="slip">
-      <div class="brand">CP LOADOUT</div>
-      <div class="meta">Order #${o.id} · ${ (o.created_at||"").slice(0,10) } · Ref ${ref}</div>
-      <h3>Ship to</h3><p>${addr}</p>
-      <p style="margin-top:8px;font-size:13px;color:#444">${esc(o.customer_email)}${o.customer_mobile ? " · " + esc(fmtMobile(o.customer_mobile)) : ""}</p>
-      <h3>Items</h3><table><thead><tr><th>Qty</th><th>Item</th><th>Total</th></tr></thead><tbody>${items}</tbody></table>
+      <div class="slip-head">
+        <div class="brand">CP LOADOUT</div>
+        <div class="meta">Order #${o.id} · ${(o.created_at||"").slice(0,10)} · Ref ${ref}</div>
+      </div>
+      <h3>Ship to</h3>
+      <p>${addr}</p>
+      <p class="contact">${esc(o.customer_email)}${o.customer_mobile ? " · " + esc(fmtMobile(o.customer_mobile)) : ""}</p>
+      <h3>Pack &amp; quality check</h3>
+      ${itemSections}
       <div class="slip-footer">
         <div><span class="slip-label">Order total</span><span class="slip-val">${gbp(o.amount_total)}</span></div>
         <div><span class="slip-label">Shipping</span><span class="slip-val">${esc(o.shipping_method)}</span></div>
+      </div>
+      <div class="signoff">
+        <div class="signoff-row"><span>Packed &amp; checked by:</span><span class="signoff-line"></span></div>
+        <div class="signoff-row"><span>Date:</span><span class="signoff-line"></span></div>
       </div>
     </div>`;
   }).join("");
@@ -181,10 +244,23 @@ function printSlips(ids){
     table{border-collapse:collapse;margin-top:6px;width:100%}
     td,th{border-bottom:1px solid #ddd;padding:6px 8px;text-align:left;font-size:14px}
     th{font-size:11px;text-transform:uppercase;color:#666}
-    .slip-footer{margin-top:18px;border-top:2px solid #111;padding-top:12px}
-    .slip-footer div{display:flex;justify-content:space-between;padding:4px 0;font-size:14px}
+    .slip-head{margin-bottom:14px}
+    .contact{font-size:12px;color:#555;margin:6px 0 0}
+    .item-section{margin:12px 0;padding:10px 0;border-top:1px solid #ddd}
+    .item-title{font-weight:700;font-size:14px;margin-bottom:8px}
+    .item-price{font-weight:400;color:#555;margin-left:6px}
+    .checklist{list-style:none;margin:0;padding:0}
+    .checklist li{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:13px;border-bottom:1px dotted #eee}
+    .checklist li:last-child{border-bottom:0}
+    .cb{display:inline-block;width:16px;height:16px;border:1.5px solid #333;border-radius:3px;flex-shrink:0}
+    .no-checklist{font-size:12px;color:#999;font-style:italic}
+    .slip-footer{margin-top:16px;border-top:2px solid #111;padding-top:10px}
+    .slip-footer div{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
     .slip-label{color:#555}
     .slip-val{font-weight:700}
+    .signoff{margin-top:24px;border-top:1px solid #ccc;padding-top:16px}
+    .signoff-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;font-size:13px}
+    .signoff-line{flex:1;border-bottom:1px solid #333;height:18px}
   </style></head><body>${slips}</body></html>`);
   w.document.close(); w.focus(); setTimeout(()=>w.print(), 300);
 }
