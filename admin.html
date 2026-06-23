@@ -218,9 +218,10 @@ function printSlips(ids){
         <div class="brand">CP LOADOUT</div>
         <div class="meta">Order #${o.id} · ${(o.created_at||"").slice(0,10)} · Ref ${ref}</div>
       </div>
-      <h3>Ship to</h3>
-      <p>${addr}</p>
-      <p class="contact">${esc(o.customer_email)}${o.customer_mobile ? " · " + esc(fmtMobile(o.customer_mobile)) : ""}</p>
+      <div class="addr-row">
+        <div class="addr-col"><h3>Ship to</h3><p>${addr}</p></div>
+        <div class="addr-col"><h3>Contact</h3><p class="contact">${esc(o.customer_email)}${o.customer_mobile ? "<br>" + esc(fmtMobile(o.customer_mobile)) : ""}</p></div>
+      </div>
       <h3>Pack &amp; quality check</h3>
       ${itemSections}
       <div class="slip-footer">
@@ -228,8 +229,10 @@ function printSlips(ids){
         <div><span class="slip-label">Shipping</span><span class="slip-val">${esc(o.shipping_method)}</span></div>
       </div>
       <div class="signoff">
-        <div class="signoff-row"><span>Packed &amp; checked by:</span><span class="signoff-line"></span></div>
-        <div class="signoff-row"><span>Date:</span><span class="signoff-line"></span></div>
+        <div class="signoff-row">
+          <div class="signoff-half"><span>Packed &amp; checked by:</span><span class="signoff-line"></span></div>
+          <div class="signoff-half"><span>Date:</span><span class="signoff-line"></span></div>
+        </div>
       </div>
     </div>`;
   }).join("");
@@ -259,8 +262,12 @@ function printSlips(ids){
     .slip-label{color:#555}
     .slip-val{font-weight:700}
     .signoff{margin-top:24px;border-top:1px solid #ccc;padding-top:16px}
-    .signoff-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;font-size:13px}
+    .signoff-row{display:flex;gap:24px;font-size:13px}
+    .signoff-half{display:flex;align-items:center;gap:8px;flex:1}
     .signoff-line{flex:1;border-bottom:1px solid #333;height:18px}
+    .addr-row{display:flex;gap:16px;margin-bottom:12px}
+    .addr-col{flex:1}
+    .addr-col h3{margin-top:0}
   </style></head><body>${slips}</body></html>`);
   w.document.close(); w.focus(); setTimeout(()=>w.print(), 300);
 }
