@@ -248,8 +248,9 @@ footer a{color:var(--gold); text-decoration:none}
           "@type": "OfferShippingDetails",
           "shippingRate": {"@type": "MonetaryAmount", "value": "3.29", "currency": "GBP"},
           "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "GB"},
-          "deliveryTime": {"@type": "ShippingDeliveryTime", "businessDays": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"]}, "cutoffTime": "17:00:00Z", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 3, "maxValue": 4, "unitCode": "DAY"}}
-        }
+          "deliveryTime": {"@type": "ShippingDeliveryTime", "businessDays": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"]}, "cutoffTime": "17:00:00Z", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY"}}
+        },
+        "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "GB", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 14, "returnMethod": "https://schema.org/ReturnByMail", "returnFees": "https://schema.org/ReturnShippingFees"}
       }
     },
     {
@@ -263,7 +264,14 @@ footer a{color:var(--gold); text-decoration:none}
         "url": "https://cploadout.com/",
         "priceCurrency": "GBP",
         "price": "15.00",
-        "availability": "https://schema.org/InStock"
+        "availability": "https://schema.org/InStock",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {"@type": "MonetaryAmount", "value": "3.29", "currency": "GBP"},
+          "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "GB"},
+          "deliveryTime": {"@type": "ShippingDeliveryTime", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY"}}
+        },
+        "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "GB", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 14, "returnMethod": "https://schema.org/ReturnByMail", "returnFees": "https://schema.org/ReturnShippingFees"}
       }
     }
   ]
@@ -274,7 +282,7 @@ footer a{color:var(--gold); text-decoration:none}
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type":"Question","name":"Does it fit a 4L or 9L Really Useful Box?","acceptedAnswer":{"@type":"Answer","text":"Both. The Loadout Tray sits in a Really Useful A4 paper tray, which rests on the rim of either a 4L or 9L Really Useful Box."}},
+    {"@type":"Question","name":"How does it fit inside a Really Useful Box?","acceptedAnswer":{"@type":"Answer","text":"The Loadout sits inside a Really Useful A4 paper tray, which rests on the rim of a 4L, 9L or 35L Really Useful Box."}},
     {"@type":"Question","name":"Are dice included?","acceptedAnswer":{"@type":"Answer","text":"No — dice are not included. The tray holds up to 50 × 16mm dice and 20 × 10mm dice."}},
     {"@type":"Question","name":"What is PLA and will it warp?","acceptedAnswer":{"@type":"Answer","text":"PLA is a common 3D-printing filament. It can warp if left in direct sunlight or a very hot environment. Under normal use it is completely robust."}},
     {"@type":"Question","name":"How long until my order is dispatched?","acceptedAnswer":{"@type":"Answer","text":"Everything is printed to order. Please allow up to 7 working days for dispatch. Pre-orders for Warhammer 40,000 products will begin shipping from 1st July."}},
@@ -396,7 +404,7 @@ footer a{color:var(--gold); text-decoration:none}
           <div class="tagline">Add-on</div>
           <h3>Really Useful Tray</h3>
           <div class="price">£4 <small>+ postage</small></div>
-          <p>The A4 paper tray the Loadout drops into. Sits on the rim of either a 4L or a 9L Really Useful Box. Skip it if you've already got one; or do you want two!?</p>
+          <p>The A4 paper tray the Loadout drops into. Sits on the rim of a 4L, 9L or 35L Really Useful Box. Skip it if you've already got one; or do you want two!?</p>
           <div class="qtyrow">
             <div class="stepper">
               <button onclick="bump('box',-1)" aria-label="Less">−</button>
@@ -440,8 +448,9 @@ footer a{color:var(--gold); text-decoration:none}
       <div class="sec-head"><span class="sec-num">04</span><h2>FAQ</h2></div>
       <div class="faq-list reveal">
         <details class="faq-item">
-          <summary>Does it fit a 4L or 9L Really Useful Box?</summary>
-          <p>Both. The Loadout Tray sits in a Really Useful A4 paper tray, which rests on the rim of either a 4L or 9L Really Useful Box. The A4 paper tray is sold separately on this site if you need one.</p>
+          <summary>How does it fit inside a Really Useful Box?</summary>
+          <p>The Loadout sits inside a Really Useful A4 paper tray, which rests on the rim of a 4L, 9L or 35L Really Useful Box — keeping everything accessible on top while your models are stored below.</p>
+          <img src="/img/35l-dice-tray.jpg" alt="The Loadout sitting inside a Really Useful 35L box" style="width:100%;border-radius:8px;margin-top:12px">
         </details>
         <details class="faq-item">
           <summary>Are dice included?</summary>
@@ -474,7 +483,7 @@ footer a{color:var(--gold); text-decoration:none}
       <div class="care reveal">
         <div><div class="k">Material</div><p>Printed in PLA in South Shields, UK. Keep it out of direct sunlight — a hot, sunny windowsill will warp it over time.</p></div>
         <div><div class="k">Delivery</div><p>Sent by Evri: 2–4 working days, £3.29. Made to order, so dispatch can take longer when we're busy — we'll email you when it's on its way.</p></div>
-        <div><div class="k">In the box</div><p>The Loadout contains our dice tray, our token caddy, 58 game-specific tokens &amp; 6 combat gauges. The Really Useful Tray (that our dice tray fits in) is sold separately and fits only a 4L or 9L Really Useful Box.</p></div>
+        <div><div class="k">In the box</div><p>The Loadout contains our dice tray, our token caddy, 58 game-specific tokens &amp; 6 combat gauges. The Really Useful Tray (that our dice tray fits in) is sold separately and fits a 4L, 9L or 35L Really Useful Box.</p></div>
       </div>
     </div>
   </section>
