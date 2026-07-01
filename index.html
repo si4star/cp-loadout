@@ -761,14 +761,16 @@ function cfgBack(){ if(cfgIx > 0){ cfgIx--; cfgRender(); } }
    Combo renders follow this naming (PNG, /img/):
      dice-tray-16[-token-holder][-tokens-aos|-tokens-40k].png
      tokens-aos.png · tokens-40k.png (standalone)
-   Missing renders fall back down the chain to the closest existing image. */
+   Missing renders fall back down the chain to the closest existing image.
+   CFG_IMG_VER busts the CDN cache — bump it whenever an image is replaced. */
+const CFG_IMG_VER = "?v=2";
 function setPreview(img, chain){
   const key = chain.join("|");
   if(img.dataset.chain === key) return;
   img.dataset.chain = key;
   let i = 0;
-  img.onerror = () => { i++; if(i < chain.length) img.src = chain[i]; };
-  img.src = chain[0];
+  img.onerror = () => { i++; if(i < chain.length) img.src = chain[i] + CFG_IMG_VER; };
+  img.src = chain[0] + CFG_IMG_VER;
 }
 function diceBase(){
   const d = cfgSel.dice;
