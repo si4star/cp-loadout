@@ -449,7 +449,7 @@ footer a{color:var(--gold); text-decoration:none}
         <!-- STEP 3: Insert -->
         <div class="cfg-step" id="step-holder">
           <div class="cfg-grid">
-            <img class="cfg-img" src="/img/token-holder.png" alt="CP Loadout Token Holder with gauges">
+            <img class="cfg-img" id="cfg-img-holder" src="/img/token-holder.png" alt="Insert preview — your build so far">
             <div>
               <h3>Step 3 — Insert</h3>
               <p class="desc">What sits inside your dice tray.</p>
@@ -466,7 +466,7 @@ footer a{color:var(--gold); text-decoration:none}
         <!-- STEP 4: Token set -->
         <div class="cfg-step" id="step-tok">
           <div class="cfg-grid">
-            <img class="cfg-img" src="/img/tokens-aos.jpg" alt="Age of Sigmar token set">
+            <img class="cfg-img" id="cfg-img-tok" src="/img/tokens-aos.jpg" alt="Token preview — your build so far">
             <div>
               <h3>Step 4 — Token Set</h3>
               <p class="desc">Tokens and command-point coins, printed and ready to drop into our caddy racks.</p>
@@ -681,6 +681,8 @@ function cfgRender(){
       : '<p class="cfg-empty">Nothing selected — go back and pick at least one piece.</p>';
   }
 
+  cfgPreviews();
+
   // footer
   document.getElementById("cfg-total").textContent = gbp(cfgTotal());
   document.getElementById("cfg-back").style.visibility = cfgIx === 0 ? "hidden" : "visible";
@@ -696,9 +698,54 @@ function cfgRender(){
 
 function cfgNext(){
   if(CFG_STEPS[cfgIx] === "summary"){ cfgAddToCart(); return; }
-  cfgIx++; cfgRender();
+  cfgIx++;
+  // Token Holder is the default insert — pre-select it on arrival (unless dice tray was skipped)
+  if(CFG_STEPS[cfgIx] === "holder" && cfgSel.holder === undefined && cfgSel.dice) cfgSel.holder = "token-holder";
+  cfgRender();
 }
 function cfgBack(){ if(cfgIx > 0){ cfgIx--; cfgRender(); } }
+
+/* ---- build-preview images ----
+   Combo renders follow this naming (PNG, /img/):
+     dice-tray-16[-token-holder][-tokens-aos|-tokens-40k].png
+     tokens-aos.png · tokens-40k.png (standalone)
+   Missing renders fall back down the chain to the closest existing image. */
+function setPreview(img, chain){
+  const key = chain.join("|");
+  if(img.dataset.chain === key) return;
+  img.dataset.chain = key;
+  let i = 0;
+  img.onerror = () => { i++; if(i < chain.length) img.src = chain[i]; };
+  img.src = chain[0];
+}
+function diceBase(){
+  const d = cfgSel.dice;
+  return d ? "dice-tray-" + (d === "16mm" ? "16" : d === "12mm" ? "12" : "mixed") : null;
+}
+function cfgPreviews(){
+  const db = diceBase(), h = cfgSel.holder, t = cfgSel.tok;
+  // Step 3: tray + holder, or empty tray if holder skipped
+  let hc;
+  if(db && h)      hc = ["/img/" + db + "-token-holder.png", "/img/token-holder.png"];
+  else if(db)      hc = ["/img/" + db + ".png", "/img/dice-tray-16.png"];
+  else             hc = ["/img/token-holder.png"];
+  setPreview(document.getElementById("cfg-img-holder"), hc);
+  // Step 4: full build so far
+  const parts = [];
+  if(db) parts.push(db);
+  if(h)  parts.push("token-holder");
+  const tokImg = document.getElementById("cfg-img-tok");
+  if(t){
+    const chain = [];
+    if(parts.length) chain.push("/img/" + parts.concat("tokens-" + t).join("-") + ".png");
+    chain.push("/img/tokens-" + t + ".png", "/img/tokens-aos.jpg");
+    setPreview(tokImg, chain);
+  }else if(parts.length){
+    setPreview(tokImg, hc);
+  }else{
+    setPreview(tokImg, ["/img/tokens-aos.jpg"]);
+  }
+}
 function cfgAddToCart(){
   cfgSkus().forEach(sku => { cart[sku] = (cart[sku]||0) + 1; });
   for(const k in cfgSel) cfgSel[k] = undefined;
