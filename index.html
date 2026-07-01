@@ -437,9 +437,9 @@ footer a{color:var(--gold); text-decoration:none}
               <h3>Step 2 — Dice Tray</h3>
               <p class="desc">Our 3D-printed dice tray, sized to sit flush in the Really Useful A4 paper tray. Pick the layout for your dice.</p>
               <div class="opts">
-                <button class="opt" data-pick="dice:12mm"><span class="on">12mm</span><span class="op">£25</span></button>
                 <button class="opt" data-pick="dice:16mm"><span class="on">16mm</span><span class="op">£25</span></button>
-                <button class="opt" data-pick="dice:mixed"><span class="on">Mixed</span><span class="op">£25</span></button>
+                <button class="opt" data-pick="dice:12mm" data-soon="1" disabled><span class="on">12mm</span><span class="op">£25</span><span class="od">Coming soon</span></button>
+                <button class="opt" data-pick="dice:mixed" data-soon="1" disabled><span class="on">Mixed</span><span class="op">£25</span><span class="od">Coming soon</span></button>
                 <button class="opt skip" data-pick="dice:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
               </div>
             </div>
@@ -454,8 +454,8 @@ footer a{color:var(--gold); text-decoration:none}
               <h3>Step 3 — Insert</h3>
               <p class="desc">What sits inside your dice tray.</p>
               <div class="opts">
-                <button class="opt" data-pick="holder:loadout"><span class="on">Token Holder — The Loadout</span><span class="op">£15</span><span class="od">With combat gauges</span></button>
-                <button class="opt" data-pick="holder:lift"><span class="on">Lift-out tray</span><span class="op">£8</span></button>
+                <button class="opt" data-pick="holder:token-holder"><span class="on">Token Holder</span><span class="op">£15</span><span class="od">With combat gauges</span></button>
+                <button class="opt" data-pick="holder:lift" data-soon="1" disabled><span class="on">Lift-out tray</span><span class="op">£8</span><span class="od">Coming soon</span></button>
                 <button class="opt skip" data-pick="holder:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
               </div>
               <div class="cfg-note" id="cfg-holder-note" style="display:none">Inserts fit inside the dice tray — go back and add a dice tray to choose one.</div>
@@ -629,12 +629,13 @@ const CONFIG = {
 // Catalogue. Build-your-own components + legacy SKUs (kept for safety —
 // check D1 before removing). Keep names/prices in sync with checkout.js.
 const CATALOG = {
-  "rub":            { name: "Really Useful Tray A4",                    price: 400  },
-  "dice:12mm":      { name: "Dice Tray — 12mm",                         price: 2500 },
-  "dice:16mm":      { name: "Dice Tray — 16mm",                         price: 2500 },
-  "dice:mixed":     { name: "Dice Tray — Mixed",                        price: 2500 },
-  "holder:loadout": { name: "Token Holder — The Loadout (with gauges)", price: 1500 },
-  "holder:lift":    { name: "Lift-out Tray",                            price: 800  },
+  "rub":                 { name: "Really Useful Tray A4",  price: 400  },
+  "dice:16mm":           { name: "Dice Tray — 16mm",       price: 2500 },
+  "holder:token-holder": { name: "Token Holder",           price: 1500 },
+  // Coming soon — uncomment here and in checkout.js to enable:
+  // "dice:12mm":  { name: "Dice Tray — 12mm",  price: 2500 },
+  // "dice:mixed": { name: "Dice Tray — Mixed", price: 2500 },
+  // "holder:lift":{ name: "Lift-out Tray",     price: 800  },
   "tok:aos":        { name: "Token Set — Age of Sigmar",                price: 1500 },
   "tok:40k":        { name: "Token Set — Warhammer 40,000",             price: 1500 },
   // legacy
@@ -691,7 +692,9 @@ function cfgRender(){
     const [key, val] = btn.dataset.pick.split(/:(.*)/);
     const chosen = (val === "skip") ? cfgSel[key] === null : cfgSel[key] === val;
     btn.classList.toggle("sel", chosen);
-    if(key === "holder") btn.disabled = diceSkipped && val !== "skip";
+    const soon = btn.dataset.soon === "1";
+    if(key === "holder") btn.disabled = soon || (diceSkipped && val !== "skip");
+    else btn.disabled = soon;
   });
   document.getElementById("cfg-holder-note").style.display = diceSkipped ? "block" : "none";
   document.getElementById("cfg-tok-note").style.display = cfgSel.tok === "40k" ? "block" : "none";

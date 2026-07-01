@@ -1,12 +1,13 @@
 // functions/api/checkout.js
 const CATALOG = {
   // Build-your-own components
-  "rub":            { name: "Really Useful Tray A4",                     price: 400  },
-  "dice:12mm":      { name: "Dice Tray — 12mm",                          price: 2500 },
-  "dice:16mm":      { name: "Dice Tray — 16mm",                          price: 2500 },
-  "dice:mixed":     { name: "Dice Tray — Mixed",                         price: 2500 },
-  "holder:loadout": { name: "Token Holder — The Loadout (with gauges)",  price: 1500 },
-  "holder:lift":    { name: "Lift-out Tray",                             price: 800  },
+  "rub":                 { name: "Really Useful Tray A4",  price: 400  },
+  "dice:16mm":           { name: "Dice Tray — 16mm",       price: 2500 },
+  "holder:token-holder": { name: "Token Holder",           price: 1500 },
+  // Coming soon — uncomment to enable purchase:
+  // "dice:12mm":  { name: "Dice Tray — 12mm",  price: 2500 },
+  // "dice:mixed": { name: "Dice Tray — Mixed", price: 2500 },
+  // "holder:lift":{ name: "Lift-out Tray",     price: 800  },
   "tok:aos":        { name: "Token Set — Age of Sigmar",                 price: 1500 },
   "tok:40k":        { name: "Token Set — Warhammer 40,000",              price: 1500 },
   // Legacy SKUs — kept for safety; check D1 before removing
