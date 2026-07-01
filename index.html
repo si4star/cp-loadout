@@ -268,36 +268,57 @@ footer a{color:var(--gold); text-decoration:none}
     },
     {
       "@type": "Product",
-      "name": "The Loadout",
-      "description": "3D-printed dice tray and token caddy sized for a Really Useful A4 paper tray. Holds 50 dice, 60 tokens, CP coins and combat gauges. Made to order in the UK.",
-      "image": "https://cploadout.com/img/tray-product.jpg",
+      "name": "Dice Tray — 16mm",
+      "description": "3D-printed dice tray sized to sit flush in a Really Useful A4 paper tray. Made to order in the UK.",
+      "image": "https://cploadout.com/img/dice-tray-16.png",
       "brand": {"@type": "Brand", "name": "CP Loadout"},
       "offers": {
         "@type": "Offer",
         "url": "https://cploadout.com/",
         "priceCurrency": "GBP",
-        "price": "36.00",
+        "price": "20.00",
         "availability": "https://schema.org/InStock",
         "shippingDetails": {
           "@type": "OfferShippingDetails",
           "shippingRate": {"@type": "MonetaryAmount", "value": "3.29", "currency": "GBP"},
           "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "GB"},
-          "deliveryTime": {"@type": "ShippingDeliveryTime", "businessDays": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"]}, "cutoffTime": "17:00:00Z", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY"}}
+          "deliveryTime": {"@type": "ShippingDeliveryTime", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY"}}
         },
         "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "GB", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 14, "returnMethod": "https://schema.org/ReturnByMail", "returnFees": "https://schema.org/ReturnShippingFees"}
       }
     },
     {
       "@type": "Product",
-      "name": "Token Set — Age of Sigmar",
-      "description": "Full set of 58 Age of Sigmar tokens printed in PLA. Wound, hit, rend, damage, save, ward, attack, objective and strike tokens plus CP coins. Made to order in the UK.",
+      "name": "Token Holder",
+      "description": "3D-printed token holder with combat gauges — the insert that sits inside the CP Loadout dice tray. Made to order in the UK.",
+      "image": "https://cploadout.com/img/token-holder.png",
+      "brand": {"@type": "Brand", "name": "CP Loadout"},
+      "offers": {
+        "@type": "Offer",
+        "url": "https://cploadout.com/",
+        "priceCurrency": "GBP",
+        "price": "12.00",
+        "availability": "https://schema.org/InStock",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {"@type": "MonetaryAmount", "value": "3.29", "currency": "GBP"},
+          "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "GB"},
+          "deliveryTime": {"@type": "ShippingDeliveryTime", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY"}}
+        },
+        "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "GB", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 14, "returnMethod": "https://schema.org/ReturnByMail", "returnFees": "https://schema.org/ReturnShippingFees"}
+      }
+    },
+    {
+      "@type": "Product",
+      "name": "Token Set",
+      "description": "Game-specific token set with command-point coins, printed in PLA — available for Age of Sigmar or Warhammer 40,000. Made to order in the UK.",
       "image": "https://cploadout.com/img/tokens-aos.jpg",
       "brand": {"@type": "Brand", "name": "CP Loadout"},
       "offers": {
         "@type": "Offer",
         "url": "https://cploadout.com/",
         "priceCurrency": "GBP",
-        "price": "15.00",
+        "price": "10.00",
         "availability": "https://schema.org/InStock",
         "shippingDetails": {
           "@type": "OfferShippingDetails",
@@ -422,7 +443,7 @@ footer a{color:var(--gold); text-decoration:none}
               <h3>Step 1 — Really Useful Tray</h3>
               <p class="desc">The A4 paper tray everything drops into. Sits on the rim of a 4L, 9L or 35L Really Useful Box. Skip it if you've already got one.</p>
               <div class="opts">
-                <button class="opt" data-pick="rub:yes"><span class="on">Add the tray</span><span class="op">£4</span></button>
+                <button class="opt" data-pick="rub:yes"><span class="on">Add the tray</span><span class="op">£3</span></button>
                 <button class="opt skip" data-pick="rub:skip"><span class="on">No thanks</span><span class="op">I've already got one</span></button>
               </div>
             </div>
@@ -437,9 +458,9 @@ footer a{color:var(--gold); text-decoration:none}
               <h3>Step 2 — Dice Tray</h3>
               <p class="desc">Our 3D-printed dice tray, sized to sit flush in the Really Useful A4 paper tray. Pick the layout for your dice.</p>
               <div class="opts">
-                <button class="opt" data-pick="dice:16mm"><span class="on">16mm</span><span class="op">£25</span></button>
-                <button class="opt" data-pick="dice:12mm" data-soon="1" disabled><span class="on">12mm</span><span class="op">£25</span><span class="od">Coming soon</span></button>
-                <button class="opt" data-pick="dice:mixed" data-soon="1" disabled><span class="on">Mixed</span><span class="op">£25</span><span class="od">Coming soon</span></button>
+                <button class="opt" data-pick="dice:16mm"><span class="on">16mm</span><span class="op">£20</span></button>
+                <button class="opt" data-pick="dice:12mm" data-soon="1" disabled><span class="on">12mm</span><span class="op">£20</span><span class="od">Coming soon</span></button>
+                <button class="opt" data-pick="dice:mixed" data-soon="1" disabled><span class="on">Mixed</span><span class="op">£20</span><span class="od">Coming soon</span></button>
                 <button class="opt skip" data-pick="dice:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
               </div>
             </div>
@@ -454,7 +475,7 @@ footer a{color:var(--gold); text-decoration:none}
               <h3>Step 3 — Insert</h3>
               <p class="desc">What sits inside your dice tray.</p>
               <div class="opts">
-                <button class="opt" data-pick="holder:token-holder"><span class="on">Token Holder</span><span class="op">£15</span><span class="od">With combat gauges</span></button>
+                <button class="opt" data-pick="holder:token-holder"><span class="on">Token Holder</span><span class="op">£12</span><span class="od">With combat gauges</span></button>
                 <button class="opt" data-pick="holder:lift" data-soon="1" disabled><span class="on">Lift-out tray</span><span class="op">£8</span><span class="od">Coming soon</span></button>
                 <button class="opt skip" data-pick="holder:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
               </div>
@@ -471,8 +492,8 @@ footer a{color:var(--gold); text-decoration:none}
               <h3>Step 4 — Token Set</h3>
               <p class="desc">Tokens and command-point coins, printed and ready to drop into our caddy racks.</p>
               <div class="opts">
-                <button class="opt" data-pick="tok:aos"><span class="on">Age of Sigmar</span><span class="op">£15</span></button>
-                <button class="opt" data-pick="tok:40k"><span class="on">Warhammer 40,000</span><span class="op">£15</span><span class="od">Pre-order, ships from 1st July</span></button>
+                <button class="opt" data-pick="tok:aos"><span class="on">Age of Sigmar</span><span class="op">£10</span></button>
+                <button class="opt" data-pick="tok:40k"><span class="on">Warhammer 40,000</span><span class="op">£10</span><span class="od">Pre-order, ships from 1st July</span></button>
                 <button class="opt skip" data-pick="tok:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
               </div>
               <div class="cfg-note" id="cfg-tok-note" style="display:none"><strong>Pre-order:</strong> payment is taken now. Shipping begins 1st July — printing capacity will dictate your exact dispatch date. We are currently experiencing high order numbers.</div>
@@ -603,15 +624,15 @@ const CONFIG = {
 // Catalogue. Build-your-own components + legacy SKUs (kept for safety —
 // check D1 before removing). Keep names/prices in sync with checkout.js.
 const CATALOG = {
-  "rub":                 { name: "Really Useful Tray A4",  price: 400  },
-  "dice:16mm":           { name: "Dice Tray — 16mm",       price: 2500 },
-  "holder:token-holder": { name: "Token Holder",           price: 1500 },
+  "rub":                 { name: "Really Useful Tray A4",  price: 300  },
+  "dice:16mm":           { name: "Dice Tray — 16mm",       price: 2000 },
+  "holder:token-holder": { name: "Token Holder",           price: 1200 },
   // Coming soon — uncomment here and in checkout.js to enable:
-  // "dice:12mm":  { name: "Dice Tray — 12mm",  price: 2500 },
-  // "dice:mixed": { name: "Dice Tray — Mixed", price: 2500 },
+  // "dice:12mm":  { name: "Dice Tray — 12mm",  price: 2000 },
+  // "dice:mixed": { name: "Dice Tray — Mixed", price: 2000 },
   // "holder:lift":{ name: "Lift-out Tray",     price: 800  },
-  "tok:aos":        { name: "Token Set — Age of Sigmar",                price: 1500 },
-  "tok:40k":        { name: "Token Set — Warhammer 40,000",             price: 1500 },
+  "tok:aos":        { name: "Token Set — Age of Sigmar",                price: 1000 },
+  "tok:40k":        { name: "Token Set — Warhammer 40,000",             price: 1000 },
   // legacy
   "tray:aos": { name: "The Loadout — Age of Sigmar",    price: 3600 },
   "tray:40k": { name: "The Loadout — Warhammer 40,000", price: 3600 },
@@ -624,6 +645,7 @@ const gbp = p => "£" + (p/100).toFixed(2);
 /* ---- configurator ---- */
 const CFG_STEPS = ["rub","dice","holder","tok","summary"];
 const CFG_LABEL = { rub:"RUB Tray", dice:"Dice Tray", holder:"Insert", tok:"Tokens", summary:"Review" };
+const CFG_DEFAULT = { rub:"yes", dice:"16mm", holder:"token-holder", tok:"aos" };
 let cfgIx = 0;
 // undefined = not chosen yet · null = skipped · string = chosen variant
 const cfgSel = { rub:undefined, dice:undefined, holder:undefined, tok:undefined };
@@ -696,11 +718,17 @@ function cfgRender(){
   }
 }
 
+// Each step's default is pre-selected on arrival (insert only if a dice tray is in the build)
+function cfgApplyDefault(){
+  const s = CFG_STEPS[cfgIx];
+  if(s === "summary" || cfgSel[s] !== undefined) return;
+  if(s === "holder" && !cfgSel.dice) return;
+  cfgSel[s] = CFG_DEFAULT[s];
+}
 function cfgNext(){
   if(CFG_STEPS[cfgIx] === "summary"){ cfgAddToCart(); return; }
   cfgIx++;
-  // Token Holder is the default insert — pre-select it on arrival (unless dice tray was skipped)
-  if(CFG_STEPS[cfgIx] === "holder" && cfgSel.holder === undefined && cfgSel.dice) cfgSel.holder = "token-holder";
+  cfgApplyDefault();
   cfgRender();
 }
 function cfgBack(){ if(cfgIx > 0){ cfgIx--; cfgRender(); } }
@@ -750,6 +778,7 @@ function cfgAddToCart(){
   cfgSkus().forEach(sku => { cart[sku] = (cart[sku]||0) + 1; });
   for(const k in cfgSel) cfgSel[k] = undefined;
   cfgIx = 0;
+  cfgApplyDefault();
   render(); cfgRender(); openCart();
 }
 
@@ -827,6 +856,7 @@ function closeCheckout(){
 /* ---- niceties ---- */
 document.getElementById("yr").textContent = new Date().getFullYear();
 render();
+cfgApplyDefault();
 cfgRender();
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeCheckout(); closeCart(); } });
 const io = new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add("in"); }), {threshold:.12});
