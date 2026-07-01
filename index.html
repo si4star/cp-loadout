@@ -3,18 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CP Loadout — A4 Dice Tray &amp; Token Caddy</title>
-<meta name="description" content="A custom 3D-printed dice tray and token caddy that drops into a Really Useful A4 tray. Holds 50 dice, 60 tokens, command-point coins and combat gauges. Made to order in the UK.">
+<title>CP Loadout — A4 Dice Tray &amp; Token Holder</title>
+<meta name="description" content="A build-your-own 3D-printed dice tray, token holder and token sets that drop into a Really Useful A4 tray. Made to order in the UK.">
 
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://cploadout.com/">
 <link rel="canonical" href="https://cploadout.com/">
-<meta property="og:title" content="CP Loadout — A4 Dice Tray & Token Caddy">
-<meta property="og:description" content="Your army's dice, tokens and gauges — packed to go. A 3D-printed tray and token caddy for a Really Useful A4 tray.">
+<meta property="og:title" content="CP Loadout — A4 Dice Tray & Token Holder">
+<meta property="og:description" content="Your army's dice, tokens and gauges — packed to go. A build-your-own 3D-printed dice tray, token holder and token sets for a Really Useful A4 tray.">
 <meta property="og:image" content="https://cploadout.com/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="CP Loadout — A4 Dice Tray & Token Caddy">
+<meta name="twitter:title" content="CP Loadout — A4 Dice Tray & Token Holder">
 <meta name="twitter:description" content="Your army's dice, tokens and gauges — packed to go.">
 <meta name="twitter:image" content="https://cploadout.com/og.jpg">
 
@@ -217,7 +217,9 @@ section{padding:62px 0}
 .drawer h3{font-size:22px; text-transform:uppercase; margin-bottom:18px; display:flex; justify-content:space-between; align-items:center}
 .drawer .x{background:none; border:none; color:var(--muted); font-size:26px; cursor:pointer; line-height:1}
 .line{display:flex; justify-content:space-between; gap:10px; padding:12px 0; border-bottom:1px solid var(--line); font-size:15px}
-.line .ln{font-family:"Space Mono"}
+.line .ln{font-family:"Space Mono"; white-space:nowrap}
+.line .rm{background:none; border:none; color:var(--muted); cursor:pointer; font-size:17px; padding:0 0 0 8px; line-height:1}
+.line .rm:hover{color:#d9534f}
 .cart-empty{color:var(--muted); padding:30px 0}
 .totals{margin-top:auto; padding-top:18px}
 .totals .row{display:flex; justify-content:space-between; padding:6px 0; color:#cfcabd; font-size:14px}
@@ -310,8 +312,8 @@ footer a{color:var(--gold); text-decoration:none}
     },
     {
       "@type": "Product",
-      "name": "Token Set",
-      "description": "Game-specific token set with command-point coins, printed in PLA — available for Age of Sigmar or Warhammer 40,000. Made to order in the UK.",
+      "name": "Token Set — Age of Sigmar",
+      "description": "Full set of 58 Age of Sigmar tokens with command-point coins, printed in PLA. Made to order in the UK.",
       "image": "https://cploadout.com/img/tokens-aos.jpg",
       "brand": {"@type": "Brand", "name": "CP Loadout"},
       "offers": {
@@ -320,6 +322,28 @@ footer a{color:var(--gold); text-decoration:none}
         "priceCurrency": "GBP",
         "price": "10.00",
         "availability": "https://schema.org/InStock",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {"@type": "MonetaryAmount", "value": "3.29", "currency": "GBP"},
+          "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "GB"},
+          "deliveryTime": {"@type": "ShippingDeliveryTime", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY"}}
+        },
+        "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "GB", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 14, "returnMethod": "https://schema.org/ReturnByMail", "returnFees": "https://schema.org/ReturnShippingFees"}
+      }
+    },
+    {
+      "@type": "Product",
+      "name": "Token Set — Warhammer 40,000",
+      "description": "Warhammer 40,000 token set with command-point coins, printed in PLA. Pre-order — shipping begins 1st August. Made to order in the UK.",
+      "image": "https://cploadout.com/img/tokens-40k.png",
+      "brand": {"@type": "Brand", "name": "CP Loadout"},
+      "offers": {
+        "@type": "Offer",
+        "url": "https://cploadout.com/",
+        "priceCurrency": "GBP",
+        "price": "10.00",
+        "availability": "https://schema.org/PreOrder",
+        "availabilityStarts": "2026-08-01",
         "shippingDetails": {
           "@type": "OfferShippingDetails",
           "shippingRate": {"@type": "MonetaryAmount", "value": "3.29", "currency": "GBP"},
@@ -339,11 +363,11 @@ footer a{color:var(--gold); text-decoration:none}
   "mainEntity": [
     {"@type":"Question","name":"How does it fit inside a Really Useful Box?","acceptedAnswer":{"@type":"Answer","text":"The Loadout sits inside a Really Useful A4 paper tray, which rests on the rim of a 4L, 9L or 35L Really Useful Box, keeping everything accessible on top while your models are stored below."}},
     {"@type":"Question","name":"Does it fit inside a Really Useful 35L box?","acceptedAnswer":{"@type":"Answer","text":"Yes — The Loadout sits inside a Really Useful A4 paper tray which rests on the rim of a 35L Really Useful Box."}},
-    {"@type":"Question","name":"Are dice included?","acceptedAnswer":{"@type":"Answer","text":"No — dice are not included. The tray holds up to 50 × 16mm dice and 20 × 10mm dice."}},
+    {"@type":"Question","name":"Are dice included?","acceptedAnswer":{"@type":"Answer","text":"No — dice are not included; just the slots for them. The 16mm tray holds up to 50 × 16mm dice and 20 × 10mm dice."}},
     {"@type":"Question","name":"What is PLA and will it warp?","acceptedAnswer":{"@type":"Answer","text":"PLA is a common 3D-printing filament. It can warp if left in direct sunlight or a very hot environment. Under normal use it is completely robust."}},
-    {"@type":"Question","name":"How long until my order is dispatched?","acceptedAnswer":{"@type":"Answer","text":"Everything is printed to order. Please allow up to 7 working days for dispatch. Pre-orders for Warhammer 40,000 products will begin shipping from 1st July."}},
+    {"@type":"Question","name":"How long until my order is dispatched?","acceptedAnswer":{"@type":"Answer","text":"Everything is printed to order. Please allow up to 7 working days for dispatch. Pre-orders for Warhammer 40,000 products will begin shipping from 1st August."}},
     {"@type":"Question","name":"Do you ship outside the UK?","acceptedAnswer":{"@type":"Answer","text":"Not currently — we ship to UK addresses only via Evri."}},
-    {"@type":"Question","name":"What is the difference between the AoS and 40K token sets?","acceptedAnswer":{"@type":"Answer","text":"The token sets are designed for their respective game systems. Both fit the same caddy racks in The Loadout."}}
+    {"@type":"Question","name":"What is the difference between the AoS and 40K token sets?","acceptedAnswer":{"@type":"Answer","text":"The token sets are designed for their respective game systems. Both fit the same racks in the Token Holder."}}
   ]
 }
 </script>
@@ -356,7 +380,7 @@ footer a{color:var(--gold); text-decoration:none}
     <nav class="nav">
       <a href="#holds">What it holds</a>
       <a href="#how">How it works</a>
-      <a href="#buy">Pricing</a>
+      <a href="#buy">Build yours</a>
       <a class="cartbtn" href="#" onclick="openCart();return false">Cart (<span id="cart-count">0</span>)</a>
     </nav>
   </div>
@@ -370,9 +394,9 @@ footer a{color:var(--gold); text-decoration:none}
       <div class="reveal in">
         <div class="eyebrow">3D-printed · made to order · <span>UK</span></div>
         <h1>Your army's dice, tokens &amp; gauges — <em>packed to go.</em></h1>
-        <p class="lede"><strong>The Loadout</strong> is a custom dice tray and token caddy, sized to drop into a Really Useful Boxes A4 paper tray. When the lid clicks shut, nothing moves.</p>
+        <p class="lede">Build your <strong>Loadout</strong>: a 3D-printed dice tray, token holder and game tokens, sized to drop into a Really Useful Boxes A4 paper tray. Pick the pieces you need. When the lid clicks shut, nothing moves.</p>
         <div class="cta-row">
-          <a class="btn btn-gold" href="#buy">See Pricing</a>
+          <a class="btn btn-gold" href="#buy">Build yours</a>
           <a class="btn btn-ghost" href="#holds">See what it holds</a>
         </div>
       </div>
@@ -383,7 +407,7 @@ footer a{color:var(--gold); text-decoration:none}
             <div class="hero-tag">SECURED FOR TRANSPORT</div>
           </div>
           <div class="slide">
-            <img src="/img/hero-2.jpg" alt="CP Loadout dice tray and token caddy">
+            <img src="/img/hero-2.jpg" alt="CP Loadout dice tray and token holder">
             <div class="hero-tag">FITS A REALLY USEFUL A4 PAPER TRAY</div>
           </div>
           <div class="slide">
@@ -403,7 +427,7 @@ footer a{color:var(--gold); text-decoration:none}
     <div class="wrap">
       <div class="sec-head"><span class="sec-num">01</span><h2>What fits inside</h2></div>
       <div class="datasheet reveal">
-        <div class="ds-title">Storage loadout — every slot accounted for</div>
+        <div class="ds-title">A full Loadout — 16mm dice tray with token holder — every slot accounted for</div>
         <div class="ds-row"><span class="ds-label">16mm dice</span><span class="ds-dots"></span><span class="ds-val">×50</span></div>
         <div class="ds-row"><span class="ds-label">10mm dice</span><span class="ds-dots"></span><span class="ds-val">×20</span></div>
         <div class="ds-row"><span class="ds-label">Tokens</span><span class="ds-dots"></span><span class="ds-val">×58</span></div>
@@ -420,7 +444,7 @@ footer a{color:var(--gold); text-decoration:none}
       <div class="sec-head"><span class="sec-num">02</span><h2>How it works</h2></div>
       <div class="steps">
         <div class="step reveal"><div class="n">STEP 01</div><h3>Drop it in</h3><p>The printed tray is sized to sit flush in a Really Useful Boxes A4 paper tray — no chaos, no wasted space.</p></div>
-        <div class="step reveal"><div class="n">STEP 02</div><h3>Lift &amp; roll</h3><p>The token caddy lifts straight out to reveal the dice tray underneath. Roll 'em.</p></div>
+        <div class="step reveal"><div class="n">STEP 02</div><h3>Lift &amp; roll</h3><p>The token holder lifts straight out to reveal the dice tray underneath. Roll 'em.</p></div>
         <div class="step reveal"><div class="n">STEP 03</div><h3>Close it up</h3><p>Then dock The Loadout, drop the tray back on top of your box & the lid clicks shut. Locked in place for transport. Game packed in seconds.</p></div>
       </div>
     </div>
@@ -490,13 +514,13 @@ footer a{color:var(--gold); text-decoration:none}
             <img class="cfg-img" id="cfg-img-tok" src="/img/tokens-aos.jpg" alt="Token preview — your build so far">
             <div>
               <h3>Step 4 — Token Set</h3>
-              <p class="desc">Tokens and command-point coins, printed and ready to drop into our caddy racks.</p>
+              <p class="desc">Tokens and command-point coins, printed and ready to drop into the Token Holder's racks.</p>
               <div class="opts">
                 <button class="opt" data-pick="tok:aos"><span class="on">Age of Sigmar</span><span class="op">£10</span></button>
-                <button class="opt" data-pick="tok:40k"><span class="on">Warhammer 40,000</span><span class="op">£10</span><span class="od">Pre-order, ships from 1st July</span></button>
+                <button class="opt" data-pick="tok:40k"><span class="on">Warhammer 40,000</span><span class="op">£10</span><span class="od">Pre-order, ships from 1st August</span></button>
                 <button class="opt skip" data-pick="tok:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
               </div>
-              <div class="cfg-note" id="cfg-tok-note" style="display:none"><strong>Pre-order:</strong> payment is taken now. Shipping begins 1st July — printing capacity will dictate your exact dispatch date. We are currently experiencing high order numbers.</div>
+              <div class="cfg-note" id="cfg-tok-note" style="display:none"><strong>Pre-order:</strong> payment is taken now. Shipping begins 1st August — printing capacity will dictate your exact dispatch date. We are currently experiencing high order numbers.</div>
             </div>
           </div>
         </div>
@@ -538,7 +562,7 @@ footer a{color:var(--gold); text-decoration:none}
         </details>
         <details class="faq-item">
           <summary>Are dice included?</summary>
-          <p>No — dice are not included. The tray holds up to 50 × 16mm dice and 20 × 10mm dice, but you'll need to bring your own.</p>
+          <p>No — dice aren't included; just the slots for them. The 16mm tray holds up to 50 × 16mm dice and 20 × 10mm dice.</p>
         </details>
         <details class="faq-item">
           <summary>What is PLA and will it warp?</summary>
@@ -546,7 +570,7 @@ footer a{color:var(--gold); text-decoration:none}
         </details>
         <details class="faq-item">
           <summary>How long until my order is dispatched?</summary>
-          <p>Everything is printed to order. Please allow up to 7 working days for dispatch — we'll email you with your Evri tracking number as soon as it's on its way. Pre-orders for Warhammer 40,000 products will begin shipping from 1st July, subject to printing capacity.</p>
+          <p>Everything is printed to order. Please allow up to 7 working days for dispatch — we'll email you with your Evri tracking number as soon as it's on its way. Pre-orders for Warhammer 40,000 products will begin shipping from 1st August, subject to printing capacity.</p>
         </details>
         <details class="faq-item">
           <summary>Do you ship outside the UK?</summary>
@@ -554,7 +578,7 @@ footer a{color:var(--gold); text-decoration:none}
         </details>
         <details class="faq-item">
           <summary>What's the difference between the AoS and 40K token sets?</summary>
-          <p>The token sets are designed for their respective game systems. The Age of Sigmar set includes wound, hit, rend, damage, save and ward tokens plus CP coins. The Warhammer 40,000 set includes tokens specific to 40K rules. Both fit the same caddy racks in The Loadout.</p>
+          <p>The token sets are designed for their respective game systems. The Age of Sigmar set includes wound, hit, rend, damage, save and ward tokens plus CP coins. The Warhammer 40,000 set includes tokens specific to 40K rules. Both fit the same racks in the Token Holder.</p>
         </details>
       </div>
     </div>
@@ -567,7 +591,7 @@ footer a{color:var(--gold); text-decoration:none}
       <div class="care reveal">
         <div><div class="k">Material</div><p>Printed in PLA in South Shields, UK. Keep it out of direct sunlight — a hot, sunny windowsill will warp it over time.</p></div>
         <div><div class="k">Delivery</div><p>Sent by Evri: 2–4 working days, £3.29. Made to order, so dispatch can take longer when we're busy — we'll email you when it's on its way.</p></div>
-        <div><div class="k">In the box</div><p>The Loadout contains our dice tray, our token caddy, 58 game-specific tokens &amp; 6 combat gauges. The Really Useful Tray (that our dice tray fits in) is sold separately and fits a 4L, 9L or 35L Really Useful Box.</p></div>
+        <div><div class="k">In the box</div><p>You build the box — dice tray, token holder (with six gauges) and token sets are each sold separately, so you only buy what you need. The Really Useful Tray fits a 4L, 9L or 35L Really Useful Box.</p></div>
       </div>
     </div>
   </section>
@@ -796,7 +820,7 @@ function render(){
   let html = "", sub = 0;
   for(const k in cart){
     const lt = CATALOG[k].price * cart[k]; sub += lt;
-    html += '<div class="line"><span>'+CATALOG[k].name+' × '+cart[k]+'</span><span class="ln">'+gbp(lt)+'</span></div>';
+    html += '<div class="line"><span>'+CATALOG[k].name+' × '+cart[k]+'</span><span class="ln">'+gbp(lt)+'<button class="rm" onclick="removeLine(\''+k+'\')" aria-label="Remove '+CATALOG[k].name+'">×</button></span></div>';
   }
   lines.innerHTML = html;
   document.getElementById("t-sub").textContent = gbp(sub);
@@ -805,6 +829,7 @@ function render(){
   totals.style.display = "block";
 }
 
+function removeLine(k){ delete cart[k]; render(); }
 function openCart(){ document.getElementById("drawer").classList.add("open"); document.getElementById("scrim").classList.add("open"); }
 function closeCart(){ document.getElementById("drawer").classList.remove("open"); document.getElementById("scrim").classList.remove("open"); }
 

@@ -89,7 +89,7 @@ export async function onRequestPost({ request, env }) {
       `<h2>Thanks for your order</h2><p>${itemsHtml}</p>` +
       `<p><strong>Delivery:</strong> ${o.shipping_method}</p>` +
       `<p><strong>Total paid:</strong> ${gbp(o.amount_total)}</p>` +
-      `<p>Everything's made to order — we'll email you the moment it's on its way by DPD.</p>`,
+      `<p>Everything's made to order — we'll email you the moment it's on its way by Evri.</p>`,
   });
 
   // Admin notification

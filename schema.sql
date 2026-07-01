@@ -17,11 +17,11 @@ CREATE TABLE IF NOT EXISTS orders (
   ship_postcode   TEXT,
   ship_country    TEXT,
   items_json      TEXT,                   -- [{name, qty, amount}]
-  shipping_method TEXT,                   -- e.g. "DPD — Next working day"
+  shipping_method TEXT,                   -- e.g. "Evri — 2–4 working days"
   amount_total    INTEGER,                -- pence
   currency        TEXT,
   status          TEXT DEFAULT 'paid',    -- paid | dispatched | refunded
-  tracking        TEXT,                   -- DPD tracking number
+  tracking        TEXT,                   -- Evri tracking number
   dispatched_at   TEXT
 );
 
