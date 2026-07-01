@@ -166,6 +166,40 @@ section{padding:62px 0}
 .more{color:var(--muted); font-size:14px; text-align:center; margin-top:22px}
 @media(max-width:760px){ .price-grid{grid-template-columns:1fr} }
 
+/* ---- configurator ---- */
+.config{background:var(--bg2); border:1px solid var(--line); border-radius:14px; padding:28px}
+.cfg-progress{display:flex; gap:8px; margin-bottom:26px; flex-wrap:wrap}
+.chip{font-family:"Space Mono"; font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+  padding:6px 12px; border-radius:999px; border:1px solid var(--line); color:var(--muted)}
+.chip.done{color:var(--ink); border-color:#48505c}
+.chip.cur{border-color:var(--gold); color:var(--gold)}
+.cfg-step{display:none}
+.cfg-step.cur{display:block}
+.cfg-grid{display:grid; grid-template-columns:280px 1fr; gap:24px; align-items:start}
+.cfg-img{width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:9px; border:1px solid var(--line); background:var(--bg3)}
+.cfg-step h3{font-size:23px; text-transform:uppercase; margin-bottom:6px}
+.cfg-step .desc{color:#cfcabd; font-size:15px; margin:0 0 18px}
+.opts{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px}
+.opt{background:var(--bg3); border:1px solid var(--line); border-radius:10px; padding:15px 16px; text-align:left;
+  cursor:pointer; color:var(--ink); font-family:"Inter"; transition:border-color .15s}
+.opt:hover:not(:disabled){border-color:#48505c}
+.opt.sel{border-color:var(--gold); box-shadow:0 0 0 1px var(--gold)}
+.opt:disabled{opacity:.4; cursor:not-allowed}
+.opt .on{font-weight:600; font-size:15.5px; display:block}
+.opt .op{font-family:"Space Mono"; color:var(--gold); font-size:14.5px; margin-top:5px; display:block}
+.opt .od{color:var(--muted); font-size:13px; margin-top:5px; display:block}
+.opt.skip .op{color:var(--muted)}
+.cfg-note{font-size:12.5px; color:var(--gold); margin:14px 0 0; line-height:1.5}
+.cfg-foot{display:flex; align-items:center; justify-content:space-between; gap:14px;
+  border-top:1px solid var(--line); margin-top:26px; padding-top:18px; flex-wrap:wrap}
+.cfg-total{font-family:"Oswald"; font-weight:700; font-size:15px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted)}
+.cfg-total .ln{font-family:"Space Mono"; font-size:20px; color:var(--gold); margin-left:8px}
+.btn-sm{padding:11px 20px; font-size:14px}
+.sum-line{display:flex; justify-content:space-between; gap:10px; padding:11px 0; border-bottom:1px solid var(--line); font-size:15px}
+.sum-line .ln{font-family:"Space Mono"; color:var(--gold)}
+.cfg-empty{color:var(--muted); font-size:15px; padding:14px 0}
+@media(max-width:760px){ .cfg-grid{grid-template-columns:1fr} .cfg-img{max-width:340px} }
+
 /* ---- care strip ---- */
 .care{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
 .care div{border:1px solid var(--line); border-radius:10px; padding:18px}
@@ -374,53 +408,100 @@ footer a{color:var(--gold); text-decoration:none}
   <!-- PRICING -->
   <section id="buy" style="padding-top:0">
     <div class="wrap">
-      <div class="sec-head"><span class="sec-num">03</span><h2>Get yours</h2></div>
-      <div class="price-grid">
-        <div class="card feature reveal">
-          <img class="card-img" src="/img/tray-product.jpg" alt="The CP Loadout Tray">
-          <div class="tagline">Dice Tray &amp; Token Holder</div>
-          <h3>The Loadout</h3>
-          <div class="price">£36 <small>+ postage</small></div>
-          <p>Our Our 3D-printed dice tray, our token caddy, game-specific token set & six gauges; ready to drop into your own Really Useful A4 paper tray.</p>
-          <p style="font-size:12.5px;color:var(--muted);margin:-14px 0 20px">Dice and tape measure not included.</p>
-          <label class="varlabel" for="tray-variant">Game</label>
-          <select id="tray-variant" class="variant" onchange="render()">
-            <option value="aos">Age of Sigmar</option>
-            <option value="40k">Warhammer 40,000 — Pre-order, ships from 1st July</option>
-          </select>
-          <div id="tray-preorder-note" style="display:none;font-size:12.5px;color:var(--gold);margin:8px 0 14px;line-height:1.5">
-            <strong>Pre-order:</strong> payment is taken now. Shipping begins 1st July — printing capacity will dictate your exact dispatch date. We are currently experiencing high order numbers.
-          </div>
-          <div class="qtyrow">
-            <div class="stepper">
-              <button onclick="bumpTray(-1)" aria-label="Less">−</button>
-              <span class="q" id="q-tray">0</span>
-              <button onclick="bumpTray(1)" aria-label="More">+</button>
+      <div class="sec-head"><span class="sec-num">03</span><h2>Build your loadout</h2></div>
+      <p class="sec-sub">Pick the pieces you need, skip the ones you don't. Every part works on its own.</p>
+
+      <div class="config reveal">
+        <div class="cfg-progress" id="cfg-progress"></div>
+
+        <!-- STEP 1: RUB tray -->
+        <div class="cfg-step" id="step-rub">
+          <div class="cfg-grid">
+            <img class="cfg-img" src="/img/box-product.jpg" alt="Really Useful A4 paper tray">
+            <div>
+              <h3>Step 1 — Really Useful Tray</h3>
+              <p class="desc">The A4 paper tray everything drops into. Sits on the rim of a 4L, 9L or 35L Really Useful Box. Skip it if you've already got one.</p>
+              <div class="opts">
+                <button class="opt" data-pick="rub:yes"><span class="on">Add the tray</span><span class="op">£4</span></button>
+                <button class="opt skip" data-pick="rub:skip"><span class="on">No thanks</span><span class="op">I've already got one</span></button>
+              </div>
             </div>
-            <button class="addbtn" id="tray-add" onclick="addTray();openCart()">Add to cart</button>
           </div>
         </div>
-        <div class="card reveal">
-          <img class="card-img" src="/img/box-product.jpg" alt="Really Useful A4 paper tray — the shallow clear tray the Loadout Tray sits in.">
-          <div class="tagline">Add-on</div>
-          <h3>Really Useful Tray</h3>
-          <div class="price">£4 <small>+ postage</small></div>
-          <p>The A4 paper tray the Loadout drops into. Sits on the rim of a 4L, 9L or 35L Really Useful Box. Skip it if you've already got one; or do you want two!?</p>
-          <div class="qtyrow">
-            <div class="stepper">
-              <button onclick="bump('box',-1)" aria-label="Less">−</button>
-              <span class="q" id="q-box">0</span>
-              <button onclick="bump('box',1)" aria-label="More">+</button>
+
+        <!-- STEP 2: Dice tray -->
+        <div class="cfg-step" id="step-dice">
+          <div class="cfg-grid">
+            <img class="cfg-img" src="/img/placeholder-dice-tray.jpg" alt="CP Loadout dice tray">
+            <div>
+              <h3>Step 2 — Dice Tray</h3>
+              <p class="desc">Our 3D-printed dice tray, sized to sit flush in the Really Useful A4 paper tray. Pick the layout for your dice.</p>
+              <div class="opts">
+                <button class="opt" data-pick="dice:12mm"><span class="on">12mm</span><span class="op">£25</span></button>
+                <button class="opt" data-pick="dice:16mm"><span class="on">16mm</span><span class="op">£25</span></button>
+                <button class="opt" data-pick="dice:mixed"><span class="on">Mixed</span><span class="op">£25</span></button>
+                <button class="opt skip" data-pick="dice:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
+              </div>
             </div>
-            <button class="addbtn" onclick="addItem('box');openCart()">Add to cart</button>
           </div>
         </div>
-        <div class="card reveal">
+
+        <!-- STEP 3: Insert -->
+        <div class="cfg-step" id="step-holder">
+          <div class="cfg-grid">
+            <img class="cfg-img" src="/img/placeholder-insert.jpg" alt="CP Loadout insert options">
+            <div>
+              <h3>Step 3 — Insert</h3>
+              <p class="desc">What sits inside your dice tray.</p>
+              <div class="opts">
+                <button class="opt" data-pick="holder:loadout"><span class="on">Token Holder — The Loadout</span><span class="op">£15</span><span class="od">With combat gauges</span></button>
+                <button class="opt" data-pick="holder:lift"><span class="on">Lift-out tray</span><span class="op">£8</span></button>
+                <button class="opt skip" data-pick="holder:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
+              </div>
+              <div class="cfg-note" id="cfg-holder-note" style="display:none">Inserts fit inside the dice tray — go back and add a dice tray to choose one.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: Token set -->
+        <div class="cfg-step" id="step-tok">
+          <div class="cfg-grid">
+            <img class="cfg-img" src="/img/tokens-aos.jpg" alt="Age of Sigmar token set">
+            <div>
+              <h3>Step 4 — Token Set</h3>
+              <p class="desc">Tokens and command-point coins, printed and ready to drop into our caddy racks.</p>
+              <div class="opts">
+                <button class="opt" data-pick="tok:aos"><span class="on">Age of Sigmar</span><span class="op">£15</span></button>
+                <button class="opt" data-pick="tok:40k"><span class="on">Warhammer 40,000</span><span class="op">£15</span><span class="od">Pre-order, ships from 1st July</span></button>
+                <button class="opt skip" data-pick="tok:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
+              </div>
+              <div class="cfg-note" id="cfg-tok-note" style="display:none"><strong>Pre-order:</strong> payment is taken now. Shipping begins 1st July — printing capacity will dictate your exact dispatch date. We are currently experiencing high order numbers.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5: Review -->
+        <div class="cfg-step" id="step-summary">
+          <h3>Your build</h3>
+          <p class="desc">Check it over, then add the lot to your cart.</p>
+          <div id="cfg-summary"></div>
+        </div>
+
+        <div class="cfg-foot">
+          <button class="btn btn-ghost btn-sm" id="cfg-back" onclick="cfgBack()">Back</button>
+          <div class="cfg-total">Total<span class="ln" id="cfg-total">£0.00</span></div>
+          <button class="btn btn-gold btn-sm" id="cfg-next" onclick="cfgNext()">Next</button>
+        </div>
+      </div>
+
+      <!-- Standalone token set quick-buy -->
+      <div class="price-grid" style="margin-top:26px">
+        <div class="card reveal" style="max-width:400px">
           <img class="card-img" src="/img/tokens-aos.jpg" alt="Age of Sigmar token set">
-          <div class="tagline">Add-on</div>
+          <div class="tagline">Buy on its own</div>
           <h3>Token Set</h3>
           <div class="price">£15 <small>+ postage</small></div>
-          <p>Tokens, and command-point coins, printed and ready to drop into our caddy racks.</p>
+          <p>Just want the tokens? Tokens and command-point coins, printed and ready to go — no tray required.</p>
           <label class="varlabel" for="tok-variant">Game</label>
           <select id="tok-variant" class="variant" onchange="render()">
             <option value="aos">Age of Sigmar</option>
@@ -545,24 +626,110 @@ const CONFIG = {
   POSTAGE_NOTE: "Evri · £3.29",
 };
 
-// Catalogue. The token set is one product with per-game variants; add more
-// games here as you print them. Keep names/prices in sync with checkout.js.
+// Catalogue. Build-your-own components + legacy SKUs (kept for safety —
+// check D1 before removing). Keep names/prices in sync with checkout.js.
 const CATALOG = {
-  "tray:aos": { name: "The Loadout — Age of Sigmar",       price: 3600 },
-  "tray:40k": { name: "The Loadout — Warhammer 40,000",    price: 3600 },
-  "box":      { name: "Really Useful Tray A4",              price: 400  },
-  "tok:aos":  { name: "Token Set — Age of Sigmar",          price: 1500 },
-  "tok:40k":  { name: "Token Set — Warhammer 40,000",       price: 1500 },
+  "rub":            { name: "Really Useful Tray A4",                    price: 400  },
+  "dice:12mm":      { name: "Dice Tray — 12mm",                         price: 2500 },
+  "dice:16mm":      { name: "Dice Tray — 16mm",                         price: 2500 },
+  "dice:mixed":     { name: "Dice Tray — Mixed",                        price: 2500 },
+  "holder:loadout": { name: "Token Holder — The Loadout (with gauges)", price: 1500 },
+  "holder:lift":    { name: "Lift-out Tray",                            price: 800  },
+  "tok:aos":        { name: "Token Set — Age of Sigmar",                price: 1500 },
+  "tok:40k":        { name: "Token Set — Warhammer 40,000",             price: 1500 },
+  // legacy
+  "tray:aos": { name: "The Loadout — Age of Sigmar",    price: 3600 },
+  "tray:40k": { name: "The Loadout — Warhammer 40,000", price: 3600 },
+  "box":      { name: "Really Useful Tray A4",          price: 400  },
 };
 
 const cart = {};                       // sku -> qty
 const gbp = p => "£" + (p/100).toFixed(2);
 
-function trayKey(){ return "tray:" + document.getElementById("tray-variant").value; }
-function trayPreorder(){ return document.getElementById("tray-variant").value === "40k"; }
-function bumpTray(d){ bump(trayKey(), d); }
-function addTray(){ addItem(trayKey()); }
+/* ---- configurator ---- */
+const CFG_STEPS = ["rub","dice","holder","tok","summary"];
+const CFG_LABEL = { rub:"RUB Tray", dice:"Dice Tray", holder:"Insert", tok:"Tokens", summary:"Review" };
+let cfgIx = 0;
+// undefined = not chosen yet · null = skipped · string = chosen variant
+const cfgSel = { rub:undefined, dice:undefined, holder:undefined, tok:undefined };
 
+function cfgSku(k){
+  if(!cfgSel[k]) return null;
+  return k === "rub" ? "rub" : k + ":" + cfgSel[k];
+}
+function cfgSkus(){ return ["rub","dice","holder","tok"].map(cfgSku).filter(Boolean); }
+function cfgTotal(){ return cfgSkus().reduce((s, sku) => s + CATALOG[sku].price, 0); }
+
+document.querySelectorAll(".opt").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const [key, val] = btn.dataset.pick.split(/:(.*)/);
+    const prev = cfgSel[key];
+    cfgSel[key] = (val === "skip") ? null : val;
+    if(key === "dice"){
+      if(cfgSel.dice === null) cfgSel.holder = null;              // insert requires dice tray
+      else if(prev === null && cfgSel.holder === null) cfgSel.holder = undefined; // un-force
+    }
+    cfgRender();
+  });
+});
+
+function cfgRender(){
+  const step = CFG_STEPS[cfgIx];
+
+  // progress chips
+  document.getElementById("cfg-progress").innerHTML = CFG_STEPS.map((s, i) => {
+    const done = s !== "summary" && cfgSel[s] !== undefined;
+    return '<span class="chip' + (i === cfgIx ? " cur" : done ? " done" : "") + '">' + (i+1) + ' · ' + CFG_LABEL[s] + '</span>';
+  }).join("");
+
+  // show current step
+  CFG_STEPS.forEach(s => document.getElementById("step-" + s).classList.toggle("cur", s === step));
+
+  // option selection state; insert step gated on dice tray
+  const diceSkipped = cfgSel.dice === null;
+  document.querySelectorAll(".opt").forEach(btn => {
+    const [key, val] = btn.dataset.pick.split(/:(.*)/);
+    const chosen = (val === "skip") ? cfgSel[key] === null : cfgSel[key] === val;
+    btn.classList.toggle("sel", chosen);
+    if(key === "holder") btn.disabled = diceSkipped && val !== "skip";
+  });
+  document.getElementById("cfg-holder-note").style.display = diceSkipped ? "block" : "none";
+  document.getElementById("cfg-tok-note").style.display = cfgSel.tok === "40k" ? "block" : "none";
+
+  // summary
+  if(step === "summary"){
+    const skus = cfgSkus();
+    document.getElementById("cfg-summary").innerHTML = skus.length
+      ? skus.map(sku => '<div class="sum-line"><span>' + CATALOG[sku].name + '</span><span class="ln">' + gbp(CATALOG[sku].price) + '</span></div>').join("")
+      : '<p class="cfg-empty">Nothing selected — go back and pick at least one piece.</p>';
+  }
+
+  // footer
+  document.getElementById("cfg-total").textContent = gbp(cfgTotal());
+  document.getElementById("cfg-back").style.visibility = cfgIx === 0 ? "hidden" : "visible";
+  const next = document.getElementById("cfg-next");
+  if(step === "summary"){
+    next.textContent = "Add to cart";
+    next.disabled = cfgSkus().length === 0;
+  }else{
+    next.textContent = "Next";
+    next.disabled = cfgSel[step] === undefined;
+  }
+}
+
+function cfgNext(){
+  if(CFG_STEPS[cfgIx] === "summary"){ cfgAddToCart(); return; }
+  cfgIx++; cfgRender();
+}
+function cfgBack(){ if(cfgIx > 0){ cfgIx--; cfgRender(); } }
+function cfgAddToCart(){
+  cfgSkus().forEach(sku => { cart[sku] = (cart[sku]||0) + 1; });
+  for(const k in cfgSel) cfgSel[k] = undefined;
+  cfgIx = 0;
+  render(); cfgRender(); openCart();
+}
+
+/* ---- standalone token quick-buy ---- */
 function tokKey(){ return "tok:" + document.getElementById("tok-variant").value; }
 function tokPreorder(){ return document.getElementById("tok-variant").value === "40k"; }
 function bumpTok(d){ bump(tokKey(), d); }
@@ -576,15 +743,8 @@ function bump(key, d){
 function addItem(key){ cart[key] = Math.max(1, (cart[key]||0) + 1); render(); }
 
 function render(){
-  document.getElementById("q-tray").textContent = cart[trayKey()] || 0;
-  document.getElementById("q-box").textContent  = cart["box"] || 0;
-  document.getElementById("q-tok").textContent  = cart[tokKey()] || 0;
-  // tray pre-order note
-  const trayPre = trayPreorder();
-  document.getElementById("tray-preorder-note").style.display = trayPre ? "block" : "none";
-  // tok pre-order note
-  const tokPre = tokPreorder();
-  document.getElementById("tok-preorder-note").style.display = tokPre ? "block" : "none";
+  document.getElementById("q-tok").textContent = cart[tokKey()] || 0;
+  document.getElementById("tok-preorder-note").style.display = tokPreorder() ? "block" : "none";
 
   let count = 0; for(const k in cart) count += cart[k];
   document.getElementById("cart-count").textContent = count;
@@ -659,6 +819,7 @@ function closeCheckout(){
 /* ---- niceties ---- */
 document.getElementById("yr").textContent = new Date().getFullYear();
 render();
+cfgRender();
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeCheckout(); closeCart(); } });
 const io = new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add("in"); }), {threshold:.12});
 document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
