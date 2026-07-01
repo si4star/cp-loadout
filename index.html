@@ -494,32 +494,6 @@ footer a{color:var(--gold); text-decoration:none}
         </div>
       </div>
 
-      <!-- Standalone token set quick-buy -->
-      <div class="price-grid" style="margin-top:26px">
-        <div class="card reveal" style="max-width:400px">
-          <img class="card-img" src="/img/tokens-aos.jpg" alt="Age of Sigmar token set">
-          <div class="tagline">Buy on its own</div>
-          <h3>Token Set</h3>
-          <div class="price">£15 <small>+ postage</small></div>
-          <p>Just want the tokens? Tokens and command-point coins, printed and ready to go — no tray required.</p>
-          <label class="varlabel" for="tok-variant">Game</label>
-          <select id="tok-variant" class="variant" onchange="render()">
-            <option value="aos">Age of Sigmar</option>
-            <option value="40k">Warhammer 40,000 — Pre-order, ships from 1st July</option>
-          </select>
-          <div id="tok-preorder-note" style="display:none;font-size:12.5px;color:var(--gold);margin:8px 0 14px;line-height:1.5">
-            <strong>Pre-order:</strong> payment is taken now. Shipping begins 1st July — printing capacity will dictate your exact dispatch date. We are currently experiencing high order numbers.
-          </div>
-          <div class="qtyrow">
-            <div class="stepper">
-              <button onclick="bumpTok(-1)" aria-label="Less">−</button>
-              <span class="q" id="q-tok">0</span>
-              <button onclick="bumpTok(1)" aria-label="More">+</button>
-            </div>
-            <button class="addbtn" id="tok-add" onclick="addTok();openCart()">Add to cart</button>
-          </div>
-        </div>
-      </div>
       <p class="more">More game token sets coming. Got a system you want covered? <a href="mailto:hello@cploadout.com" style="color:var(--gold)">Tell us.</a></p>
     </div>
   </section>
@@ -732,23 +706,7 @@ function cfgAddToCart(){
   render(); cfgRender(); openCart();
 }
 
-/* ---- standalone token quick-buy ---- */
-function tokKey(){ return "tok:" + document.getElementById("tok-variant").value; }
-function tokPreorder(){ return document.getElementById("tok-variant").value === "40k"; }
-function bumpTok(d){ bump(tokKey(), d); }
-function addTok(){ addItem(tokKey()); }
-
-function bump(key, d){
-  cart[key] = Math.max(0, (cart[key]||0) + d);
-  if(!cart[key]) delete cart[key];
-  render();
-}
-function addItem(key){ cart[key] = Math.max(1, (cart[key]||0) + 1); render(); }
-
 function render(){
-  document.getElementById("q-tok").textContent = cart[tokKey()] || 0;
-  document.getElementById("tok-preorder-note").style.display = tokPreorder() ? "block" : "none";
-
   let count = 0; for(const k in cart) count += cart[k];
   document.getElementById("cart-count").textContent = count;
 
