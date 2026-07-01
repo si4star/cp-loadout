@@ -183,14 +183,22 @@ const CHECKLISTS = {
     "6× objective tokens",
     "6× strike first / last tokens",
   ],
+  "dice": ["Dice tray"],
+  "holder:token-holder": [
+    "Token holder",
+    "6× gauges",
+  ],
   "box": ["Really Useful A4 paper tray"],
 };
 
 function checklistFor(name){
+  // Build-your-own components (match before legacy/40K rules)
+  if(/^token holder/i.test(name)) return CHECKLISTS["holder:token-holder"];
+  if(/^dice tray/i.test(name)) return CHECKLISTS["dice"];
+  if(/^really useful/i.test(name)) return CHECKLISTS["box"];
   if(/40.?000|40k/i.test(name)) return null; // 40K TBD
   if(/token set.*age|age.*token/i.test(name)) return CHECKLISTS["tok:aos"];
-  if(/loadout|dice tray/i.test(name)) return CHECKLISTS["tray:aos"];
-  if(/really useful/i.test(name)) return CHECKLISTS["box"];
+  if(/loadout/i.test(name)) return CHECKLISTS["tray:aos"]; // legacy bundle
   return null;
 }
 
