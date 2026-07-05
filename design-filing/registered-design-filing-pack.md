@@ -32,6 +32,7 @@
 - **Still needed:** top-down, long side, short side; underside if it has distinctive geometry.
 
 ### 2. Token Holder
+- **Have: nothing standalone.** Only combo renders exist.
 - **Still needed:** full set of solo views — ¾, top (gauge and token rack layout), sides, back.
 - ⚠ **Separate site bug found while checking:** `/img/token-holder.png` is referenced by index.html (Step 3 preview fallback and the Token Holder JSON-LD image) but the file doesn't exist in the repo or on the live site. A solo render fixes the filing gap and the 404 together.
 
