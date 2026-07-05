@@ -10,6 +10,9 @@ const CATALOG = {
   // "holder:lift":{ name: "Lift-out Tray",     price: 800  },
   "tok:aos":        { name: "Token Set — Age of Sigmar",                 price: 1000 },
   "tok:40k":        { name: "Token Set — Warhammer 40,000",              price: 1000 },
+  // Standalone extras
+  "objective-case": { name: "Seasonal Objectives Storage Case",          price: 1000 },
+  "fury-tracker":   { name: "CP, Fury & Rage Tracker — Age of Sigmar",   price: 1500 },
   // Legacy SKUs — kept for safety; check D1 before removing
   "tray:aos": { name: "The Loadout — Age of Sigmar",       price: 3600 },
   "tray:40k": { name: "The Loadout — Warhammer 40,000",    price: 3600 },

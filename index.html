@@ -352,6 +352,48 @@ footer a{color:var(--gold); text-decoration:none}
         },
         "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "GB", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 14, "returnMethod": "https://schema.org/ReturnByMail", "returnFees": "https://schema.org/ReturnShippingFees"}
       }
+    },
+    {
+      "@type": "Product",
+      "name": "CP, Fury & Rage Tracker — Age of Sigmar",
+      "description": "Tracks command points, fury and rage for Age of Sigmar with a magnetised peg. Holds your seasonal battle plan and battle tactic cards in the back. Made to order in the UK.",
+      "image": "https://cploadout.com/img/fury-tracker.png",
+      "brand": {"@type": "Brand", "name": "CP Loadout"},
+      "offers": {
+        "@type": "Offer",
+        "url": "https://cploadout.com/",
+        "priceCurrency": "GBP",
+        "price": "15.00",
+        "availability": "https://schema.org/InStock",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {"@type": "MonetaryAmount", "value": "3.29", "currency": "GBP"},
+          "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "GB"},
+          "deliveryTime": {"@type": "ShippingDeliveryTime", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY"}}
+        },
+        "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "GB", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 14, "returnMethod": "https://schema.org/ReturnByMail", "returnFees": "https://schema.org/ReturnShippingFees"}
+      }
+    },
+    {
+      "@type": "Product",
+      "name": "Seasonal Objectives Storage Case",
+      "description": "Storage case for seasonal objectives. Made to order in the UK.",
+      "image": "https://cploadout.com/img/objective-case.png",
+      "brand": {"@type": "Brand", "name": "CP Loadout"},
+      "offers": {
+        "@type": "Offer",
+        "url": "https://cploadout.com/",
+        "priceCurrency": "GBP",
+        "price": "10.00",
+        "availability": "https://schema.org/InStock",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {"@type": "MonetaryAmount", "value": "3.29", "currency": "GBP"},
+          "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "GB"},
+          "deliveryTime": {"@type": "ShippingDeliveryTime", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY"}}
+        },
+        "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "GB", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 14, "returnMethod": "https://schema.org/ReturnByMail", "returnFees": "https://schema.org/ReturnShippingFees"}
+      }
     }
   ]
 }
@@ -381,6 +423,7 @@ footer a{color:var(--gold); text-decoration:none}
       <a href="#holds">What it holds</a>
       <a href="#how">How it works</a>
       <a href="#buy">Build yours</a>
+      <a href="#extras">Extras</a>
       <a class="cartbtn" href="#" onclick="openCart();return false">Cart (<span id="cart-count">0</span>)</a>
     </nav>
   </div>
@@ -525,7 +568,23 @@ footer a{color:var(--gold); text-decoration:none}
           </div>
         </div>
 
-        <!-- STEP 5: Review -->
+        <!-- STEP 5: Extras -->
+        <div class="cfg-step" id="step-extras">
+          <div class="cfg-grid">
+            <img class="cfg-img" src="/img/objective-case.png" alt="Seasonal Objectives Storage Case">
+            <div>
+              <h3>Step 5 — Extras</h3>
+              <p class="desc">Standalone pieces — they work on their own, no tray needed. Pick one, both, or skip.</p>
+              <div class="opts">
+                <button class="opt" data-pick="extras:objective-case"><span class="on">Seasonal Objectives Storage Case</span><span class="op">£10</span></button>
+                <button class="opt" data-pick="extras:fury-tracker"><span class="on">CP, Fury &amp; Rage Tracker</span><span class="op">£15</span><span class="od">Age of Sigmar</span></button>
+                <button class="opt skip" data-pick="extras:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 6: Review -->
         <div class="cfg-step" id="step-summary">
           <h3>Your build</h3>
           <p class="desc">Check it over, then add the lot to your cart.</p>
@@ -543,10 +602,38 @@ footer a{color:var(--gold); text-decoration:none}
     </div>
   </section>
 
+  <!-- EXTRAS -->
+  <section id="extras" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head"><span class="sec-num">04</span><h2>Extras</h2></div>
+      <p class="sec-sub">Standalone pieces — no tray or Loadout needed.</p>
+      <div class="price-grid">
+        <div class="card reveal">
+          <img class="card-img" src="/img/objective-case.png" alt="Seasonal Objectives Storage Case">
+          <h3>Seasonal Objectives Storage Case</h3>
+          <div class="price">£10 <small>+ postage</small></div>
+          <p>A storage case for your seasonal objectives.</p>
+          <div class="qtyrow">
+            <button class="addbtn" onclick="addSku('objective-case')">Add to cart</button>
+          </div>
+        </div>
+        <div class="card reveal">
+          <img class="card-img" src="/img/fury-tracker.png" alt="CP, Fury &amp; Rage Tracker">
+          <h3>CP, Fury &amp; Rage Tracker</h3>
+          <div class="price">£15 <small>+ postage</small></div>
+          <p>Track command points, fury and rage for Age of Sigmar with a magnetised peg — and your seasonal battle plan and battle tactic cards slot into the back.</p>
+          <div class="qtyrow">
+            <button class="addbtn" onclick="addSku('fury-tracker')">Add to cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FAQ -->
   <section id="faq" style="padding-top:0">
     <div class="wrap">
-      <div class="sec-head"><span class="sec-num">04</span><h2>FAQ</h2></div>
+      <div class="sec-head"><span class="sec-num">05</span><h2>FAQ</h2></div>
       <div class="faq-list reveal">
         <details class="faq-item">
           <summary>How does it fit inside a Really Useful Box?</summary>
@@ -587,7 +674,7 @@ footer a{color:var(--gold); text-decoration:none}
   <!-- CARE -->
   <section style="padding-top:0">
     <div class="wrap">
-      <div class="sec-head"><span class="sec-num">05</span><h2>Good to know</h2></div>
+      <div class="sec-head"><span class="sec-num">06</span><h2>Good to know</h2></div>
       <div class="care reveal">
         <div><div class="k">Material</div><p>Printed in PLA in South Shields, UK. Keep it out of direct sunlight — a hot, sunny windowsill will warp it over time.</p></div>
         <div><div class="k">Delivery</div><p>Sent by Evri: 2–4 working days, £3.29. Made to order, so dispatch can take longer when we're busy — we'll email you when it's on its way.</p></div>
@@ -657,6 +744,9 @@ const CATALOG = {
   // "holder:lift":{ name: "Lift-out Tray",     price: 800  },
   "tok:aos":        { name: "Token Set — Age of Sigmar",                price: 1000 },
   "tok:40k":        { name: "Token Set — Warhammer 40,000",             price: 1000 },
+  // Standalone extras
+  "objective-case": { name: "Seasonal Objectives Storage Case",         price: 1000 },
+  "fury-tracker":   { name: "CP, Fury & Rage Tracker — Age of Sigmar",  price: 1500 },
   // legacy
   "tray:aos": { name: "The Loadout — Age of Sigmar",    price: 3600 },
   "tray:40k": { name: "The Loadout — Warhammer 40,000", price: 3600 },
@@ -667,24 +757,39 @@ const cart = {};                       // sku -> qty
 const gbp = p => "£" + (p/100).toFixed(2);
 
 /* ---- configurator ---- */
-const CFG_STEPS = ["rub","dice","holder","tok","summary"];
-const CFG_LABEL = { rub:"RUB Tray", dice:"Dice Tray", holder:"Insert", tok:"Tokens", summary:"Review" };
-const CFG_DEFAULT = { rub:"yes", dice:"16mm", holder:"token-holder", tok:"aos" };
+const CFG_STEPS = ["rub","dice","holder","tok","extras","summary"];
+const CFG_LABEL = { rub:"RUB Tray", dice:"Dice Tray", holder:"Insert", tok:"Tokens", extras:"Extras", summary:"Review" };
+const CFG_DEFAULT = { rub:"yes", dice:"16mm", holder:"token-holder", tok:"aos", extras:null };
 let cfgIx = 0;
 // undefined = not chosen yet · null = skipped · string = chosen variant
-const cfgSel = { rub:undefined, dice:undefined, holder:undefined, tok:undefined };
+// extras is multi-select: undefined | null | array of full SKUs
+const cfgSel = { rub:undefined, dice:undefined, holder:undefined, tok:undefined, extras:undefined };
 
 function cfgSku(k){
   if(!cfgSel[k]) return null;
   return k === "rub" ? "rub" : k + ":" + cfgSel[k];
 }
-function cfgSkus(){ return ["rub","dice","holder","tok"].map(cfgSku).filter(Boolean); }
+function cfgSkus(){
+  const skus = ["rub","dice","holder","tok"].map(cfgSku).filter(Boolean);
+  if(Array.isArray(cfgSel.extras)) skus.push(...cfgSel.extras);
+  return skus;
+}
 function cfgTotal(){ return cfgSkus().reduce((s, sku) => s + CATALOG[sku].price, 0); }
 
 document.querySelectorAll(".opt").forEach(btn => {
   btn.addEventListener("click", () => {
     const [key, val] = btn.dataset.pick.split(/:(.*)/);
     const prev = cfgSel[key];
+    if(key === "extras"){
+      if(val === "skip") cfgSel.extras = null;
+      else {
+        let a = Array.isArray(cfgSel.extras) ? cfgSel.extras.slice() : [];
+        a = a.includes(val) ? a.filter(v => v !== val) : a.concat(val);
+        cfgSel.extras = a.length ? a : undefined;
+      }
+      cfgRender();
+      return;
+    }
     cfgSel[key] = (val === "skip") ? null : val;
     if(key === "dice"){
       if(cfgSel.dice === null) cfgSel.holder = null;              // insert requires dice tray
@@ -710,7 +815,9 @@ function cfgRender(){
   const diceSkipped = cfgSel.dice === null;
   document.querySelectorAll(".opt").forEach(btn => {
     const [key, val] = btn.dataset.pick.split(/:(.*)/);
-    const chosen = (val === "skip") ? cfgSel[key] === null : cfgSel[key] === val;
+    const chosen = (val === "skip") ? cfgSel[key] === null
+      : key === "extras" ? Array.isArray(cfgSel.extras) && cfgSel.extras.includes(val)
+      : cfgSel[key] === val;
     btn.classList.toggle("sel", chosen);
     const soon = btn.dataset.soon === "1";
     if(key === "holder") btn.disabled = soon || (diceSkipped && val !== "skip");
@@ -831,6 +938,7 @@ function render(){
   totals.style.display = "block";
 }
 
+function addSku(sku){ cart[sku] = (cart[sku]||0) + 1; render(); openCart(); }
 function removeLine(k){ delete cart[k]; render(); }
 function openCart(){ document.getElementById("drawer").classList.add("open"); document.getElementById("scrim").classList.add("open"); }
 function closeCart(){ document.getElementById("drawer").classList.remove("open"); document.getElementById("scrim").classList.remove("open"); }
