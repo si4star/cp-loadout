@@ -184,6 +184,14 @@ const CHECKLISTS = {
     "6× strike first / last tokens",
   ],
   "dice": ["Dice tray"],
+  "fury-tracker": [
+    "Tracker with card holder",
+    "2× markers",
+  ],
+  "objective-case": [
+    "Lid",
+    "Base",
+  ],
   "holder:token-holder": [
     "Token holder",
     "6× gauges",
@@ -196,6 +204,8 @@ function checklistFor(name){
   if(/^token holder/i.test(name)) return CHECKLISTS["holder:token-holder"];
   if(/^dice tray/i.test(name)) return CHECKLISTS["dice"];
   if(/^really useful/i.test(name)) return CHECKLISTS["box"];
+  if(/fury.*rage.*tracker/i.test(name)) return CHECKLISTS["fury-tracker"];
+  if(/objectives storage case/i.test(name)) return CHECKLISTS["objective-case"];
   if(/40.?000|40k/i.test(name)) return null; // 40K TBD
   if(/token set.*age|age.*token/i.test(name)) return CHECKLISTS["tok:aos"];
   if(/loadout/i.test(name)) return CHECKLISTS["tray:aos"]; // legacy bundle
