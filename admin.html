@@ -183,6 +183,18 @@ const CHECKLISTS = {
     "6× objective tokens",
     "6× strike first / last tokens",
   ],
+  "tok:40k": [
+    "6× hit plus / minus tokens",
+    "6× wound plus / minus tokens",
+    "6× reroll hits / reroll wounds tokens",
+    "6× cover / reroll saves tokens",
+    "6× moved / remained stationary tokens",
+    "6× advanced / fell back tokens",
+    "6× hidden / action tokens",
+    "6× secured / charged tokens",
+    "6× half strength / battle shocked tokens",
+    "6× generic 1–6 tokens",
+  ],
   "dice": ["Dice tray"],
   "fury-tracker": [
     "Tracker with card holder",
@@ -206,7 +218,8 @@ function checklistFor(name){
   if(/^really useful/i.test(name)) return CHECKLISTS["box"];
   if(/fury.*rage.*tracker/i.test(name)) return CHECKLISTS["fury-tracker"];
   if(/objectives storage case/i.test(name)) return CHECKLISTS["objective-case"];
-  if(/40.?000|40k/i.test(name)) return null; // 40K TBD
+  if(/token set/i.test(name) && /40.?000|40k/i.test(name)) return CHECKLISTS["tok:40k"];
+  if(/40.?000|40k/i.test(name)) return null; // legacy 40K bundle TBD
   if(/token set.*age|age.*token/i.test(name)) return CHECKLISTS["tok:aos"];
   if(/loadout/i.test(name)) return CHECKLISTS["tray:aos"]; // legacy bundle
   return null;
