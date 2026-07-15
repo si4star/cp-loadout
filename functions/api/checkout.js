@@ -4,8 +4,8 @@ const CATALOG = {
   "rub":                 { name: "Really Useful Tray A4",  price: 300  },
   "dice:16mm":           { name: "Dice Tray — 16mm",       price: 2000 },
   "holder:token-holder": { name: "Token Holder",           price: 1200 },
+  "dice:12mm":           { name: "Dice Tray — 12mm",       price: 2000 },
   // Coming soon — uncomment to enable purchase:
-  // "dice:12mm":  { name: "Dice Tray — 12mm",  price: 2000 },
   // "dice:mixed": { name: "Dice Tray — Mixed", price: 2000 },
   // "holder:lift":{ name: "Lift-out Tray",     price: 800  },
   "tok:aos":        { name: "Token Set — Age of Sigmar",                 price: 1000 },
