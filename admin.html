@@ -219,6 +219,7 @@ const CHECKLISTS = {
     "Lid",
     "Base",
   ],
+  "holder:lift": ["Lift-out tray"],
   "holder:token-holder": [
     "Token holder",
     "6× gauges",
@@ -229,6 +230,7 @@ const CHECKLISTS = {
 function checklistFor(name){
   // Build-your-own components (match before legacy/40K rules)
   if(/^token holder/i.test(name)) return CHECKLISTS["holder:token-holder"];
+  if(/^lift.out tray/i.test(name)) return CHECKLISTS["holder:lift"];
   if(/^dice tray/i.test(name)) return CHECKLISTS["dice"];
   if(/^really useful/i.test(name)) return CHECKLISTS["box"];
   if(/fury.*rage.*tracker/i.test(name)) return CHECKLISTS["fury-tracker"];

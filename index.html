@@ -538,10 +538,10 @@ footer a{color:var(--gold); text-decoration:none}
             <img class="cfg-img" id="cfg-img-holder" src="/img/token-holder.png" alt="Insert preview — your build so far">
             <div>
               <h3>Step 3 — Insert</h3>
-              <p class="desc">What sits inside your dice tray. Holds 20 × 12mm dice, 60 tokens and 6 command-point coins — and comes with 6 combat gauges.</p>
+              <p class="desc">What sits inside your dice tray.</p>
               <div class="opts">
-                <button class="opt" data-pick="holder:token-holder"><span class="on">Token Holder</span><span class="op">£12</span><span class="od">With combat gauges</span></button>
-                <button class="opt" data-pick="holder:lift" data-soon="1" disabled><span class="on">Lift-out tray</span><span class="op">£8</span><span class="od">Coming soon</span></button>
+                <button class="opt" data-pick="holder:token-holder"><span class="on">Token Holder</span><span class="op">£12</span><span class="od">Holds 20 × 12mm dice, 60 tokens and 6 command-point coins — and comes with 6 combat gauges</span></button>
+                <button class="opt" data-pick="holder:lift"><span class="on">Lift-out tray</span><span class="op">£8</span></button>
                 <button class="opt skip" data-pick="holder:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
               </div>
               <div class="cfg-note" id="cfg-holder-note" style="display:none">Inserts fit inside the dice tray — go back and add a dice tray to choose one.</div>
@@ -736,9 +736,9 @@ const CATALOG = {
   "dice:16mm":           { name: "Dice Tray — 16mm",       price: 2000 },
   "holder:token-holder": { name: "Token Holder",           price: 1200 },
   "dice:12mm":           { name: "Dice Tray — 12mm",       price: 2000 },
+  "holder:lift":         { name: "Lift-out Tray",           price: 800  },
   // Coming soon — uncomment here and in checkout.js to enable:
   // "dice:mixed": { name: "Dice Tray — Mixed", price: 2000 },
-  // "holder:lift":{ name: "Lift-out Tray",     price: 800  },
   "tok:aos":        { name: "Token Set — Age of Sigmar",                price: 1000 },
   "tok:40k":        { name: "Token Set — Warhammer 40,000",             price: 1000 },
   // Standalone extras
@@ -863,7 +863,8 @@ function cfgBack(){ if(cfgIx > 0){ cfgIx--; cfgRender(); } }
 
 /* ---- build-preview images ----
    Combo renders follow this naming (PNG, /img/):
-     dice-tray-16[-token-holder].png
+     dice-tray-16[-token-holder|-lift-out-tray].png
+     token-holder.png · lift-out-tray.png (standalone inserts)
      tokens-aos.png · tokens-40k.png (standalone — step 4 shows the token set only)
    Missing renders fall back down the chain to the closest existing image.
    CFG_IMG_VER busts the CDN cache — bump it whenever an image is replaced. */
@@ -882,11 +883,12 @@ function diceBase(){
 }
 function cfgPreviews(){
   const db = diceBase(), h = cfgSel.holder, t = cfgSel.tok;
-  // Step 3: tray + holder, or empty tray if holder skipped
+  // Step 3: tray + insert, or empty tray if insert skipped
+  const hImg = h === "lift" ? "lift-out-tray" : "token-holder";
   let hc;
-  if(db && h)      hc = ["/img/" + db + "-token-holder.png", "/img/token-holder.png"];
+  if(db && h)      hc = ["/img/" + db + "-" + hImg + ".png", "/img/" + hImg + ".png", "/img/token-holder.png"];
   else if(db)      hc = ["/img/" + db + ".png", "/img/dice-tray-16.png"];
-  else             hc = ["/img/token-holder.png"];
+  else             hc = ["/img/" + hImg + ".png", "/img/token-holder.png"];
   setPreview(document.getElementById("cfg-img-holder"), hc);
   // Step 4: just the selected token set (last picked if more than one)
   const last = Array.isArray(t) && t.length ? t[t.length - 1] : "aos";
