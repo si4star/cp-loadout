@@ -37,7 +37,7 @@
 - ⚠ **Separate site bug found while checking:** `/img/token-holder.png` is referenced by index.html (Step 3 preview fallback and the Token Holder JSON-LD image) but the file doesn't exist in the repo or on the live site. A solo render fixes the filing gap and the 404 together.
 
 ### 3–4. Token Sets (AoS / 40K)
-- **Have:** `tokens-aos.jpg` — plain white background, whole set laid out. Good filing quality. `tokens-40k.png` is small (10 KB) — likely needs a better shot.
+- **Have:** `tokens-aos.png` — plain white background, whole set laid out. Good filing quality. `tokens-40k.png` is small (10 KB) — likely needs a better shot.
 - **Decision needed:** one registration per *set* protects the collection as depicted; it does not protect individual token designs copied singly. Registering key individual tokens separately costs a design slot each. Worth asking an attorney which matters more.
 
 ### 5. Seasonal Objectives Storage Case

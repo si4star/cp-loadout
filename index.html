@@ -314,7 +314,7 @@ footer a{color:var(--gold); text-decoration:none}
       "@type": "Product",
       "name": "Token Set — Age of Sigmar",
       "description": "Full set of 58 Age of Sigmar tokens with command-point coins, printed in PLA. Made to order in the UK.",
-      "image": "https://cploadout.com/img/tokens-aos.jpg",
+      "image": "https://cploadout.com/img/tokens-aos.png",
       "brand": {"@type": "Brand", "name": "CP Loadout"},
       "offers": {
         "@type": "Offer",
@@ -470,10 +470,10 @@ footer a{color:var(--gold); text-decoration:none}
     <div class="wrap">
       <div class="sec-head"><span class="sec-num">01</span><h2>What fits inside</h2></div>
       <div class="datasheet reveal">
-        <div class="ds-title">A full Loadout — 16mm dice tray with token holder — every slot accounted for</div>
+        <div class="ds-title">A full Loadout with the 16mm dice tray option and token holder — every slot accounted for</div>
         <div class="ds-row"><span class="ds-label">16mm dice</span><span class="ds-dots"></span><span class="ds-val">×50</span></div>
         <div class="ds-row"><span class="ds-label">10mm dice</span><span class="ds-dots"></span><span class="ds-val">×20</span></div>
-        <div class="ds-row"><span class="ds-label">Tokens</span><span class="ds-dots"></span><span class="ds-val">×58</span></div>
+        <div class="ds-row"><span class="ds-label">Tokens</span><span class="ds-dots"></span><span class="ds-val">×60</span></div>
         <div class="ds-row"><span class="ds-label">Command-point coins</span><span class="ds-dots"></span><span class="ds-val">×6</span></div>
         <div class="ds-row"><span class="ds-label">Combat gauges — ½″ · 1″ · 2″ · 3″</span><span class="ds-dots"></span><span class="ds-val">×6</span></div>
         <div class="ds-foot"><span>◆</span><p>Deep inner compartment easily holds a <b>tape measure</b> and any loose bits. Dice not included.</p></div>
@@ -554,10 +554,10 @@ footer a{color:var(--gold); text-decoration:none}
         <!-- STEP 4: Token set -->
         <div class="cfg-step" id="step-tok">
           <div class="cfg-grid">
-            <img class="cfg-img" id="cfg-img-tok" src="/img/tokens-aos.jpg" alt="Token preview — your build so far">
+            <img class="cfg-img" id="cfg-img-tok" src="/img/tokens-aos.png" alt="Token preview — your build so far">
             <div>
               <h3>Step 4 — Token Set</h3>
-              <p class="desc">Tokens and command-point coins, printed and ready to drop into the Token Holder's racks.</p>
+              <p class="desc">Tokens and command-point coins, printed and ready to drop into the Token Holder's racks. Pick one, both, or skip.</p>
               <div class="opts">
                 <button class="opt" data-pick="tok:aos"><span class="on">Age of Sigmar</span><span class="op">£10</span></button>
                 <button class="opt" data-pick="tok:40k"><span class="on">Warhammer 40,000</span><span class="op">£10</span><span class="od">Pre-order, ships from 1st August</span></button>
@@ -759,10 +759,10 @@ const gbp = p => "£" + (p/100).toFixed(2);
 /* ---- configurator ---- */
 const CFG_STEPS = ["rub","dice","holder","tok","extras","summary"];
 const CFG_LABEL = { rub:"RUB Tray", dice:"Dice Tray", holder:"Insert", tok:"Tokens", extras:"Extras", summary:"Review" };
-const CFG_DEFAULT = { rub:"yes", dice:"16mm", holder:"token-holder", tok:"aos", extras:null };
+const CFG_DEFAULT = { rub:"yes", dice:"16mm", holder:"token-holder", tok:["aos"], extras:null };
 let cfgIx = 0;
 // undefined = not chosen yet · null = skipped · string = chosen variant
-// extras is multi-select: undefined | null | array of full SKUs
+// extras and tok are multi-select: undefined | null | array (extras holds full SKUs, tok holds variants)
 const cfgSel = { rub:undefined, dice:undefined, holder:undefined, tok:undefined, extras:undefined };
 
 function cfgSku(k){
@@ -770,7 +770,8 @@ function cfgSku(k){
   return k === "rub" ? "rub" : k + ":" + cfgSel[k];
 }
 function cfgSkus(){
-  const skus = ["rub","dice","holder","tok"].map(cfgSku).filter(Boolean);
+  const skus = ["rub","dice","holder"].map(cfgSku).filter(Boolean);
+  if(Array.isArray(cfgSel.tok)) skus.push(...cfgSel.tok.map(v => "tok:" + v));
   if(Array.isArray(cfgSel.extras)) skus.push(...cfgSel.extras);
   return skus;
 }
@@ -780,12 +781,12 @@ document.querySelectorAll(".opt").forEach(btn => {
   btn.addEventListener("click", () => {
     const [key, val] = btn.dataset.pick.split(/:(.*)/);
     const prev = cfgSel[key];
-    if(key === "extras"){
-      if(val === "skip") cfgSel.extras = null;
+    if(key === "extras" || key === "tok"){
+      if(val === "skip") cfgSel[key] = null;
       else {
-        let a = Array.isArray(cfgSel.extras) ? cfgSel.extras.slice() : [];
+        let a = Array.isArray(cfgSel[key]) ? cfgSel[key].slice() : [];
         a = a.includes(val) ? a.filter(v => v !== val) : a.concat(val);
-        cfgSel.extras = a.length ? a : undefined;
+        cfgSel[key] = a.length ? a : undefined;
       }
       cfgRender();
       return;
@@ -816,7 +817,7 @@ function cfgRender(){
   document.querySelectorAll(".opt").forEach(btn => {
     const [key, val] = btn.dataset.pick.split(/:(.*)/);
     const chosen = (val === "skip") ? cfgSel[key] === null
-      : key === "extras" ? Array.isArray(cfgSel.extras) && cfgSel.extras.includes(val)
+      : (key === "extras" || key === "tok") ? Array.isArray(cfgSel[key]) && cfgSel[key].includes(val)
       : cfgSel[key] === val;
     btn.classList.toggle("sel", chosen);
     const soon = btn.dataset.soon === "1";
@@ -824,7 +825,7 @@ function cfgRender(){
     else btn.disabled = soon;
   });
   document.getElementById("cfg-holder-note").style.display = diceSkipped ? "block" : "none";
-  document.getElementById("cfg-tok-note").style.display = cfgSel.tok === "40k" ? "block" : "none";
+  document.getElementById("cfg-tok-note").style.display = Array.isArray(cfgSel.tok) && cfgSel.tok.includes("40k") ? "block" : "none";
 
   // summary
   if(step === "summary"){
@@ -866,8 +867,8 @@ function cfgBack(){ if(cfgIx > 0){ cfgIx--; cfgRender(); } }
 
 /* ---- build-preview images ----
    Combo renders follow this naming (PNG, /img/):
-     dice-tray-16[-token-holder][-tokens-aos|-tokens-40k].png
-     tokens-aos.png · tokens-40k.png (standalone)
+     dice-tray-16[-token-holder].png
+     tokens-aos.png · tokens-40k.png (standalone — step 4 shows the token set only)
    Missing renders fall back down the chain to the closest existing image.
    CFG_IMG_VER busts the CDN cache — bump it whenever an image is replaced. */
 const CFG_IMG_VER = "?v=2";
@@ -891,21 +892,9 @@ function cfgPreviews(){
   else if(db)      hc = ["/img/" + db + ".png", "/img/dice-tray-16.png"];
   else             hc = ["/img/token-holder.png"];
   setPreview(document.getElementById("cfg-img-holder"), hc);
-  // Step 4: full build so far
-  const parts = [];
-  if(db) parts.push(db);
-  if(h)  parts.push("token-holder");
-  const tokImg = document.getElementById("cfg-img-tok");
-  if(t){
-    const chain = [];
-    if(parts.length) chain.push("/img/" + parts.concat("tokens-" + t).join("-") + ".png");
-    chain.push("/img/tokens-" + t + ".png", "/img/tokens-aos.jpg");
-    setPreview(tokImg, chain);
-  }else if(parts.length){
-    setPreview(tokImg, hc);
-  }else{
-    setPreview(tokImg, ["/img/tokens-aos.jpg"]);
-  }
+  // Step 4: just the selected token set (last picked if more than one)
+  const last = Array.isArray(t) && t.length ? t[t.length - 1] : "aos";
+  setPreview(document.getElementById("cfg-img-tok"), ["/img/tokens-" + last + ".png", "/img/tokens-aos.png"]);
 }
 function cfgAddToCart(){
   cfgSkus().forEach(sku => { cart[sku] = (cart[sku]||0) + 1; });
