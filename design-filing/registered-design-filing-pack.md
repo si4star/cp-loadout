@@ -13,7 +13,7 @@
 | 1 | Dice Tray — 16mm | | On sale |
 | 2 | Token Holder | | On sale |
 | 3 | Token Set — Age of Sigmar | | On sale |
-| 4 | Token Set — Warhammer 40,000 | | Pre-order |
+| 4 | Token Set — Warhammer 40,000 | | On sale |
 | 5 | Seasonal Objectives Storage Case | | On sale |
 | 6 | CP, Fury & Rage Tracker | | On sale |
 | 7 | Lift-out Tray | | Coming soon — see note |

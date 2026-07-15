@@ -334,7 +334,7 @@ footer a{color:var(--gold); text-decoration:none}
     {
       "@type": "Product",
       "name": "Token Set — Warhammer 40,000",
-      "description": "Warhammer 40,000 token set with command-point coins, printed in PLA. Pre-order — shipping begins 1st August. Made to order in the UK.",
+      "description": "Warhammer 40,000 token set with command-point coins, printed in PLA. Made to order in the UK.",
       "image": "https://cploadout.com/img/tokens-40k.png",
       "brand": {"@type": "Brand", "name": "CP Loadout"},
       "offers": {
@@ -342,8 +342,7 @@ footer a{color:var(--gold); text-decoration:none}
         "url": "https://cploadout.com/",
         "priceCurrency": "GBP",
         "price": "10.00",
-        "availability": "https://schema.org/PreOrder",
-        "availabilityStarts": "2026-08-01",
+        "availability": "https://schema.org/InStock",
         "shippingDetails": {
           "@type": "OfferShippingDetails",
           "shippingRate": {"@type": "MonetaryAmount", "value": "3.29", "currency": "GBP"},
@@ -407,7 +406,7 @@ footer a{color:var(--gold); text-decoration:none}
     {"@type":"Question","name":"Does it fit inside a Really Useful 35L box?","acceptedAnswer":{"@type":"Answer","text":"Yes — The Loadout sits inside a Really Useful A4 paper tray which rests on the rim of a 35L Really Useful Box."}},
     {"@type":"Question","name":"Are dice included?","acceptedAnswer":{"@type":"Answer","text":"No — dice are not included; just the slots for them. The 16mm tray holds up to 50 × 16mm dice and 20 × 10mm dice."}},
     {"@type":"Question","name":"What is PLA and will it warp?","acceptedAnswer":{"@type":"Answer","text":"PLA is a common 3D-printing filament. It can warp if left in direct sunlight or a very hot environment. Under normal use it is completely robust."}},
-    {"@type":"Question","name":"How long until my order is dispatched?","acceptedAnswer":{"@type":"Answer","text":"Everything is printed to order. Please allow up to 7 working days for dispatch. Pre-orders for Warhammer 40,000 products will begin shipping from 1st August."}},
+    {"@type":"Question","name":"How long until my order is dispatched?","acceptedAnswer":{"@type":"Answer","text":"Everything is printed to order. Please allow up to 7 working days for dispatch."}},
     {"@type":"Question","name":"Do you ship outside the UK?","acceptedAnswer":{"@type":"Answer","text":"Not currently — we ship to UK addresses only via Evri."}},
     {"@type":"Question","name":"What is the difference between the AoS and 40K token sets?","acceptedAnswer":{"@type":"Answer","text":"The token sets are designed for their respective game systems. Both fit the same racks in the Token Holder."}}
   ]
@@ -560,10 +559,9 @@ footer a{color:var(--gold); text-decoration:none}
               <p class="desc">Tokens and command-point coins, printed and ready to drop into the Token Holder's racks. Pick one, both, or skip.</p>
               <div class="opts">
                 <button class="opt" data-pick="tok:aos"><span class="on">Age of Sigmar</span><span class="op">£10</span></button>
-                <button class="opt" data-pick="tok:40k"><span class="on">Warhammer 40,000</span><span class="op">£10</span><span class="od">Pre-order, ships from 1st August</span></button>
+                <button class="opt" data-pick="tok:40k"><span class="on">Warhammer 40,000</span><span class="op">£10</span></button>
                 <button class="opt skip" data-pick="tok:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
               </div>
-              <div class="cfg-note" id="cfg-tok-note" style="display:none"><strong>Pre-order:</strong> payment is taken now. Shipping begins 1st August — printing capacity will dictate your exact dispatch date. We are currently experiencing high order numbers.</div>
             </div>
           </div>
         </div>
@@ -657,7 +655,7 @@ footer a{color:var(--gold); text-decoration:none}
         </details>
         <details class="faq-item">
           <summary>How long until my order is dispatched?</summary>
-          <p>Everything is printed to order. Please allow up to 7 working days for dispatch — we'll email you with your Evri tracking number as soon as it's on its way. Pre-orders for Warhammer 40,000 products will begin shipping from 1st August, subject to printing capacity.</p>
+          <p>Everything is printed to order. Please allow up to 7 working days for dispatch — we'll email you with your Evri tracking number as soon as it's on its way.</p>
         </details>
         <details class="faq-item">
           <summary>Do you ship outside the UK?</summary>
@@ -825,7 +823,6 @@ function cfgRender(){
     else btn.disabled = soon;
   });
   document.getElementById("cfg-holder-note").style.display = diceSkipped ? "block" : "none";
-  document.getElementById("cfg-tok-note").style.display = Array.isArray(cfgSel.tok) && cfgSel.tok.includes("40k") ? "block" : "none";
 
   // summary
   if(step === "summary"){
