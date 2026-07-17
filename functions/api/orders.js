@@ -17,6 +17,12 @@ export async function onRequestGet({ request, env }) {
   if (status) { sql += " AND status = ?";      b.push(status); }
   sql += " ORDER BY created_at DESC LIMIT 500";
 
-  const { results } = await env.DB.prepare(sql).bind(...b).all();
+  let results;
+  try {
+    ({ results } = await env.DB.prepare(sql).bind(...b).all());
+  } catch (e) {
+    console.error("orders db error:", e.message);
+    return json({ error: "Database unavailable — try again in a minute" }, 503);
+  }
   return json({ orders: results });
 }

@@ -6,12 +6,23 @@ export async function onRequestPost({ request, env }) {
   if (!(await authed(request, env))) return json({ error: "unauthorized" }, 401);
 
   const { id, tracking } = await request.json();
-  const order = await env.DB.prepare("SELECT * FROM orders WHERE id = ?").bind(id).first();
+  let order;
+  try {
+    order = await env.DB.prepare("SELECT * FROM orders WHERE id = ?").bind(id).first();
+  } catch (e) {
+    console.error("dispatch db error:", e.message);
+    return json({ error: "Database unavailable — try again in a minute" }, 503);
+  }
   if (!order) return json({ error: "not found" }, 404);
 
-  await env.DB.prepare(
-    "UPDATE orders SET status = 'dispatched', tracking = ?, dispatched_at = ? WHERE id = ?"
-  ).bind(tracking || "", new Date().toISOString(), id).run();
+  try {
+    await env.DB.prepare(
+      "UPDATE orders SET status = 'dispatched', tracking = ?, dispatched_at = ? WHERE id = ?"
+    ).bind(tracking || "", new Date().toISOString(), id).run();
+  } catch (e) {
+    console.error("dispatch db error:", e.message);
+    return json({ error: "Database unavailable — order NOT marked dispatched, no email sent" }, 503);
+  }
 
   const trackHtml = tracking
     ? `<p>Evri tracking: <strong>${tracking}</strong><br>` +

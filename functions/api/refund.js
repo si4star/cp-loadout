@@ -6,7 +6,13 @@ export async function onRequestPost({ request, env }) {
   if (!(await authed(request, env))) return json({ error: "unauthorized" }, 401);
 
   const { id } = await request.json();
-  const order = await env.DB.prepare("SELECT * FROM orders WHERE id = ?").bind(id).first();
+  let order;
+  try {
+    order = await env.DB.prepare("SELECT * FROM orders WHERE id = ?").bind(id).first();
+  } catch (e) {
+    console.error("refund db error:", e.message);
+    return json({ error: "Database unavailable — no refund issued, try again in a minute" }, 503);
+  }
   if (!order) return json({ error: "not found" }, 404);
   if (order.status === "refunded") return json({ error: "already refunded" }, 400);
   if (!order.payment_intent) return json({ error: "no payment to refund" }, 400);
@@ -15,7 +21,13 @@ export async function onRequestPost({ request, env }) {
   form.append("payment_intent", order.payment_intent);
   await stripe(env, "refunds", "POST", form);
 
-  await env.DB.prepare("UPDATE orders SET status = 'refunded' WHERE id = ?").bind(id).run();
+  try {
+    await env.DB.prepare("UPDATE orders SET status = 'refunded' WHERE id = ?").bind(id).run();
+  } catch (e) {
+    // Stripe refund HAS been issued at this point — say so explicitly.
+    console.error("refund db error after Stripe refund:", e.message);
+    return json({ error: "Refund WAS issued via Stripe, but the order status couldn't be saved (database unavailable). Do not refund again — update the status once the database is back." }, 500);
+  }
 
   await sendEmail(env, {
     to: order.customer_email,

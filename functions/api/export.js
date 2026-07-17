@@ -15,7 +15,13 @@ export async function onRequestGet({ request, env }) {
   if (to)   { sql += " AND created_at <= ?"; b.push(to + "T23:59:59.999Z"); }
   sql += " ORDER BY created_at DESC";
 
-  const { results } = await env.DB.prepare(sql).bind(...b).all();
+  let results;
+  try {
+    ({ results } = await env.DB.prepare(sql).bind(...b).all());
+  } catch (e) {
+    console.error("export db error:", e.message);
+    return new Response("Database unavailable — try again in a minute", { status: 503 });
+  }
 
   const cols = [
     "created_at", "customer_name", "customer_email", "items_json", "shipping_method",

@@ -76,6 +76,11 @@ let ORDERS = [];
 const gbp = p => "£" + (Number(p||0)/100).toFixed(2);
 const msg = t => document.getElementById("msg").textContent = t;
 const parseItems = j => { try { return JSON.parse(j||"[]"); } catch { return []; } };
+// Pull a readable error out of an API response, whatever shape it's in.
+async function apiError(res){
+  try{ const d = await res.json(); if(d && d.error) return d.error; }catch{}
+  return "server error (HTTP " + res.status + ")";
+}
 
 async function load(){
   const u = new URL("/api/orders", location.origin);
@@ -84,6 +89,7 @@ async function load(){
   try{
     const res = await fetch(u);
     if(res.status === 401){ msg("Not signed in — refresh to log in via Cloudflare Access."); return; }
+    if(!res.ok){ msg("Couldn't load orders: " + await apiError(res)); return; }
     const data = await res.json();
     ORDERS = data.orders || [];
     renderFiltered();
@@ -132,19 +138,19 @@ async function dispatch(id){
   const tracking = prompt("Evri tracking number (leave blank if none):", "");
   if(tracking === null) return;
   const res = await fetch("/api/dispatch", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({id,tracking}) });
-  msg(res.ok ? "Marked dispatched — email sent." : "Dispatch failed."); if(res.ok) load();
+  msg(res.ok ? "Marked dispatched — email sent." : "Dispatch failed: " + await apiError(res)); if(res.ok) load();
 }
 async function refund(id){
   if(!confirm("Cancel and refund this order? This issues a Stripe refund and emails the customer.")) return;
   const res = await fetch("/api/refund", { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({id}) });
-  msg(res.ok ? "Refunded — email sent." : "Refund failed."); if(res.ok) load();
+  msg(res.ok ? "Refunded — email sent." : "Refund failed: " + await apiError(res)); if(res.ok) load();
 }
 
 async function exportCsv(){
   const u = new URL("/api/export", location.origin);
   ["from","to"].forEach(k=>{ const v=document.getElementById(k).value; if(v) u.searchParams.set(k,v); });
   const res = await fetch(u);
-  if(!res.ok){ msg("Export failed."); return; }
+  if(!res.ok){ msg("Export failed: " + (res.status === 503 ? await res.text() : "HTTP " + res.status)); return; }
   const blob = await res.blob();
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob); a.download = "cploadout-orders.csv"; a.click();
