@@ -451,7 +451,7 @@ footer a{color:var(--gold); text-decoration:none}
   "mainEntity": [
     {"@type":"Question","name":"How does it fit inside a Really Useful Box?","acceptedAnswer":{"@type":"Answer","text":"The Loadout sits inside a Really Useful A4 paper tray, which rests on the rim of a 4L, 9L or 35L Really Useful Box, keeping everything accessible on top while your models are stored below."}},
     {"@type":"Question","name":"Does it fit inside a Really Useful 35L box?","acceptedAnswer":{"@type":"Answer","text":"Yes — The Loadout sits inside a Really Useful A4 paper tray which rests on the rim of a 35L Really Useful Box."}},
-    {"@type":"Question","name":"Are dice included?","acceptedAnswer":{"@type":"Answer","text":"No — dice are not included; just the slots for them. The 16mm tray holds up to 50 × 16mm dice and 20 × 12mm dice."}},
+    {"@type":"Question","name":"Are dice included?","acceptedAnswer":{"@type":"Answer","text":"No — dice are not included; just the slots for them. The 16mm dice tray holds up to 50 × 16mm dice, and the Token Holder insert adds slots for 20 × 12mm dice."}},
     {"@type":"Question","name":"What is PLA and will it warp?","acceptedAnswer":{"@type":"Answer","text":"PLA is a common 3D-printing filament. It can warp if left in direct sunlight or a very hot environment. Under normal use it is completely robust."}},
     {"@type":"Question","name":"How long until my order is dispatched?","acceptedAnswer":{"@type":"Answer","text":"Everything is printed to order. Please allow up to 7 working days for dispatch."}},
     {"@type":"Question","name":"Do you ship outside the UK?","acceptedAnswer":{"@type":"Answer","text":"Not currently — we ship to UK addresses only via Evri."}},
@@ -571,7 +571,7 @@ footer a{color:var(--gold); text-decoration:none}
               <h3>Step 2 — Dice Tray</h3>
               <p class="desc">Our 3D-printed dice tray, sized to sit flush in the Really Useful A4 paper tray. Pick the layout for your dice.</p>
               <div class="opts">
-                <button class="opt" data-pick="dice:16mm"><span class="on">16mm</span><span class="op">£20</span></button>
+                <button class="opt" data-pick="dice:16mm"><span class="on">16mm</span><span class="op">£20</span><span class="od">Holds 50 × 16mm dice</span></button>
                 <button class="opt" data-pick="dice:12mm"><span class="on">12mm</span><span class="op">£20</span></button>
                 <button class="opt skip" data-pick="dice:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
               </div>
@@ -695,7 +695,7 @@ footer a{color:var(--gold); text-decoration:none}
         </details>
         <details class="faq-item">
           <summary>Are dice included?</summary>
-          <p>No — dice aren't included; just the slots for them. The 16mm tray holds up to 50 × 16mm dice and 20 × 12mm dice.</p>
+          <p>No — dice aren't included; just the slots for them. The 16mm dice tray holds up to 50 × 16mm dice, and the Token Holder insert adds slots for 20 × 12mm dice.</p>
         </details>
         <details class="faq-item">
           <summary>What is PLA and will it warp?</summary>
@@ -965,33 +965,47 @@ function tpAdd(id, delta){
   let next = Math.max(0, cur + delta);
   if(next * per + others > TOKEN_CAP) next = Math.floor((TOKEN_CAP - others) / per);
   if(next <= 0) delete cfgSel.tok[id]; else cfgSel.tok[id] = next;
-  cfgRender();
+  // Update in place — rebuilding the list recreates the <img>s and makes them flash.
+  tpSync();
+  document.getElementById("cfg-total").textContent = gbp(cfgTotal());
 }
+// Rebuild the row list (filter/search/step arrival only)
 function tpRender(){
   const q = (document.getElementById("tp-search").value || "").toLowerCase();
-  const picks = (typeof cfgSel.tok === "object" && cfgSel.tok) ? cfgSel.tok : {};
-  const total = tokenSum(picks);
-  const atCap = total >= TOKEN_CAP;
   const rows = Object.entries(TOKENS)
     .filter(([id, t]) => (tpSys === "all" || t.sys === tpSys) && (!q || t.name.toLowerCase().includes(q)))
     .map(([id, t]) => {
-      const n = picks[id] || 0;
       const per = t.per || 1;
       const label = TOKEN_SYS_LABEL[t.sys] + (per > 1 ? ' · ' + per + ' tokens · ' + gbp(TOKEN_PRICE * per) : '');
-      const plusDisabled = total + per > TOKEN_CAP;
-      return '<div class="tp-row' + (n ? ' has' : '') + '">'
+      return '<div class="tp-row" data-id="' + id + '">'
         + '<img class="ti" src="/img/tokens/' + id + '.png' + CFG_IMG_VER + '" loading="lazy" alt="' + t.name + ' token, both sides">'
         + '<span class="tn">' + t.name + ' <span class="ts">' + label + '</span></span>'
         + '<span class="tp-qty">'
-        + '<button onclick="tpAdd(\'' + id + '\',-1)"' + (n === 0 ? ' disabled' : '') + ' aria-label="Fewer ' + t.name + '">−</button>'
-        + '<span class="q">' + n + '</span>'
-        + '<button onclick="tpAdd(\'' + id + '\',1)"' + (plusDisabled ? ' disabled' : '') + ' aria-label="More ' + t.name + '">+</button>'
+        + '<button onclick="tpAdd(\'' + id + '\',-1)" aria-label="Fewer ' + t.name + '">−</button>'
+        + '<span class="q">0</span>'
+        + '<button onclick="tpAdd(\'' + id + '\',1)" aria-label="More ' + t.name + '">+</button>'
         + '</span></div>';
     }).join("");
   document.getElementById("tp-list").innerHTML = rows || '<p class="tp-empty">No tokens match your search.</p>';
+  tpSync();
+}
+// Sync qty, button states and the counter without touching the row DOM
+function tpSync(){
+  const picks = (typeof cfgSel.tok === "object" && cfgSel.tok) ? cfgSel.tok : {};
+  const total = tokenSum(picks);
+  document.querySelectorAll("#tp-list .tp-row").forEach(row => {
+    const id = row.dataset.id;
+    const per = TOKENS[id].per || 1;
+    const n = picks[id] || 0;
+    row.classList.toggle("has", n > 0);
+    row.querySelector(".q").textContent = n;
+    const btns = row.querySelectorAll("button");
+    btns[0].disabled = n === 0;
+    btns[1].disabled = total + per > TOKEN_CAP;
+  });
   const cnt = document.getElementById("tp-count");
   cnt.textContent = total + " / " + TOKEN_CAP + " tokens";
-  cnt.className = "cnt" + (atCap ? " full" : total > 0 ? " some" : "");
+  cnt.className = "cnt" + (total >= TOKEN_CAP ? " full" : total > 0 ? " some" : "");
   document.getElementById("tp-price").textContent = gbp(total * TOKEN_PRICE);
 }
 
