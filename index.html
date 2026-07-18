@@ -808,7 +808,7 @@ const TOKEN_CAP = 60;    // Token Holder rack capacity
 const TOKENS = {
   "hit":           { name: "Hit +/−",                            sys: "gen" },
   "wound":         { name: "Wound +/−",                          sys: "gen" },
-  "generic-1-6":   { name: "Generic 1–6",                        sys: "gen" },
+  "generic-1-6":   { name: "Set of Numbered 1–6",                sys: "gen", per: 6 },
   "damage":        { name: "Damage +/−",                         sys: "gen" },
   "save":          { name: "Save +/−",                           sys: "gen" },
   "reroll-hits":   { name: "Reroll Hits / Reroll Wounds",        sys: "40k" },
@@ -834,9 +834,10 @@ const TOKENS = {
 const TOKEN_SYS_LABEL = { gen: "Generic", "40k": "40K", aos: "AoS" };
 
 const cart = {};                       // sku -> qty
-const cartTokens = {};                 // tokenId -> qty (pick & mix)
+const cartTokens = {};                 // tokenId -> picks (pick & mix)
 const gbp = p => "£" + (p/100).toFixed(2);
-const tokenSum = m => Object.values(m).reduce((s,q)=>s+q, 0);
+// physical token count: a pick of a set counts all its tokens (per)
+const tokenSum = m => Object.entries(m).reduce((s,[id,q])=>s + q * (TOKENS[id]?.per || 1), 0);
 
 /* ---- configurator ---- */
 const CFG_STEPS = ["rub","dice","holder","tok","extras","summary"];
@@ -959,10 +960,12 @@ function tpFilter(btn){
 }
 function tpAdd(id, delta){
   if(typeof cfgSel.tok !== "object" || cfgSel.tok === null) cfgSel.tok = {};
+  const per = TOKENS[id].per || 1;
   const cur = cfgSel.tok[id] || 0;
-  const total = tokenSum(cfgSel.tok);
-  const next = Math.max(0, Math.min(cur + delta, cur + (TOKEN_CAP - total)));
-  if(next === 0) delete cfgSel.tok[id]; else cfgSel.tok[id] = next;
+  const others = tokenSum(cfgSel.tok) - cur * per; // cap is in physical tokens
+  let next = Math.max(0, cur + delta);
+  if(next * per + others > TOKEN_CAP) next = Math.floor((TOKEN_CAP - others) / per);
+  if(next <= 0) delete cfgSel.tok[id]; else cfgSel.tok[id] = next;
   cfgRender();
 }
 function tpRender(){
@@ -974,13 +977,16 @@ function tpRender(){
     .filter(([id, t]) => (tpSys === "all" || t.sys === tpSys) && (!q || t.name.toLowerCase().includes(q)))
     .map(([id, t]) => {
       const n = picks[id] || 0;
+      const per = t.per || 1;
+      const label = TOKEN_SYS_LABEL[t.sys] + (per > 1 ? ' · ' + per + ' tokens · ' + gbp(TOKEN_PRICE * per) : '');
+      const plusDisabled = total + per > TOKEN_CAP;
       return '<div class="tp-row' + (n ? ' has' : '') + '">'
         + '<img class="ti" src="/img/tokens/' + id + '.png' + CFG_IMG_VER + '" loading="lazy" alt="' + t.name + ' token, both sides">'
-        + '<span class="tn">' + t.name + ' <span class="ts">' + TOKEN_SYS_LABEL[t.sys] + '</span></span>'
+        + '<span class="tn">' + t.name + ' <span class="ts">' + label + '</span></span>'
         + '<span class="tp-qty">'
         + '<button onclick="tpAdd(\'' + id + '\',-1)"' + (n === 0 ? ' disabled' : '') + ' aria-label="Fewer ' + t.name + '">−</button>'
         + '<span class="q">' + n + '</span>'
-        + '<button onclick="tpAdd(\'' + id + '\',1)"' + (atCap ? ' disabled' : '') + ' aria-label="More ' + t.name + '">+</button>'
+        + '<button onclick="tpAdd(\'' + id + '\',1)"' + (plusDisabled ? ' disabled' : '') + ' aria-label="More ' + t.name + '">+</button>'
         + '</span></div>';
     }).join("");
   document.getElementById("tp-list").innerHTML = rows || '<p class="tp-empty">No tokens match your search.</p>';

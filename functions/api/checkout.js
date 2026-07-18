@@ -45,8 +45,8 @@ export async function onRequestPost({ request, env }) {
       if (!TOKENS[id]) continue;
       const qty = Math.max(0, parseInt(tokens[id]) || 0);
       if (qty === 0) continue;
-      tokenCount += qty;
-      manifest += (manifest ? "," : "") + id + ":" + qty;
+      tokenCount += qty * (TOKENS[id].per || 1); // sets count all their tokens
+      manifest += (manifest ? "," : "") + id + ":" + qty; // manifest stores picks
     }
     if (tokenCount > TOKEN_CAP) {
       return json({ error: `Maximum ${TOKEN_CAP} tokens per set` }, 400);

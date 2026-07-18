@@ -107,13 +107,15 @@ export const gbp = (p) => "£" + (Number(p || 0) / 100).toFixed(2);
 
 // Token pick & mix master list (source: Simon's CSV, 2026-07-18).
 // All tokens double-sided. sys: "gen" = fits both systems.
+// per: physical tokens per pick (default 1) — a pick of a set counts per
+// tokens toward the cap and costs per × TOKEN_PRICE.
 export const TOKEN_PRICE = 30; // pence per token
 export const TOKEN_CAP = 60;   // Token Holder rack capacity
 export const TOKENS = {
   // Generic
   "hit":           { name: "Hit +/−",                            sys: "gen" },
   "wound":         { name: "Wound +/−",                          sys: "gen" },
-  "generic-1-6":   { name: "Generic 1–6",                        sys: "gen" },
+  "generic-1-6":   { name: "Set of Numbered 1–6",                sys: "gen", per: 6 },
   "damage":        { name: "Damage +/−",                         sys: "gen" },
   "save":          { name: "Save +/−",                           sys: "gen" },
   // Warhammer 40,000
