@@ -170,7 +170,9 @@ section{padding:62px 0}
 .config{background:var(--bg2); border:1px solid var(--line); border-radius:14px; padding:28px}
 .cfg-progress{display:flex; gap:8px; margin-bottom:26px; flex-wrap:wrap}
 .chip{font-family:"Space Mono"; font-size:11px; letter-spacing:.12em; text-transform:uppercase;
-  padding:6px 12px; border-radius:999px; border:1px solid var(--line); color:var(--muted)}
+  padding:6px 12px; border-radius:999px; border:1px solid var(--line); color:var(--muted);
+  background:none; cursor:pointer}
+.chip:hover{border-color:#48505c; color:var(--ink)}
 .chip.done{color:var(--ink); border-color:#48505c}
 .chip.cur{border-color:var(--gold); color:var(--gold)}
 .cfg-step{display:none}
@@ -883,10 +885,12 @@ document.querySelectorAll(".opt").forEach(btn => {
 function cfgRender(){
   const step = CFG_STEPS[cfgIx];
 
-  // progress chips
+  // progress chips (clickable — jump to any step)
   document.getElementById("cfg-progress").innerHTML = CFG_STEPS.map((s, i) => {
     const done = s !== "summary" && cfgSel[s] !== undefined;
-    return '<span class="chip' + (i === cfgIx ? " cur" : done ? " done" : "") + '">' + (i+1) + ' · ' + CFG_LABEL[s] + '</span>';
+    return '<button type="button" class="chip' + (i === cfgIx ? " cur" : done ? " done" : "")
+      + '" onclick="cfgGoto(' + i + ')" aria-label="Go to step ' + (i+1) + ' — ' + CFG_LABEL[s] + '">'
+      + (i+1) + ' · ' + CFG_LABEL[s] + '</button>';
   }).join("");
 
   // show current step
@@ -949,6 +953,12 @@ function cfgNext(){
   cfgRender();
 }
 function cfgBack(){ if(cfgIx > 0){ cfgIx--; cfgRender(); } }
+function cfgGoto(i){
+  if(i === cfgIx || i < 0 || i >= CFG_STEPS.length) return;
+  cfgIx = i;
+  cfgApplyDefault(); // same as arriving via Next — pre-select the step's default
+  cfgRender();
+}
 
 /* ---- token pick & mix ---- */
 let tpSys = "all";
@@ -1030,12 +1040,13 @@ function diceBase(){
 }
 function cfgPreviews(){
   const db = diceBase(), h = cfgSel.holder;
-  // Step 3: tray + insert, or empty tray if insert skipped
+  // Step 3: tray + insert · tray only · insert only · plain white when neither
   const hImg = h === "lift" ? "lift-out-tray" : "token-holder";
   let hc;
   if(db && h)      hc = ["/img/" + db + "-" + hImg + ".png", "/img/" + hImg + ".png", "/img/token-holder.png"];
   else if(db)      hc = ["/img/" + db + ".png", "/img/dice-tray-16.png"];
-  else             hc = ["/img/" + hImg + ".png", "/img/token-holder.png"];
+  else if(h)       hc = ["/img/" + hImg + ".png", "/img/token-holder.png"];
+  else             hc = ["/img/no-selection.png"];
   setPreview(document.getElementById("cfg-img-holder"), hc);
 }
 function cfgAddToCart(){
