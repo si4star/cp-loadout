@@ -15,6 +15,9 @@ total_before = total_after = 0
 for path in sorted(glob.glob(os.path.join(ROOT, "*.png"))):
     before = os.path.getsize(path)
     im = Image.open(path)
+    if im.mode == "P" and im.width <= MAX_W:
+        print(f"{os.path.basename(path):22} {before//1024:>6} KB  (already optimised)")
+        continue
     if im.width > MAX_W:
         im = im.resize((MAX_W, round(im.height * MAX_W / im.width)), Image.LANCZOS)
     has_alpha = im.mode in ("RGBA", "LA") and im.getextrema()[-1][0] < 255

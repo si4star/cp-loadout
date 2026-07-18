@@ -8,6 +8,9 @@ const CATALOG = {
   "holder:token-holder": { name: "Token Holder",           price: 1200 },
   "dice:12mm":           { name: "Dice Tray — 12mm",       price: 2000 },
   "holder:lift":         { name: "Lift-out Tray",           price: 800  },
+  // Handle colour variants (+£2) — black is the default, unsuffixed SKU
+  "holder:token-holder-yellow": { name: "Token Holder — Yellow Handle", price: 1400 },
+  "holder:lift-yellow":         { name: "Lift-out Tray — Yellow Handle", price: 1000 },
   // Coming soon — uncomment to enable purchase:
   // "dice:mixed": { name: "Dice Tray — Mixed", price: 2000 },
   // Legacy fixed sets — kept for safety; check D1 before removing
