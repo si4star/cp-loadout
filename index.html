@@ -595,10 +595,9 @@ footer a{color:var(--gold); text-decoration:none}
           </div>
         </div>
 
-        <!-- STEP 4: Token pick & mix -->
+        <!-- STEP 4: Token pick & mix (no step image — the picker is the visual) -->
         <div class="cfg-step" id="step-tok">
-          <div class="cfg-grid">
-            <img class="cfg-img" id="cfg-img-tok" src="/img/tokens-aos.png" alt="Double-sided game tokens">
+          <div>
             <div>
               <h3>Step 4 — Tokens, Pick &amp; Mix</h3>
               <p class="desc">Build your own token set — every design is double-sided, 30p each, and the Token Holder's racks take up to 60. Pick what your army actually uses, or skip straight past.</p>
@@ -1000,7 +999,6 @@ function tpRender(){
    Combo renders follow this naming (PNG, /img/):
      dice-tray-16[-token-holder|-lift-out-tray].png
      token-holder.png · lift-out-tray.png (standalone inserts)
-     tokens-aos.png (static step 4 image — replace with a mixed-tokens photo)
    Missing renders fall back down the chain to the closest existing image.
    CFG_IMG_VER busts the CDN cache — bump it whenever an image is replaced. */
 const CFG_IMG_VER = "?v=3";
@@ -1025,7 +1023,6 @@ function cfgPreviews(){
   else if(db)      hc = ["/img/" + db + ".png", "/img/dice-tray-16.png"];
   else             hc = ["/img/" + hImg + ".png", "/img/token-holder.png"];
   setPreview(document.getElementById("cfg-img-holder"), hc);
-  // Step 4 image is static (tokens photo) — the picker itself is the preview.
 }
 function cfgAddToCart(){
   // Token picks merge into the cart's single pick & mix set, capped at rack capacity.
