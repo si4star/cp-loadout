@@ -1,4 +1,6 @@
 // functions/api/checkout.js
+import { json, TOKENS, TOKEN_PRICE, TOKEN_CAP } from "./_lib.js";
+
 const CATALOG = {
   // Build-your-own components
   "rub":                 { name: "Really Useful Tray A4",  price: 300  },
@@ -8,6 +10,7 @@ const CATALOG = {
   "holder:lift":         { name: "Lift-out Tray",           price: 800  },
   // Coming soon — uncomment to enable purchase:
   // "dice:mixed": { name: "Dice Tray — Mixed", price: 2000 },
+  // Legacy fixed sets — kept for safety; check D1 before removing
   "tok:aos":        { name: "Token Set for Age of Sigmar",                 price: 1000 },
   "tok:40k":        { name: "Token Set for Warhammer 40,000",              price: 1000 },
   // Standalone extras
@@ -16,7 +19,7 @@ const CATALOG = {
   // Legacy SKUs — kept for safety; check D1 before removing
   "tray:aos": { name: "The Loadout — Age of Sigmar",       price: 3600 },
   "tray:40k": { name: "The Loadout — Warhammer 40,000",    price: 3600 },
-  "box":      { name: "Really Useful Tray A4",              price: 400  },
+  "box":      { name: "Really Useful Tray A4 (legacy)",     price: 400  },
 };
 
 const SHIPPING = [
@@ -25,7 +28,7 @@ const SHIPPING = [
 
 export async function onRequestPost({ request, env }) {
   try {
-    const { items } = await request.json();
+    const { items, tokens } = await request.json();
 
     const line_items = [];
     for (const sku in (items || {})) {
@@ -33,6 +36,25 @@ export async function onRequestPost({ request, env }) {
       const qty = Math.min(50, Math.max(0, parseInt(items[sku]) || 0));
       if (qty > 0) line_items.push(lineItem(CATALOG[sku].name, CATALOG[sku].price, qty));
     }
+
+    // Token pick & mix: { tokenId: qty }. One line item; manifest goes to
+    // session metadata so the webhook can persist the exact picks.
+    let manifest = "";
+    let tokenCount = 0;
+    for (const id in (tokens || {})) {
+      if (!TOKENS[id]) continue;
+      const qty = Math.max(0, parseInt(tokens[id]) || 0);
+      if (qty === 0) continue;
+      tokenCount += qty;
+      manifest += (manifest ? "," : "") + id + ":" + qty;
+    }
+    if (tokenCount > TOKEN_CAP) {
+      return json({ error: `Maximum ${TOKEN_CAP} tokens per set` }, 400);
+    }
+    if (tokenCount > 0) {
+      line_items.push(lineItem("Token Pick & Mix", TOKEN_PRICE, tokenCount));
+    }
+
     if (line_items.length === 0) {
       return json({ error: "Cart is empty" }, 400);
     }
@@ -43,6 +65,7 @@ export async function onRequestPost({ request, env }) {
     body.append("return_url", `${env.SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`);
     body.append("shipping_address_collection[allowed_countries][0]", "GB");
     body.append("metadata[site]", "cp-loadout");
+    if (manifest) body.append("metadata[tokens]", manifest); // ≤500 chars: 24 ids max ≈ 360
     body.append("custom_fields[0][key]", "mobile");
     body.append("custom_fields[0][label][type]", "custom");
     body.append("custom_fields[0][label][custom]", "Mobile number");
@@ -96,5 +119,3 @@ export async function onRequestPost({ request, env }) {
 }
 
 const lineItem = (name, unit_amount, quantity) => ({ name, unit_amount, quantity });
-const json = (obj, status = 200) =>
-  new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json" } });

@@ -97,11 +97,16 @@ async function load(){
   }catch(e){ msg("Failed to load: " + e.message); }
 }
 
+// "40k" matches "Warhammer 40,000" and vice versa
+const searchNorm = s => s.toLowerCase().replace(/40,000/g, "40k");
 function renderFiltered(){
-  const q = (document.getElementById("search").value || "").toLowerCase();
+  const q = searchNorm(document.getElementById("search").value || "");
   if(!q){ render(ORDERS); return; }
   const filtered = ORDERS.filter(o =>
-    parseItems(o.items_json).some(i => i.name.toLowerCase().includes(q))
+    parseItems(o.items_json).some(i =>
+      searchNorm(i.name).includes(q) ||
+      (i.tokens || []).some(t => searchNorm(t.name).includes(q))
+    )
   );
   render(filtered);
 }
@@ -111,7 +116,11 @@ function render(orders){
   const tb = document.getElementById("rows");
   if(!orders.length){ tb.innerHTML = '<tr><td colspan="9" class="msg">No orders.</td></tr>'; return; }
   tb.innerHTML = orders.map(o=>{
-    const items = parseItems(o.items_json).map(i=>`${i.qty}× ${i.name}`).join("<br>");
+    const items = parseItems(o.items_json).map(i=>{
+      let line = `${i.qty}× ${i.name}`;
+      if(i.tokens) line += `<br><span class="mono" style="color:var(--muted);font-size:11px">${i.tokens.map(t=>`${t.qty}× ${esc(t.name)}`).join(", ")}</span>`;
+      return line;
+    }).join("<br>");
     const date = (o.created_at||"").slice(0,10);
     const acts = o.status==="refunded" ? "" :
       `${o.status!=="dispatched" ? `<button class="b-disp" onclick="dispatch(${o.id})">Mark dispatched</button>` : ""}
@@ -258,7 +267,10 @@ function printSlips(ids){
     const ref = (o.session_id||"").slice(-12);
 
     const itemSections = parsedItems.map(i => {
-      const checklist = checklistFor(i.name);
+      // Pick & mix carries its own manifest — build the checklist from it.
+      const checklist = i.tokens
+        ? i.tokens.map(t => `${t.qty}× ${esc(t.name)} tokens`)
+        : checklistFor(i.name);
       const checkboxes = checklist
         ? `<ul class="checklist">${checklist.map(c=>`<li><span class="cb"></span>${c}</li>`).join("")}</ul>`
         : `<p class="no-checklist">Checklist not yet defined for this product.</p>`;

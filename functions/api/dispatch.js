@@ -14,6 +14,7 @@ export async function onRequestPost({ request, env }) {
     return json({ error: "Database unavailable — try again in a minute" }, 503);
   }
   if (!order) return json({ error: "not found" }, 404);
+  if (order.status === "refunded") return json({ error: "order is refunded — can't mark dispatched" }, 400);
 
   try {
     await env.DB.prepare(

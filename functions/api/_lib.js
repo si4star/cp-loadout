@@ -104,3 +104,45 @@ export async function sendEmail(env, { to, subject, html, text }) {
 }
 
 export const gbp = (p) => "£" + (Number(p || 0) / 100).toFixed(2);
+
+// Token pick & mix master list (source: Simon's CSV, 2026-07-18).
+// All tokens double-sided. sys: "gen" = fits both systems.
+export const TOKEN_PRICE = 30; // pence per token
+export const TOKEN_CAP = 60;   // Token Holder rack capacity
+export const TOKENS = {
+  // Generic
+  "hit":           { name: "Hit +/−",                            sys: "gen" },
+  "wound":         { name: "Wound +/−",                          sys: "gen" },
+  "generic-1-6":   { name: "Generic 1–6",                        sys: "gen" },
+  "damage":        { name: "Damage +/−",                         sys: "gen" },
+  "save":          { name: "Save +/−",                           sys: "gen" },
+  // Warhammer 40,000
+  "reroll-hits":   { name: "Reroll Hits / Reroll Wounds",        sys: "40k" },
+  "cover":         { name: "Cover / Reroll Saves",               sys: "40k" },
+  "moved":         { name: "Moved / Remained Stationary",        sys: "40k" },
+  "advanced":      { name: "Advanced / Fell Back",               sys: "40k" },
+  "hidden":        { name: "Hidden / Action",                    sys: "40k" },
+  "secured":       { name: "Secured / Charged",                  sys: "40k" },
+  "half-strength": { name: "Half Strength / Battle Shocked",     sys: "40k" },
+  // Age of Sigmar
+  "rend":          { name: "Rend +/−",                           sys: "aos" },
+  "ward-6":        { name: "Ward 6 / No Ward",                   sys: "aos" },
+  "ward-5":        { name: "Ward 5 / No Ward",                   sys: "aos" },
+  "ward-4":        { name: "Ward 4 / No Ward",                   sys: "aos" },
+  "ward-3":        { name: "Ward 3 / No Ward",                   sys: "aos" },
+  "attack":        { name: "Attack +/−",                         sys: "aos" },
+  "run-charge":    { name: "Run & Charge / Run, Shoot & Charge", sys: "aos" },
+  "cast":          { name: "Cast +/−",                           sys: "aos" },
+  "strikes":       { name: "Strikes First / Strikes Last",       sys: "aos" },
+  "fugitive":      { name: "Fugitive / Hideout",                 sys: "aos" },
+  "poisoned":      { name: "Poisoned",                           sys: "aos" },
+  "finest-hour":   { name: "Finest Hour",                        sys: "aos" },
+};
+
+// "hit:10,wound:5" → [["hit",10],["wound",5]] (unknown ids dropped)
+export const parseTokenManifest = (str) =>
+  String(str || "")
+    .split(",")
+    .map((p) => p.split(":"))
+    .filter(([id, q]) => TOKENS[id] && parseInt(q) > 0)
+    .map(([id, q]) => [id, parseInt(q)]);

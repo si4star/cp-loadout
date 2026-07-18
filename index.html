@@ -190,6 +190,33 @@ section{padding:62px 0}
 .opt .od{color:var(--muted); font-size:13px; margin-top:5px; display:block}
 .opt.skip .op{color:var(--muted)}
 .cfg-note{font-size:12.5px; color:var(--gold); margin:14px 0 0; line-height:1.5}
+/* token pick & mix */
+.tp-bar{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px}
+.tp-search{flex:1; min-width:150px; background:var(--bg3); border:1px solid var(--line); border-radius:8px;
+  padding:9px 12px; color:var(--ink); font-size:14px; font-family:inherit}
+.tp-search:focus{outline:none; border-color:var(--gold)}
+.tp-chip{background:var(--bg3); border:1px solid var(--line); border-radius:999px; padding:7px 13px;
+  color:var(--muted); font-size:12.5px; cursor:pointer; font-family:inherit}
+.tp-chip.on{border-color:var(--gold); color:var(--gold)}
+.tp-list{max-height:320px; overflow-y:auto; border:1px solid var(--line); border-radius:10px; background:var(--bg3)}
+.tp-row{display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:10px 14px; border-bottom:1px solid var(--line); font-size:14px}
+.tp-row:last-child{border-bottom:none}
+.tp-row .ti{width:76px; height:38px; object-fit:contain; flex:none}
+.tp-row .tn{flex:1}
+.tp-row .ts{color:var(--muted); font-size:11px; font-family:"Space Mono"; text-transform:uppercase; letter-spacing:.06em}
+.tp-qty{display:flex; align-items:center; gap:8px}
+.tp-qty button{width:28px; height:28px; border-radius:7px; background:var(--bg2); border:1px solid var(--line);
+  color:var(--ink); font-size:16px; line-height:1; cursor:pointer}
+.tp-qty button:hover:not(:disabled){border-color:var(--gold)}
+.tp-qty button:disabled{opacity:.35; cursor:not-allowed}
+.tp-qty .q{min-width:22px; text-align:center; font-family:"Space Mono"; font-size:14px}
+.tp-row.has .q{color:var(--gold)}
+.tp-count{display:flex; justify-content:space-between; align-items:center; margin-top:10px;
+  font-family:"Space Mono"; font-size:13.5px; color:var(--muted)}
+.tp-count .cnt.full{color:var(--green)}
+.tp-count .cnt.some{color:var(--gold)}
+.tp-empty{padding:16px; color:var(--muted); font-size:13.5px; text-align:center}
 .cfg-foot{display:flex; align-items:center; justify-content:space-between; gap:14px;
   border-top:1px solid var(--line); margin-top:26px; padding-top:18px; flex-wrap:wrap}
 .cfg-total{font-family:"Oswald"; font-weight:700; font-size:15px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted)}
@@ -291,6 +318,47 @@ footer a{color:var(--gold); text-decoration:none}
     },
     {
       "@type": "Product",
+      "name": "Dice Tray — 12mm",
+      "description": "3D-printed dice tray for 12mm dice, sized to sit flush in a Really Useful A4 paper tray. Made to order in the UK.",
+      "brand": {"@type": "Brand", "name": "CP Loadout"},
+      "offers": {
+        "@type": "Offer",
+        "url": "https://cploadout.com/",
+        "priceCurrency": "GBP",
+        "price": "20.00",
+        "availability": "https://schema.org/InStock",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {"@type": "MonetaryAmount", "value": "3.29", "currency": "GBP"},
+          "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "GB"},
+          "deliveryTime": {"@type": "ShippingDeliveryTime", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY"}}
+        },
+        "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "GB", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 14, "returnMethod": "https://schema.org/ReturnByMail", "returnFees": "https://schema.org/ReturnShippingFees"}
+      }
+    },
+    {
+      "@type": "Product",
+      "name": "Lift-out Tray",
+      "description": "3D-printed lift-out tray — the insert that sits inside the CP Loadout dice tray. Made to order in the UK.",
+      "image": "https://cploadout.com/img/lift-out-tray.png",
+      "brand": {"@type": "Brand", "name": "CP Loadout"},
+      "offers": {
+        "@type": "Offer",
+        "url": "https://cploadout.com/",
+        "priceCurrency": "GBP",
+        "price": "8.00",
+        "availability": "https://schema.org/InStock",
+        "shippingDetails": {
+          "@type": "OfferShippingDetails",
+          "shippingRate": {"@type": "MonetaryAmount", "value": "3.29", "currency": "GBP"},
+          "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "GB"},
+          "deliveryTime": {"@type": "ShippingDeliveryTime", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY"}}
+        },
+        "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "GB", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 14, "returnMethod": "https://schema.org/ReturnByMail", "returnFees": "https://schema.org/ReturnShippingFees"}
+      }
+    },
+    {
+      "@type": "Product",
       "name": "Token Holder",
       "description": "3D-printed token holder with combat gauges — the insert that sits inside the CP Loadout dice tray. Made to order in the UK.",
       "image": "https://cploadout.com/img/token-holder.png",
@@ -312,36 +380,15 @@ footer a{color:var(--gold); text-decoration:none}
     },
     {
       "@type": "Product",
-      "name": "Token Set for Age of Sigmar",
-      "description": "Full set of 58 Age of Sigmar tokens with command-point coins, printed in PLA. Made to order in the UK.",
+      "name": "Token Pick & Mix",
+      "description": "Build-your-own set of double-sided game tokens — Age of Sigmar, Warhammer 40,000 and generic designs, 30p per token, up to 60 (the Token Holder's rack capacity). Printed in PLA, made to order in the UK.",
       "image": "https://cploadout.com/img/tokens-aos.png",
       "brand": {"@type": "Brand", "name": "CP Loadout"},
       "offers": {
         "@type": "Offer",
         "url": "https://cploadout.com/",
         "priceCurrency": "GBP",
-        "price": "10.00",
-        "availability": "https://schema.org/InStock",
-        "shippingDetails": {
-          "@type": "OfferShippingDetails",
-          "shippingRate": {"@type": "MonetaryAmount", "value": "3.29", "currency": "GBP"},
-          "shippingDestination": {"@type": "DefinedRegion", "addressCountry": "GB"},
-          "deliveryTime": {"@type": "ShippingDeliveryTime", "handlingTime": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 7, "unitCode": "DAY"}, "transitTime": {"@type": "QuantitativeValue", "minValue": 2, "maxValue": 4, "unitCode": "DAY"}}
-        },
-        "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "GB", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 14, "returnMethod": "https://schema.org/ReturnByMail", "returnFees": "https://schema.org/ReturnShippingFees"}
-      }
-    },
-    {
-      "@type": "Product",
-      "name": "Token Set for Warhammer 40,000",
-      "description": "Warhammer 40,000 token set with command-point coins, printed in PLA. Made to order in the UK.",
-      "image": "https://cploadout.com/img/tokens-40k.png",
-      "brand": {"@type": "Brand", "name": "CP Loadout"},
-      "offers": {
-        "@type": "Offer",
-        "url": "https://cploadout.com/",
-        "priceCurrency": "GBP",
-        "price": "10.00",
+        "price": "0.30",
         "availability": "https://schema.org/InStock",
         "shippingDetails": {
           "@type": "OfferShippingDetails",
@@ -408,7 +455,7 @@ footer a{color:var(--gold); text-decoration:none}
     {"@type":"Question","name":"What is PLA and will it warp?","acceptedAnswer":{"@type":"Answer","text":"PLA is a common 3D-printing filament. It can warp if left in direct sunlight or a very hot environment. Under normal use it is completely robust."}},
     {"@type":"Question","name":"How long until my order is dispatched?","acceptedAnswer":{"@type":"Answer","text":"Everything is printed to order. Please allow up to 7 working days for dispatch."}},
     {"@type":"Question","name":"Do you ship outside the UK?","acceptedAnswer":{"@type":"Answer","text":"Not currently — we ship to UK addresses only via Evri."}},
-    {"@type":"Question","name":"What is the difference between the AoS and 40K token sets?","acceptedAnswer":{"@type":"Answer","text":"The token sets are designed for their respective game systems. Both fit the same racks in the Token Holder."}}
+    {"@type":"Question","name":"How does the token pick & mix work?","acceptedAnswer":{"@type":"Answer","text":"Every token design is double-sided and costs 30p. Pick any mix of Age of Sigmar, Warhammer 40,000 and generic designs — up to 60 tokens, which is what the Token Holder's racks take. Command-point coins come with the Token Holder itself."}}
   ]
 }
 </script>
@@ -538,29 +585,32 @@ footer a{color:var(--gold); text-decoration:none}
             <img class="cfg-img" id="cfg-img-holder" src="/img/token-holder.png" alt="Insert preview — your build so far">
             <div>
               <h3>Step 3 — Insert</h3>
-              <p class="desc">What sits inside your dice tray.</p>
+              <p class="desc">Sits inside the dice tray — or works on its own if you're skipping the tray.</p>
               <div class="opts">
-                <button class="opt" data-pick="holder:token-holder"><span class="on">Token Holder</span><span class="op">£12</span><span class="od">Holds 20 × 12mm dice, 60 tokens and 6 command-point coins — and comes with 6 combat gauges</span></button>
+                <button class="opt" data-pick="holder:token-holder"><span class="on">Token Holder</span><span class="op">£12</span><span class="od">Holds 20 × 12mm dice and 60 tokens — comes with 6 combat gauges and 6 command-point coins</span></button>
                 <button class="opt" data-pick="holder:lift"><span class="on">Lift-out tray</span><span class="op">£8</span></button>
                 <button class="opt skip" data-pick="holder:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
               </div>
-              <div class="cfg-note" id="cfg-holder-note" style="display:none">Inserts fit inside the dice tray — go back and add a dice tray to choose one.</div>
             </div>
           </div>
         </div>
 
-        <!-- STEP 4: Token set -->
+        <!-- STEP 4: Token pick & mix -->
         <div class="cfg-step" id="step-tok">
           <div class="cfg-grid">
-            <img class="cfg-img" id="cfg-img-tok" src="/img/tokens-aos.png" alt="Token preview — your build so far">
+            <img class="cfg-img" id="cfg-img-tok" src="/img/tokens-aos.png" alt="Double-sided game tokens">
             <div>
-              <h3>Step 4 — Token Set</h3>
-              <p class="desc">Tokens and command-point coins, printed and ready to drop into the Token Holder's racks. Pick one, both, or skip.</p>
-              <div class="opts">
-                <button class="opt" data-pick="tok:aos"><span class="on">Age of Sigmar</span><span class="op">£10</span></button>
-                <button class="opt" data-pick="tok:40k"><span class="on">Warhammer 40,000</span><span class="op">£10</span></button>
-                <button class="opt skip" data-pick="tok:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
+              <h3>Step 4 — Tokens, Pick &amp; Mix</h3>
+              <p class="desc">Build your own token set — every design is double-sided, 30p each, and the Token Holder's racks take up to 60. Pick what your army actually uses, or skip straight past.</p>
+              <div class="tp-bar">
+                <input class="tp-search" id="tp-search" type="text" placeholder="Search tokens…" oninput="tpRender()">
+                <button class="tp-chip on" data-sys="all" onclick="tpFilter(this)">All</button>
+                <button class="tp-chip" data-sys="40k" onclick="tpFilter(this)">40K</button>
+                <button class="tp-chip" data-sys="aos" onclick="tpFilter(this)">AoS</button>
+                <button class="tp-chip" data-sys="gen" onclick="tpFilter(this)">Generic</button>
               </div>
+              <div class="tp-list" id="tp-list"></div>
+              <div class="tp-count"><span class="cnt" id="tp-count">0 / 60 tokens</span><span id="tp-price">£0.00</span></div>
             </div>
           </div>
         </div>
@@ -595,7 +645,7 @@ footer a{color:var(--gold); text-decoration:none}
         </div>
       </div>
 
-      <p class="more">More game token sets coming. Got a system you want covered? <a href="mailto:hello@cploadout.com" style="color:var(--gold)">Tell us.</a></p>
+      <p class="more">More token designs coming. Got a system you want covered? <a href="mailto:hello@cploadout.com" style="color:var(--gold)">Tell us.</a></p>
     </div>
   </section>
 
@@ -661,8 +711,8 @@ footer a{color:var(--gold); text-decoration:none}
           <p>Not currently — we ship to UK addresses only via Evri.</p>
         </details>
         <details class="faq-item">
-          <summary>What's the difference between the AoS and 40K token sets?</summary>
-          <p>The token sets are designed for their respective game systems. The Age of Sigmar set includes wound, hit, rend, damage, save and ward tokens plus CP coins. The Warhammer 40,000 set includes tokens specific to 40K rules. Both fit the same racks in the Token Holder.</p>
+          <summary>How does the token pick &amp; mix work?</summary>
+          <p>Every token design is double-sided and costs 30p. Pick any mix of Age of Sigmar, Warhammer 40,000 and generic designs — up to 60 tokens, which is what the Token Holder's racks take. Any mix fits the same racks. Command-point coins come with the Token Holder itself.</p>
         </details>
       </div>
     </div>
@@ -739,6 +789,7 @@ const CATALOG = {
   "holder:lift":         { name: "Lift-out Tray",           price: 800  },
   // Coming soon — uncomment here and in checkout.js to enable:
   // "dice:mixed": { name: "Dice Tray — Mixed", price: 2000 },
+  // Legacy fixed sets — superseded by the token pick & mix; kept for safety
   "tok:aos":        { name: "Token Set for Age of Sigmar",                price: 1000 },
   "tok:40k":        { name: "Token Set for Warhammer 40,000",             price: 1000 },
   // Standalone extras
@@ -747,19 +798,54 @@ const CATALOG = {
   // legacy
   "tray:aos": { name: "The Loadout — Age of Sigmar",    price: 3600 },
   "tray:40k": { name: "The Loadout — Warhammer 40,000", price: 3600 },
-  "box":      { name: "Really Useful Tray A4",          price: 400  },
+  "box":      { name: "Really Useful Tray A4 (legacy)", price: 400  },
 };
 
+// Token pick & mix. Keep in sync with TOKENS in functions/api/_lib.js.
+// All tokens double-sided. sys: "gen" = fits both systems.
+const TOKEN_PRICE = 30;  // pence each
+const TOKEN_CAP = 60;    // Token Holder rack capacity
+const TOKENS = {
+  "hit":           { name: "Hit +/−",                            sys: "gen" },
+  "wound":         { name: "Wound +/−",                          sys: "gen" },
+  "generic-1-6":   { name: "Generic 1–6",                        sys: "gen" },
+  "damage":        { name: "Damage +/−",                         sys: "gen" },
+  "save":          { name: "Save +/−",                           sys: "gen" },
+  "reroll-hits":   { name: "Reroll Hits / Reroll Wounds",        sys: "40k" },
+  "cover":         { name: "Cover / Reroll Saves",               sys: "40k" },
+  "moved":         { name: "Moved / Remained Stationary",        sys: "40k" },
+  "advanced":      { name: "Advanced / Fell Back",               sys: "40k" },
+  "hidden":        { name: "Hidden / Action",                    sys: "40k" },
+  "secured":       { name: "Secured / Charged",                  sys: "40k" },
+  "half-strength": { name: "Half Strength / Battle Shocked",     sys: "40k" },
+  "rend":          { name: "Rend +/−",                           sys: "aos" },
+  "ward-6":        { name: "Ward 6 / No Ward",                   sys: "aos" },
+  "ward-5":        { name: "Ward 5 / No Ward",                   sys: "aos" },
+  "ward-4":        { name: "Ward 4 / No Ward",                   sys: "aos" },
+  "ward-3":        { name: "Ward 3 / No Ward",                   sys: "aos" },
+  "attack":        { name: "Attack +/−",                         sys: "aos" },
+  "run-charge":    { name: "Run & Charge / Run, Shoot & Charge", sys: "aos" },
+  "cast":          { name: "Cast +/−",                           sys: "aos" },
+  "strikes":       { name: "Strikes First / Strikes Last",       sys: "aos" },
+  "fugitive":      { name: "Fugitive / Hideout",                 sys: "aos" },
+  "poisoned":      { name: "Poisoned",                           sys: "aos" },
+  "finest-hour":   { name: "Finest Hour",                        sys: "aos" },
+};
+const TOKEN_SYS_LABEL = { gen: "Generic", "40k": "40K", aos: "AoS" };
+
 const cart = {};                       // sku -> qty
+const cartTokens = {};                 // tokenId -> qty (pick & mix)
 const gbp = p => "£" + (p/100).toFixed(2);
+const tokenSum = m => Object.values(m).reduce((s,q)=>s+q, 0);
 
 /* ---- configurator ---- */
 const CFG_STEPS = ["rub","dice","holder","tok","extras","summary"];
 const CFG_LABEL = { rub:"RUB Tray", dice:"Dice Tray", holder:"Insert", tok:"Tokens", extras:"Extras", summary:"Review" };
-const CFG_DEFAULT = { rub:"yes", dice:"16mm", holder:"token-holder", tok:["aos"], extras:null };
+const CFG_DEFAULT = { rub:"yes", dice:"16mm", holder:"token-holder", tok:null, extras:null };
 let cfgIx = 0;
 // undefined = not chosen yet · null = skipped · string = chosen variant
-// extras and tok are multi-select: undefined | null | array (extras holds full SKUs, tok holds variants)
+// extras is multi-select: undefined | null | array of full SKUs
+// tok is the pick & mix map: undefined | { tokenId: qty } ({} = nothing picked)
 const cfgSel = { rub:undefined, dice:undefined, holder:undefined, tok:undefined, extras:undefined };
 
 function cfgSku(k){
@@ -768,17 +854,18 @@ function cfgSku(k){
 }
 function cfgSkus(){
   const skus = ["rub","dice","holder"].map(cfgSku).filter(Boolean);
-  if(Array.isArray(cfgSel.tok)) skus.push(...cfgSel.tok.map(v => "tok:" + v));
   if(Array.isArray(cfgSel.extras)) skus.push(...cfgSel.extras);
   return skus;
 }
-function cfgTotal(){ return cfgSkus().reduce((s, sku) => s + CATALOG[sku].price, 0); }
+function cfgTokCount(){ return cfgSel.tok ? tokenSum(cfgSel.tok) : 0; }
+function cfgTotal(){
+  return cfgSkus().reduce((s, sku) => s + CATALOG[sku].price, 0) + cfgTokCount() * TOKEN_PRICE;
+}
 
 document.querySelectorAll(".opt").forEach(btn => {
   btn.addEventListener("click", () => {
     const [key, val] = btn.dataset.pick.split(/:(.*)/);
-    const prev = cfgSel[key];
-    if(key === "extras" || key === "tok"){
+    if(key === "extras"){
       if(val === "skip") cfgSel[key] = null;
       else {
         let a = Array.isArray(cfgSel[key]) ? cfgSel[key].slice() : [];
@@ -789,10 +876,6 @@ document.querySelectorAll(".opt").forEach(btn => {
       return;
     }
     cfgSel[key] = (val === "skip") ? null : val;
-    if(key === "dice"){
-      if(cfgSel.dice === null) cfgSel.holder = null;              // insert requires dice tray
-      else if(prev === null && cfgSel.holder === null) cfgSel.holder = undefined; // un-force
-    }
     cfgRender();
   });
 });
@@ -809,26 +892,33 @@ function cfgRender(){
   // show current step
   CFG_STEPS.forEach(s => document.getElementById("step-" + s).classList.toggle("cur", s === step));
 
-  // option selection state; insert step gated on dice tray
-  const diceSkipped = cfgSel.dice === null;
+  // option selection state
   document.querySelectorAll(".opt").forEach(btn => {
     const [key, val] = btn.dataset.pick.split(/:(.*)/);
     const chosen = (val === "skip") ? cfgSel[key] === null
-      : (key === "extras" || key === "tok") ? Array.isArray(cfgSel[key]) && cfgSel[key].includes(val)
+      : (key === "extras") ? Array.isArray(cfgSel[key]) && cfgSel[key].includes(val)
       : cfgSel[key] === val;
     btn.classList.toggle("sel", chosen);
-    const soon = btn.dataset.soon === "1";
-    if(key === "holder") btn.disabled = soon || (diceSkipped && val !== "skip");
-    else btn.disabled = soon;
+    btn.disabled = btn.dataset.soon === "1";
   });
-  document.getElementById("cfg-holder-note").style.display = diceSkipped ? "block" : "none";
+
+  // token picker
+  if(step === "tok") tpRender();
 
   // summary
   if(step === "summary"){
     const skus = cfgSkus();
-    document.getElementById("cfg-summary").innerHTML = skus.length
-      ? skus.map(sku => '<div class="sum-line"><span>' + CATALOG[sku].name + '</span><span class="ln">' + gbp(CATALOG[sku].price) + '</span></div>').join("")
-      : '<p class="cfg-empty">Nothing selected — go back and pick at least one piece.</p>';
+    let html = skus.map(sku => '<div class="sum-line"><span>' + CATALOG[sku].name + '</span><span class="ln">' + gbp(CATALOG[sku].price) + '</span></div>').join("");
+    const tc = cfgTokCount();
+    if(tc > 0){
+      const picks = Object.entries(cfgSel.tok).filter(([,q]) => q > 0)
+        .map(([id, q]) => q + '× ' + TOKENS[id].name).join(', ');
+      html += '<div class="sum-line"><span>Token Pick &amp; Mix — ' + tc + ' tokens'
+        + '<br><span style="color:var(--muted);font-size:12.5px">' + picks + '</span></span>'
+        + '<span class="ln">' + gbp(tc * TOKEN_PRICE) + '</span></div>';
+    }
+    document.getElementById("cfg-summary").innerHTML = html
+      || '<p class="cfg-empty">Nothing selected — go back and pick at least one piece.</p>';
   }
 
   cfgPreviews();
@@ -839,18 +929,17 @@ function cfgRender(){
   const next = document.getElementById("cfg-next");
   if(step === "summary"){
     next.textContent = "Add to cart";
-    next.disabled = cfgSkus().length === 0;
+    next.disabled = cfgSkus().length === 0 && cfgTokCount() === 0;
   }else{
     next.textContent = "Next";
     next.disabled = cfgSel[step] === undefined;
   }
 }
 
-// Each step's default is pre-selected on arrival (insert only if a dice tray is in the build)
+// Each step's default is pre-selected on arrival
 function cfgApplyDefault(){
   const s = CFG_STEPS[cfgIx];
   if(s === "summary" || cfgSel[s] !== undefined) return;
-  if(s === "holder" && !cfgSel.dice) return;
   cfgSel[s] = CFG_DEFAULT[s];
 }
 function cfgNext(){
@@ -861,14 +950,54 @@ function cfgNext(){
 }
 function cfgBack(){ if(cfgIx > 0){ cfgIx--; cfgRender(); } }
 
+/* ---- token pick & mix ---- */
+let tpSys = "all";
+function tpFilter(btn){
+  tpSys = btn.dataset.sys;
+  document.querySelectorAll(".tp-chip").forEach(c => c.classList.toggle("on", c === btn));
+  tpRender();
+}
+function tpAdd(id, delta){
+  if(typeof cfgSel.tok !== "object" || cfgSel.tok === null) cfgSel.tok = {};
+  const cur = cfgSel.tok[id] || 0;
+  const total = tokenSum(cfgSel.tok);
+  const next = Math.max(0, Math.min(cur + delta, cur + (TOKEN_CAP - total)));
+  if(next === 0) delete cfgSel.tok[id]; else cfgSel.tok[id] = next;
+  cfgRender();
+}
+function tpRender(){
+  const q = (document.getElementById("tp-search").value || "").toLowerCase();
+  const picks = (typeof cfgSel.tok === "object" && cfgSel.tok) ? cfgSel.tok : {};
+  const total = tokenSum(picks);
+  const atCap = total >= TOKEN_CAP;
+  const rows = Object.entries(TOKENS)
+    .filter(([id, t]) => (tpSys === "all" || t.sys === tpSys) && (!q || t.name.toLowerCase().includes(q)))
+    .map(([id, t]) => {
+      const n = picks[id] || 0;
+      return '<div class="tp-row' + (n ? ' has' : '') + '">'
+        + '<img class="ti" src="/img/tokens/' + id + '.png' + CFG_IMG_VER + '" loading="lazy" alt="' + t.name + ' token, both sides">'
+        + '<span class="tn">' + t.name + ' <span class="ts">' + TOKEN_SYS_LABEL[t.sys] + '</span></span>'
+        + '<span class="tp-qty">'
+        + '<button onclick="tpAdd(\'' + id + '\',-1)"' + (n === 0 ? ' disabled' : '') + ' aria-label="Fewer ' + t.name + '">−</button>'
+        + '<span class="q">' + n + '</span>'
+        + '<button onclick="tpAdd(\'' + id + '\',1)"' + (atCap ? ' disabled' : '') + ' aria-label="More ' + t.name + '">+</button>'
+        + '</span></div>';
+    }).join("");
+  document.getElementById("tp-list").innerHTML = rows || '<p class="tp-empty">No tokens match your search.</p>';
+  const cnt = document.getElementById("tp-count");
+  cnt.textContent = total + " / " + TOKEN_CAP + " tokens";
+  cnt.className = "cnt" + (atCap ? " full" : total > 0 ? " some" : "");
+  document.getElementById("tp-price").textContent = gbp(total * TOKEN_PRICE);
+}
+
 /* ---- build-preview images ----
    Combo renders follow this naming (PNG, /img/):
      dice-tray-16[-token-holder|-lift-out-tray].png
      token-holder.png · lift-out-tray.png (standalone inserts)
-     tokens-aos.png · tokens-40k.png (standalone — step 4 shows the token set only)
+     tokens-aos.png (static step 4 image — replace with a mixed-tokens photo)
    Missing renders fall back down the chain to the closest existing image.
    CFG_IMG_VER busts the CDN cache — bump it whenever an image is replaced. */
-const CFG_IMG_VER = "?v=2";
+const CFG_IMG_VER = "?v=3";
 function setPreview(img, chain){
   const key = chain.join("|");
   if(img.dataset.chain === key) return;
@@ -882,7 +1011,7 @@ function diceBase(){
   return d ? "dice-tray-" + (d === "16mm" ? "16" : d === "12mm" ? "12" : "mixed") : null;
 }
 function cfgPreviews(){
-  const db = diceBase(), h = cfgSel.holder, t = cfgSel.tok;
+  const db = diceBase(), h = cfgSel.holder;
   // Step 3: tray + insert, or empty tray if insert skipped
   const hImg = h === "lift" ? "lift-out-tray" : "token-holder";
   let hc;
@@ -890,11 +1019,19 @@ function cfgPreviews(){
   else if(db)      hc = ["/img/" + db + ".png", "/img/dice-tray-16.png"];
   else             hc = ["/img/" + hImg + ".png", "/img/token-holder.png"];
   setPreview(document.getElementById("cfg-img-holder"), hc);
-  // Step 4: just the selected token set (last picked if more than one)
-  const last = Array.isArray(t) && t.length ? t[t.length - 1] : "aos";
-  setPreview(document.getElementById("cfg-img-tok"), ["/img/tokens-" + last + ".png", "/img/tokens-aos.png"]);
+  // Step 4 image is static (tokens photo) — the picker itself is the preview.
 }
 function cfgAddToCart(){
+  // Token picks merge into the cart's single pick & mix set, capped at rack capacity.
+  const picks = (typeof cfgSel.tok === "object" && cfgSel.tok) ? cfgSel.tok : {};
+  if(tokenSum(picks) > 0){
+    if(tokenSum(cartTokens) + tokenSum(picks) > TOKEN_CAP){
+      alert("The Token Holder's racks take " + TOKEN_CAP + " tokens and your cart already has "
+        + tokenSum(cartTokens) + " — remove some tokens from the cart first.");
+      return;
+    }
+    for(const id in picks) cartTokens[id] = (cartTokens[id]||0) + picks[id];
+  }
   cfgSkus().forEach(sku => { cart[sku] = (cart[sku]||0) + 1; });
   for(const k in cfgSel) cfgSel[k] = undefined;
   cfgIx = 0;
@@ -904,6 +1041,8 @@ function cfgAddToCart(){
 
 function render(){
   let count = 0; for(const k in cart) count += cart[k];
+  const tokCount = tokenSum(cartTokens);
+  if(tokCount > 0) count += 1; // pick & mix set counts as one item
   document.getElementById("cart-count").textContent = count;
 
   const lines = document.getElementById("cart-lines");
@@ -918,6 +1057,13 @@ function render(){
     const lt = CATALOG[k].price * cart[k]; sub += lt;
     html += '<div class="line"><span>'+CATALOG[k].name+' × '+cart[k]+'</span><span class="ln">'+gbp(lt)+'<button class="rm" onclick="removeLine(\''+k+'\')" aria-label="Remove '+CATALOG[k].name+'">×</button></span></div>';
   }
+  if(tokCount > 0){
+    const lt = tokCount * TOKEN_PRICE; sub += lt;
+    const picks = Object.entries(cartTokens).map(([id,q]) => q+'× '+TOKENS[id].name).join(', ');
+    html += '<div class="line"><span>Token Pick &amp; Mix × '+tokCount
+      + '<br><span style="color:var(--muted);font-size:12px">'+picks+'</span></span>'
+      + '<span class="ln">'+gbp(lt)+'<button class="rm" onclick="removeTokens()" aria-label="Remove token pick and mix">×</button></span></div>';
+  }
   lines.innerHTML = html;
   document.getElementById("t-sub").textContent = gbp(sub);
   document.getElementById("t-post").textContent = CONFIG.POSTAGE_NOTE;
@@ -927,6 +1073,7 @@ function render(){
 
 function addSku(sku){ cart[sku] = (cart[sku]||0) + 1; render(); openCart(); }
 function removeLine(k){ delete cart[k]; render(); }
+function removeTokens(){ for(const k in cartTokens) delete cartTokens[k]; render(); }
 function openCart(){ document.getElementById("drawer").classList.add("open"); document.getElementById("scrim").classList.add("open"); }
 function closeCart(){ document.getElementById("drawer").classList.remove("open"); document.getElementById("scrim").classList.remove("open"); }
 
@@ -947,7 +1094,7 @@ async function ensureStripe(){
 }
 
 async function checkout(){
-  if(Object.keys(cart).length === 0) return;
+  if(Object.keys(cart).length === 0 && tokenSum(cartTokens) === 0) return;
   const s = await ensureStripe();
   if(!s){
     alert("Payments aren't switched on yet. Set STRIPE_PUBLISHABLE_KEY (and deploy the checkout function) to take payments.");
@@ -957,7 +1104,7 @@ async function checkout(){
     const res = await fetch(CONFIG.CHECKOUT_ENDPOINT, {
       method:"POST",
       headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({ items: cart })
+      body: JSON.stringify({ items: cart, tokens: cartTokens })
     });
     if(!res.ok) throw new Error("Checkout failed");
     const { clientSecret } = await res.json();

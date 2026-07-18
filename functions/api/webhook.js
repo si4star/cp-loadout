@@ -4,7 +4,7 @@
 // Env: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, RESEND_API_KEY,
 //      FROM_EMAIL, ADMIN_EMAIL, and the D1 binding "DB".
 
-import { json, stripe, sendEmail, gbp } from "./_lib.js";
+import { json, stripe, sendEmail, gbp, TOKENS, parseTokenManifest } from "./_lib.js";
 
 export async function onRequestPost({ request, env }) {
   const body = await request.text();
@@ -33,6 +33,14 @@ export async function onRequestPost({ request, env }) {
     qty: li.quantity,
     amount: li.amount_total,
   }));
+
+  // Attach the pick & mix manifest (set by checkout.js) to its line item so
+  // items_json carries the exact picks — no schema change needed.
+  const picks = parseTokenManifest(s.metadata?.tokens);
+  if (picks.length) {
+    const pm = items.find((i) => i.name === "Token Pick & Mix");
+    if (pm) pm.tokens = picks.map(([id, qty]) => ({ id, name: TOKENS[id].name, qty }));
+  }
 
   const o = {
     session_id: s.id,
@@ -76,7 +84,15 @@ export async function onRequestPost({ request, env }) {
   // Duplicate webhook delivery (row already existed) — don't email again.
   if (!res?.meta?.changes) return json({ received: true, duplicate: true });
 
-  const itemsHtml = items.map((i) => `${i.qty} × ${i.name} — ${gbp(i.amount)}`).join("<br>");
+  const itemsHtml = items
+    .map((i) => {
+      let line = `${i.qty} × ${i.name} — ${gbp(i.amount)}`;
+      if (i.tokens) {
+        line += i.tokens.map((t) => `<br>&nbsp;&nbsp;· ${t.qty} × ${t.name}`).join("");
+      }
+      return line;
+    })
+    .join("<br>");
   const addressHtml = [o.ship_name, o.ship_line1, o.ship_line2, o.ship_city, o.ship_postcode, o.ship_country]
     .filter(Boolean)
     .join("<br>");
