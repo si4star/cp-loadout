@@ -201,6 +201,8 @@ section{padding:62px 0}
 .tp-chip{background:var(--bg3); border:1px solid var(--line); border-radius:999px; padding:7px 13px;
   color:var(--muted); font-size:12.5px; cursor:pointer; font-family:inherit}
 .tp-chip.on{border-color:var(--gold); color:var(--gold)}
+.tp-chip.fill{color:var(--gold-soft)}
+.tp-chip.fill:hover{border-color:var(--gold)}
 .tp-list{max-height:320px; overflow-y:auto; border:1px solid var(--line); border-radius:10px; background:var(--bg3)}
 .tp-row{display:flex; align-items:center; justify-content:space-between; gap:10px;
   padding:10px 14px; border-bottom:1px solid var(--line); font-size:14px}
@@ -611,6 +613,11 @@ footer a{color:var(--gold); text-decoration:none}
                 <button class="tp-chip" data-sys="aos" onclick="tpFilter(this)">AoS</button>
                 <button class="tp-chip" data-sys="gen" onclick="tpFilter(this)">Generic</button>
               </div>
+              <div class="tp-bar">
+                <button class="tp-chip fill" onclick="tpPreset('aos')">Fill: AoS recommended · 60 tokens</button>
+                <button class="tp-chip fill" onclick="tpPreset('40k')">Fill: 40K recommended · 60 tokens</button>
+                <button class="tp-chip fill" onclick="tpPreset(null)">Clear</button>
+              </div>
               <div class="tp-list" id="tp-list"></div>
               <div class="tp-count"><span class="cnt" id="tp-count">0 / 60 tokens</span><span id="tp-price">£0.00</span></div>
             </div>
@@ -971,6 +978,21 @@ function cfgGoto(i){
 }
 
 /* ---- token pick & mix ---- */
+// Recommended fills — compositions from the legacy fixed sets (see admin
+// packing checklists). Values are picks: generic-1-6 is 1 pick = 6 tokens.
+// Both total exactly 60 physical tokens.
+const TOKEN_PRESETS = {
+  "aos": { "hit":6, "wound":6, "damage":6, "save":6, "rend":6, "ward-6":2, "ward-5":2,
+           "ward-4":1, "ward-3":1, "attack":6, "run-charge":2, "cast":2, "strikes":6,
+           "fugitive":2, "generic-1-6":1 },
+  "40k": { "hit":6, "wound":6, "reroll-hits":6, "cover":6, "moved":6, "advanced":6,
+           "hidden":6, "secured":6, "half-strength":6, "generic-1-6":1 },
+};
+function tpPreset(sys){
+  cfgSel.tok = sys ? Object.assign({}, TOKEN_PRESETS[sys]) : {};
+  tpSync();
+  document.getElementById("cfg-total").textContent = gbp(cfgTotal());
+}
 let tpSys = "all";
 function tpFilter(btn){
   tpSys = btn.dataset.sys;
