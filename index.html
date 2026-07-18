@@ -593,7 +593,7 @@ footer a{color:var(--gold); text-decoration:none}
               <h3>Step 3 — Insert</h3>
               <p class="desc">Sits inside the dice tray — or works on its own if you're skipping the tray.</p>
               <div class="opts">
-                <button class="opt" data-pick="holder:token-holder"><span class="on">Token Holder</span><span class="op">£12</span><span class="od">Holds 20 × 12mm dice and 60 tokens — comes with 6 combat gauges and 6 command-point coins</span></button>
+                <button class="opt" data-pick="holder:token-holder"><span class="on">Token Holder</span><span class="op">£12</span><span class="od">Holds 20 × 12mm dice &amp; 60 tokens (in 10 stacks of 6). Comes with 6 combat gauges and 6 CP coins.</span></button>
                 <button class="opt" data-pick="holder:lift"><span class="on">Lift-out tray</span><span class="op">£8</span></button>
                 <button class="opt skip" data-pick="holder:skip"><span class="on">No thanks</span><span class="op">Skip this step</span></button>
               </div>
@@ -1094,9 +1094,11 @@ function diceBase(){
 }
 function cfgPreviews(){
   const db = diceBase(), h = cfgSel.holder;
-  // Step 2: selected dice tray variant (16mm render until chosen)
+  // Step 2: selected dice tray variant · plain white when skipped · 16mm render until chosen
   setPreview(document.getElementById("cfg-img-dice"),
-    db ? ["/img/" + db + ".png", "/img/dice-tray-16.png"] : ["/img/dice-tray-16.png"]);
+    db ? ["/img/" + db + ".png", "/img/dice-tray-16.png"]
+       : cfgSel.dice === null ? ["/img/no-selection.png"]
+       : ["/img/dice-tray-16.png"]);
   // Step 3: tray + insert · tray only · insert only · plain white when neither
   const hImg = h === "lift" ? "lift-out-tray" : "token-holder";
   let hc;
