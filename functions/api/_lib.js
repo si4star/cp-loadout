@@ -139,6 +139,7 @@ export const TOKENS = {
   "fugitive":      { name: "Fugitive / Hideout",                 sys: "aos" },
   "poisoned":      { name: "Poisoned",                           sys: "aos" },
   "finest-hour":   { name: "Finest Hour",                        sys: "aos" },
+  "obscured":      { name: "Obscured / Overgrown",               sys: "aos" },
 };
 
 // "hit:10,wound:5" → [["hit",10],["wound",5]] (unknown ids dropped)
