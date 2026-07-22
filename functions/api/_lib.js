@@ -140,6 +140,7 @@ export const TOKENS = {
   "poisoned":      { name: "Poisoned",                           sys: "aos" },
   "finest-hour":   { name: "Finest Hour",                        sys: "aos" },
   "obscured":      { name: "Obscured / Overgrown",               sys: "aos" },
+  "crit":          { name: "Crit 2 Hits / Mortal",               sys: "aos" },
 };
 
 // "hit:10,wound:5" → [["hit",10],["wound",5]] (unknown ids dropped)
