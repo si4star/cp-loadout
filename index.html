@@ -845,12 +845,15 @@ const TOKENS = {
   "cast":          { name: "Cast +/−",                           sys: "aos" },
   "strikes":       { name: "Strikes First / Strikes Last",       sys: "aos" },
   "fugitive":      { name: "Fugitive / Hideout",                 sys: "aos" },
-  "poisoned":      { name: "Poisoned",                           sys: "aos" },
+  "poisoned":      { name: "Poisoned",                           sys: ["aos", "40k"] },
   "finest-hour":   { name: "Finest Hour",                        sys: "aos" },
   "obscured":      { name: "Obscured / Overgrown",               sys: "aos" },
   "crit":          { name: "Crit 2 Hits / Mortal",               sys: "aos" },
 };
 const TOKEN_SYS_LABEL = { gen: "Generic", "40k": "40K", aos: "AoS" };
+// sys can be a single system id or an array of ids for tokens shared across systems
+const tokenSysList = sys => Array.isArray(sys) ? sys : [sys];
+const tokenSysLabel = sys => tokenSysList(sys).map(s => TOKEN_SYS_LABEL[s]).join(" · ");
 
 const cart = {};                       // sku -> qty
 const cartTokens = {};                 // tokenId -> picks (pick & mix)
@@ -1039,10 +1042,10 @@ function tpAdd(id, delta){
 function tpRender(){
   const q = (document.getElementById("tp-search").value || "").toLowerCase();
   const rows = Object.entries(TOKENS)
-    .filter(([id, t]) => (tpSys === "all" || t.sys === tpSys) && (!q || t.name.toLowerCase().includes(q)))
+    .filter(([id, t]) => (tpSys === "all" || tokenSysList(t.sys).includes(tpSys)) && (!q || t.name.toLowerCase().includes(q)))
     .map(([id, t]) => {
       const per = t.per || 1;
-      const label = TOKEN_SYS_LABEL[t.sys] + (per > 1 ? ' · ' + per + ' tokens · ' + gbp(TOKEN_PRICE * per) : '');
+      const label = tokenSysLabel(t.sys) + (per > 1 ? ' · ' + per + ' tokens · ' + gbp(TOKEN_PRICE * per) : '');
       return '<div class="tp-row" data-id="' + id + '">'
         + '<img class="ti" src="/img/tokens/' + id + '.png' + CFG_IMG_VER + '" loading="lazy" alt="' + t.name + ' token, both sides">'
         + '<span class="tn">' + t.name + ' <span class="ts">' + label + '</span></span>'
