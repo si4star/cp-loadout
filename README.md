@@ -50,7 +50,7 @@ Bind it to the Pages project with the binding name **DB**.
 | RESEND_API_KEY         | re_… (verify cploadout.com as a sender in Resend first)     |
 | FROM_EMAIL             | orders@cploadout.com                                        |
 | ADMIN_EMAIL            | where new-order alerts go (your inbox)                      |
-| CF_ACCESS_TEAM_DOMAIN  | yourteam.cloudflareaccess.com (Zero Trust team domain)      |
+| CF_ACCESS_TEAM_DOMAIN  | cploadout.cloudflareaccess.com (Zero Trust team domain)     |
 | CF_ACCESS_AUD          | the Access application's Audience (AUD) tag                 |
 | STRIPE_PUBLISHABLE_KEY | only if you use /api/config instead of hardcoding pk_       |
 
@@ -83,7 +83,7 @@ Setup (Zero Trust → Access → Applications → Add a self-hosted application)
 3. **Policy** (on each app): Action *Allow*, include *Emails* →
    `hello@cploadout.com` (login via one-time PIN, or add Google).
 4. Copy each app's **Application Audience (AUD)** tag and your **team domain**
-   (`yourteam.cloudflareaccess.com`); set `CF_ACCESS_AUD` and
+   (`cploadout.cloudflareaccess.com`); set `CF_ACCESS_AUD` and
    `CF_ACCESS_TEAM_DOMAIN`. (Use App 1's AUD — the cookie from logging in there
    is what the functions verify.)
 5. Optionally also protect the project's `*.pages.dev` URL with the same policy
