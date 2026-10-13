@@ -137,10 +137,11 @@ export const TOKENS = {
   "cast":          { name: "Cast +/−",                           sys: "aos" },
   "strikes":       { name: "Strikes First / Strikes Last",       sys: "aos" },
   "fugitive":      { name: "Fugitive / Hideout",                 sys: "aos" },
-  "poisoned":      { name: "Poisoned",                           sys: ["aos", "40k"] },
+  "disease":       { name: "Disease / Burning",                  sys: ["aos", "40k"] },
   "finest-hour":   { name: "Finest Hour",                        sys: "aos" },
   "obscured":      { name: "Obscured / Overgrown",               sys: "aos" },
   "crit":          { name: "Crit 2 Hits / Mortal",               sys: "aos" },
+  "oc":            { name: "1 / + Objective Control (OC)",       sys: ["aos", "40k"] },
 };
 
 // "hit:10,wound:5" → [["hit",10],["wound",5]] (unknown ids dropped)
