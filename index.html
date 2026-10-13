@@ -492,6 +492,7 @@ footer a{color:var(--gold); text-decoration:none}
         <p class="lede">Build your <strong>Loadout</strong>: a 3D-printed dice tray, token holder and game tokens, sized to drop into a Really Useful Boxes A4 paper tray. Pick the pieces you need. When the lid clicks shut, nothing moves.</p>
         <div class="cta-row">
           <a class="btn btn-gold" href="#buy">Build yours</a>
+          <a class="btn btn-ghost" href="#tokens" onclick="goTokens(); return false;">Just tokens? Pick'n'mix</a>
           <a class="btn btn-ghost" href="#holds">See what it holds</a>
         </div>
       </div>
@@ -549,7 +550,7 @@ footer a{color:var(--gold); text-decoration:none}
   <section id="buy" style="padding-top:0">
     <div class="wrap">
       <div class="sec-head"><span class="sec-num">03</span><h2>Build your loadout</h2></div>
-      <p class="sec-sub">Pick the pieces you need, skip the ones you don't. Every part works on its own.</p>
+      <p class="sec-sub">Pick the pieces you need, skip the ones you don't. Every part works on its own. Only after tokens? <a href="#tokens" onclick="goTokens(); return false;" style="color:var(--gold)">Skip to token pick'n'mix →</a></p>
 
       <div class="config reveal">
         <div class="cfg-progress" id="cfg-progress"></div>
@@ -998,6 +999,17 @@ function cfgCanGoto(i){
   if(s !== "summary" && cfgSel[s] !== undefined) return true;
   return CFG_STEPS.slice(0, i).every(p => cfgSel[p] !== undefined);
 }
+// "Just tokens" shortcut: skip RUB tray, dice tray and insert, land on step 4.
+// Also triggered by linking to /#tokens. Existing token picks are kept.
+function goTokens(){
+  cfgSel.rub = null; cfgSel.dice = null; cfgSel.holder = null;
+  cfgHandle = "black";
+  cfgIx = CFG_STEPS.indexOf("tok");
+  cfgApplyDefault();
+  cfgRender();
+  document.getElementById("buy").scrollIntoView({ behavior: "smooth" });
+  if(location.hash !== "#tokens") history.replaceState(null, "", "#tokens");
+}
 function cfgGoto(i){
   if(i === cfgIx || !cfgCanGoto(i)) return;
   cfgIx = i;
@@ -1230,6 +1242,8 @@ document.getElementById("yr").textContent = new Date().getFullYear();
 render();
 cfgApplyDefault();
 cfgRender();
+if(location.hash === "#tokens") goTokens();
+window.addEventListener("hashchange", () => { if(location.hash === "#tokens") goTokens(); });
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeCheckout(); closeCart(); } });
 const io = new IntersectionObserver((es)=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add("in"); }), {threshold:.12});
 document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
